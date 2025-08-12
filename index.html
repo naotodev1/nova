@@ -1,544 +1,866 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Studio Tsukiyo</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌸 CherryChat - Chat Aleatório</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='%23ff6b8b'/><path d='M16 8c-4.42 0-8 2.58-8 5.75 0 1.6.98 3.05 2.55 4.1-.33.95-1.05 2.65-.75 3.4.4 1 1.9.75 2.9.25 1.25-.6 2.05-1.75 3.3-2.5 1.75 1.25 3.75 2 6 2 4.42 0 8-2.58 8-5.75S20.42 8 16 8z' fill='white'/></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+        }
 
-  <!-- FAVICONS E META MOBILE -->
-  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<meta name="apple-mobile-web-app-title" content="Shiunji Animes" />
-<link rel="manifest" href="/site.webmanifest" />" />
+        body {
+            background-color: #fff0f5;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Orbitron:wght@600;700&display=swap" rel="stylesheet">
+        /* Header com Logo */
+        .header {
+            background: linear-gradient(135deg, #ff6b8b, #ff8fab);
+            color: white;
+            padding: 12px 15px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(255, 107, 139, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
 
-<!-- Swiper para carrosséis -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+        }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-  font-family:'Poppins',sans-serif;
-  background:#000;
-  color:#fff;
-  overflow-x:hidden;
-}
-canvas#bg3d{
-  position:fixed;
-  top:0;left:0;width:100%;height:100%;
-  z-index:-1;
-}
+        .logo-text {
+            font-family: 'Arial Rounded MT Bold', sans-serif;
+            font-size: 22px;
+            background: linear-gradient(135deg, white, #ffecef);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(255, 107, 139, 0.5);
+            letter-spacing: 0.5px;
+        }
 
-/* Header */
-header{
-  position:fixed;top:0;left:0;width:100%;
-  display:flex;justify-content:space-between;align-items:center;
-  padding:20px 50px;z-index:1000;transition:.3s;
-}
-header.scrolled{
-  background:rgba(0,0,0,.6);
-  backdrop-filter:blur(8px);
-}
-header h1{
-  font-family:'Orbitron',sans-serif;
-  color:#ff4d9d;
-  text-shadow:0 0 12px #ff4d9d;
-}
-nav{display:flex;gap:25px}
-nav a{color:#fff;text-decoration:none;text-transform:uppercase;font-weight:600;transition:.3s;}
-nav a:hover{color:#ff4d9d;text-shadow:0 0 10px #ff4d9d;}
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
 
-/* Hero */
-.hero{
-  height:100vh;display:flex;justify-content:center;align-items:center;
-  text-align:center;position:relative;z-index:1;
-}
-.hero-content{
-  max-width:700px;
-  animation:fadeIn 1.5s ease forwards;
-  opacity:0;
-}
-@keyframes fadeIn{to{opacity:1}}
-.hero h2{
-  font-size:3.5rem;margin-bottom:20px;
-  text-shadow:0 0 20px #ff4d9d;
-}
-.hero p{font-size:1.4rem;margin-bottom:30px;color:#ffb3d9;}
-.hero a{
-  background:#ff4d9d;color:#fff;padding:15px 40px;
-  border-radius:30px;font-weight:700;text-decoration:none;
-  box-shadow:0 5px 20px rgba(255,77,157,.7);transition:.3s;
-}
-.hero a:hover{background:#ff1a75;box-shadow:0 7px 25px rgba(255,26,117,.9);}
+        .info-text {
+            text-align: center;
+            padding: 20px;
+            color: #ff6b8b;
+            font-size: 16px;
+            font-weight: bold;
+        }
 
-/* Sections */
-main{max-width:1200px;margin:0 auto;padding:100px 20px;}
-section{margin-bottom:100px;}
-section h2{
-  font-size:2.5rem;color:#ff4d9d;text-align:center;
-  margin-bottom:40px;text-shadow:0 0 10px #ff4d9d;
-}
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid #ffebf0;
+        }
 
-/* Grid Cards */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:40px;
-}
-.card{
-  background:rgba(255,255,255,.05);
-  border-radius:20px;
-  padding:30px;text-align:center;
-  backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,.1);
-  transition:.4s;
-  opacity:0;transform:translateY(40px);
-}
-.card:hover{transform:translateY(-15px) scale(1.02);box-shadow:0 0 30px rgba(255,77,157,.4);}
+        .message {
+            margin-bottom: 12px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 85%;
+            word-wrap: break-word;
+            font-size: 15px;
+            line-height: 1.4;
+        }
 
-/* Footer */
-footer{
-  background:#0d0d0d;text-align:center;
-  padding:40px 20px;color:#ffb3d9;font-size:.9rem;
-}
-footer a{color:#ff4d9d;margin:0 10px;text-decoration:none;}
+        .stranger-message {
+            background-color: #f8f8f8;
+            color: #555;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            border: 1px solid #eee;
+        }
 
-/* Scroll Reveal */
-.reveal{opacity:0;transform:translateY(60px);transition:.8s ease;}
-.reveal.active{opacity:1;transform:translateY(0);}
-</style>
+        .user-message {
+            background: linear-gradient(to right, #ff6b8b, #ff8fab);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+            margin-left: auto;
+            box-shadow: 0 1px 3px rgba(255,107,139,0.3);
+        }
+
+        .input-area {
+            display: flex;
+            padding: 10px;
+            background-color: white;
+            border-radius: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            border: 1px solid #ffebf0;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #ffd6e7;
+            border-radius: 20px;
+            outline: none;
+            font-size: 16px;
+            transition: border 0.3s;
+            color: #555;
+        }
+
+        .message-input:focus {
+            border-color: #ff8fab;
+        }
+
+        .message-input::placeholder {
+            color: #ffb7c5;
+        }
+
+        .disconnect-button {
+            background: linear-gradient(to right, #ff4757, #ff6b8b);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            margin-top: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            align-self: center;
+            box-shadow: 0 2px 5px rgba(255,71,87,0.3);
+            transition: all 0.3s;
+            font-size: 15px;
+        }
+
+        .disconnect-button:hover {
+            transform: scale(1.03);
+            box-shadow: 0 3px 8px rgba(255,71,87,0.4);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 15px;
+            color: #ff6b8b;
+            font-size: 13px;
+            font-weight: bold;
+            background-color: #fff0f5;
+        }
+
+        .typing-indicator {
+            display: inline-block;
+            background-color: #f8f8f8;
+            padding: 10px 15px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            border: 1px solid #eee;
+        }
+
+        .typing-dots {
+            display: inline-flex;
+        }
+
+        .typing-dots span {
+            height: 8px;
+            width: 8px;
+            background-color: #ff8fab;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 2px;
+            animation: typing 1s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .sakura-petal {
+            position: absolute;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff8fab"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8 0-.71.13-1.39.35-2.03C7.57 14.16 10 16 12 16s4.43-1.84 7.65-6.03c.22.64.35 1.32.35 2.03 0 4.42-3.58 8-8 8z"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            height: 25px;
+            width: 25px;
+            opacity: 0.7;
+            z-index: -1;
+            animation: falling linear infinite;
+            filter: drop-shadow(0 1px 1px rgba(255, 143, 171, 0.5));
+        }
+
+        @keyframes falling {
+            0% {
+                transform: translate(0, -10vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translate(calc(var(--random-x) * 10vw), 100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Animação de pulsação para o logo */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .logo-icon {
+            animation: pulse 2s infinite;
+        }
+    </style>
 </head>
 <body>
-<canvas id="bg3d"></canvas>
+    <!-- Pétalas de Sakura -->
+    <div id="sakuraContainer"></div>
 
-<header id="header">
-  <h1>Studio Tsukiyo</h1>
-  <nav>
-    <a href="#livros">Catálogo</a>
-   <a href="#contato">Seja Membro</a>
-   <a href="#comunidade">Redes Sociais</a>
-  </nav>
-</header>
-
-<section class="hero">
-  <div class="hero-content">
-    <h2>Bem-vindo ao Mundo Otaku</h2>
-    <p>Seu cantinho de anime no mundo real!</p>
-    <a href="#livros">Explorar</a>
-  </div>
-</section>
-
-<main>
-
-
-
-<section class="book-catalog" id="livros">
-  <h2>Catálogo de Livros do Ren Tsukiyo</h2>
-  <div class="book-grid">
-
-    <!-- Livro 1 -->
-    <div class="book-card">
-      <img src="https://cdn.discordapp.com/attachments/1295254780528033892/1401211150326305000/file_000000003f2062308ab670a934d73fe6.png?ex=688f7313&is=688e2193&hm=4ac55364ef34a3079ab97a2e394dc7cae4887d6a7a1884deafc0eb8fe9ca1af4&" alt="Capa de Abunai Aisuru" class="book-cover">
-      <div class="book-info">
-        <h3>Abunai Aisuru</h3>
-        <p>Em um Japão onde casamentos são impostos pelo governo, Naoya desafia o sistema em nome do amor.</p>
-        <span class="tags">🎭 Drama • 💔 Romance • 🏛️ Distopia</span>
-        <a href="https://a.co/d/6v1y1xu" class="buy-button" target="_blank">Comprar na Amazon</a>
-      </div>
+    <!-- Header com Logo -->
+    <div class="header">
+        <svg class="logo-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ff6b8b"/>
+                    <stop offset="100%" stop-color="#ff8fab"/>
+                </linearGradient>
+            </defs>
+            <circle cx="32" cy="32" r="30" fill="url(#gradient)"/>
+            <path d="M32 16c-8.84 0-16 5.16-16 11.5 0 3.2 1.95 6.1 5.1 8.2-.65 1.9-2.1 5.3-1.5 6.8.8 2 3.8 1.5 5.8.5 2.5-1.2 4.1-3.5 6.6-5 3.5 2.5 7.5 4 12 4 8.84 0 16-5.16 16-11.5S40.84 16 32 16z" fill="white"/>
+            <path d="M26 28c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm12 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" fill="#ff6b8b"/>
+        </svg>
+        <h1 class="logo-text">CherryChat</h1>
     </div>
 
-    <!-- Livro 2 -->
-    <div class="book-card">
-      <img src="https://cdn.discordapp.com/attachments/1295254780528033892/1401210331073871963/file_00000000236861f98bbecccfd62f7307.png?ex=688f7250&is=688e20d0&hm=4f9439400af1da4cd27720de6ce29d60b137ac4c9ef97d7b46274aa738f409ac&" alt="Capa de Kizuite Kudassai" class="book-cover">
-      <div class="book-info">
-        <h3>Kizuite Kudassai</h3>
-        <p>Entre silêncios e cicatrizes, um amor delicado floresce sem pedir permissão.</p>
-        <span class="tags">🌸 Slice of Life • 💕 Romance • 😭 Emoção</span>
-        <a href="https://a.co/d/bTmnXcr" class="buy-button" target="_blank">Comprar na Amazon</a>
-      </div>
+    <div class="chat-container">
+        <div class="info-text">
+            Você está conversando com um estranho aleatório. Diga oi!
+        </div>
+
+        <div class="messages" id="messages">
+            <!-- Mensagens serão adicionadas aqui -->
+        </div>
+
+        <div class="input-area">
+            <input type="text" class="message-input" id="messageInput" placeholder="Digite sua mensagem..." onkeypress="handleKeyPress(event)">
+        </div>
+
+        <button class="disconnect-button" onclick="disconnect()">Parar Conversa</button>
     </div>
 
-    <!-- Livro 3 -->
-    <div class="book-card">
-      <img src="https://cdn.discordapp.com/attachments/1295254780528033892/1401211689864790116/file_000000002edc61f7bfda13e82a99d918.png?ex=688f7394&is=688e2214&hm=5e11fdcc40bf3b3d983636761945808bad674e392b42c41480db53d0f1f3f9d3&" alt="Capa de Emilly: Além do Horizonte" class="book-cover">
-      <div class="book-info">
-        <h3>Emilly: Além do Horizonte</h3>
-        <p>Quando sonhos e realidade se misturam, Emilly precisa encontrar quem ela realmente é.</p>
-        <span class="tags">✨ Fantasia • 🧠 Reflexão • ⏳ Futuro Incerto</span>
-        <a href="https://a.co/d/d3ByKE6" class="buy-button" target="_blank">Comprar na Amazon</a>
-      </div>
+    <div class="footer">
+        Powered by Studio Tsukiyo Platforms
     </div>
 
-  </div>
-</section>
+    <script>
+        // Variáveis globais
+        let isConnected = true;
+        let strangerMessages = [
+            "Oi! Tudo bem? 🌸",
+            "Como você está hoje?",
+            "De onde você está conversando?",
+            "Você gosta de CherryChat?",
+            "Algum hobby ou interesse especial?",
+            "Já usou o Hanabi antes? É bem parecido!",
+            "Qual seu tipo de música favorita?",
+            "Recomenda algum filme ou série?",
+            "Praia ou montanha? Qual você prefere?",
+            "Qual foi a última coisa que te fez rir muito?",
+            "Você acredita em amor à primeira vista?",
+            "Se pudesse viajar para qualquer lugar agora, onde iria?",
+            "Qual sua comida favorita?",
+            "Você tem algum talento incomum?",
+            "Qual foi o melhor dia da sua vida?",
+            "Se você pudesse ter qualquer superpoder, qual seria?",
+            "Qual seu sonho mais louco?",
+            "Você coleciona alguma coisa?",
+            "Qual seu animal favorito?",
+            "Prefere dia ou noite?",
+            "Se sua vida fosse um filme, qual seria o título?",
+            "Qual a coisa mais aleatória que você já fez?",
+            "Você acredita em aliens?",
+            "Qual a melhor lembrança da sua infância?",
+            "Se pudesse jantar com qualquer pessoa da história, quem seria?"
+            "Olá!",
+                "E aí?",
+                "Tudo bem?",
+                "Como vai você?",
+                "Que legal!",
+                "Interessante...",
+                "Entendi.",
+                "Sim.",
+                "Não.",
+                "Talvez.",
+                "Quem sabe?",
+                "O que você acha?",
+                "Concordo.",
+                "Discordo.",
+                "Não sei.",
+                "Preciso pensar sobre isso.",
+                "Conte-me mais.",
+                "Isso é ótimo!",
+                "Que pena...",
+                "Sério?",
+                "Incrível!",
+                "Impressionante.",
+                "Eu também!",
+                "Eu não.",
+                "Boa ideia!",
+                "Má ideia...",
+                "Por quê?",
+                "Como assim?",
+                "Onde?",
+                "Quando?",
+                "Quem?",
+                "O quê?",
+                "Qual?",
+                "De qual você gosta mais?",
+                "Qual é a sua opinião?",
+                "O que você está fazendo?",
+                "O que você gosta de fazer?",
+                "Qual é o seu hobby?",
+                "Que tipo de música você ouve?",
+                "Qual é o seu filme favorito?",
+                "Você gosta de ler?",
+                "Qual é o seu livro favorito?",
+                "Você gosta de viajar?",
+                "Para onde você gostaria de viajar?",
+                "Qual é o seu lugar favorito?",
+                "Você gosta de animais?",
+                "Qual é o seu animal favorito?",
+                "Qual é a sua cor favorita?",
+                "O que você está pensando?",
+                "Você tem alguma pergunta?",
+                "Quer conversar sobre o quê?",
+                "Que dia é hoje?",
+                "Qual é a data de hoje?",
+                "Como está o tempo aí?",
+                "Está calor ou frio?",
+                "Você gosta de esportes?",
+                "Qual é o seu esporte favorito?",
+                "Você gosta de cozinhar?",
+                "Qual é o seu prato favorito?",
+                "Você gosta de jardinagem?",
+                "Você tem plantas em casa?",
+                "Você gosta de arte?",
+                "Qual é o seu artista favorito?",
+                "Você gosta de história?",
+                "Qual é o seu período histórico favorito?",
+                "Você gosta de ciência?",
+                "Qual é o seu ramo da ciência favorito?",
+                "Você gosta de matemática?",
+                "Você é bom em matemática?",
+                "Você gosta de tecnologia?",
+                "Qual é o seu gadget favorito?",
+                "Você gosta de videogames?",
+                "Qual é o seu videogame favorito?",
+                "Você gosta de redes sociais?",
+                "Qual é a sua rede social favorita?",
+                "Você gosta de memes?",
+                "Qual é o seu meme favorito?",
+                "Você gosta de piadas?",
+                "Conte uma piada.",
+                "Você está entediado?",
+                "O que você faz para não ficar entediado?",
+                "Você tem algum talento especial?",
+                "O que você sabe fazer bem?",
+                "Você gosta de desafios?",
+                "Qual foi o seu maior desafio?",
+                "Você tem algum arrependimento?",
+                "O que você mudaria no passado?",
+                "Você tem alguma meta para o futuro?",
+                "O que você quer realizar?",
+                "Você gosta de ajudar os outros?",
+                "Como você gosta de ajudar os outros?",
+                "Você se considera uma pessoa feliz?",
+                "O que te faz feliz?",
+                "Você acredita em destino?",
+                "Você acredita em vida após a morte?",
+                "Você acredita em extraterrestres?",
+                "Você gosta de filosofia?",
+                "Qual é a sua filosofia de vida?",
+                "Você gosta de política?",
+                "Qual é a sua ideologia política?",
+                "Você gosta de religião?",
+                "Qual é a sua religião?",
+                "Você gosta de mistérios?",
+                "Qual é o seu mistério favorito?",
+                "Você gosta de teorias da conspiração?",
+                "Qual é a sua teoria da conspiração favorita?",
+                "Você gosta de filmes de terror?",
+                "Qual é o seu filme de terror favorito?",
+                "Você gosta de contos de fadas?",
+                "Qual é o seu conto de fadas favorito?",
+                "Você gosta de mitos e lendas?",
+                "Qual é o seu mito ou lenda favorito?",
+                "Você gosta de jogos de RPG?",
+                "Qual é o seu jogo de RPG favorito?",
+                "Você gosta de magia?",
+                "Você acredita em magia?",
+                "Você gosta de sonhos?",
+                "Você tem sonhos lúcidos?",
+                "Você gosta de astrologia?",
+                "Qual é o seu signo?",
+                "Você gosta de numerologia?",
+                "Qual é o seu número favorito?",
+                "Você gosta de tarot?",
+                "Você sabe ler tarot?",
+                "Você gosta de café?",
+                "Como você toma o seu café?",
+                "Você gosta de chá?",
+                "Qual é o seu chá favorito?",
+                "Você gosta de chocolate?",
+                "Qual é o seu chocolate favorito?",
+                "Você gosta de sorvete?",
+                "Qual é o seu sabor de sorvete favorito?",
+                "Você gosta de pizza?",
+                "Qual é o seu sabor de pizza favorito?",
+                "Você gosta de sushi?",
+                "Qual é o seu tipo de sushi favorito?",
+                "Você gosta de comida japonesa?",
+                "Qual é o seu prato japonês favorito?",
+                "Você gosta de comida italiana?",
+                "Qual é o seu prato italiano favorito?",
+                "Você gosta de comida chinesa?",
+                "Qual é o seu prato chinês favorito?",
+                "Você gosta de comida mexicana?",
+                "Qual é o seu prato mexicano favorito?",
+                "Você gosta de comida indiana?",
+                "Qual é o seu prato indiano favorito?",
+                "Você gosta de comida tailandesa?",
+                "Qual é o seu prato tailandês favorito?",
+                "Você gosta de comida vietnamita?",
+                "Qual é o seu prato vietnamita favorito?",
+                "Você gosta de comida coreana?",
+                "Qual é o seu prato coreano favorito?",
+                "Você gosta de comida brasileira?",
+                "Qual é o seu prato brasileiro favorito?",
+                "Você gosta de comida argentina?",
+                "Qual é o seu prato argentino favorito?",
+                "Você gosta de comida peruana?",
+                "Qual é o seu prato peruano favorito?",
+                "Você gosta de comida espanhola?",
+                "Qual é o seu prato espanhol favorito?",
+                "Você gosta de comida portuguesa?",
+                "Qual é o seu prato português favorito?",
+                "Você gosta de comida francesa?",
+                "Qual é o seu prato francês favorito?",
+                "Você gosta de comida alemã?",
+                "Qual é o seu prato alemão favorito?",
+                "Você gosta de comida russa?",
+                "Qual é o seu prato russo favorito?",
+                "Você gosta de comida africana?",
+                "Qual é o seu prato africano favorito?",
+                "Você gosta de comida do Oriente Médio?",
+                "Qual é o seu prato do Oriente Médio favorito?",
+                "Você gosta de comida vegana?",
+                "Você é vegano?",
+                "Você é vegetariano?",
+                "Você é alérgico a alguma coisa?",
+                "Você tem alguma intolerância alimentar?",
+                "Você gosta de animais de estimação?",
+                "Você tem animais de estimação?",
+                "Qual é o nome do seu animal de estimação?",
+                "Que raça é o seu animal de estimação?",
+                "Quantos anos tem o seu animal de estimação?",
+                "Você gosta de passear com o seu animal de estimação?",
+                "Você gosta de brincar com o seu animal de estimação?",
+                "Você gosta de dar carinho para o seu animal de estimação?",
+                "Você gosta de tirar fotos do seu animal de estimação?",
+                "Você gosta de postar fotos do seu animal de estimação nas redes sociais?",
+                "Você gosta de ir ao veterinário?",
+                "Você já teve algum problema com o seu animal de estimação?",
+                "Você já perdeu um animal de estimação?",
+                "Você já encontrou um animal de estimação perdido?",
+                "Você já salvou um animal de estimação?",
+                "Você já adotou um animal de estimação?",
+                "Você já doou um animal de estimação?",
+                "Você gostaria de ter mais animais de estimação?",
+                "Você acha que os animais têm alma?",
+                "Você acha que os animais deveriam ter os mesmos direitos que os humanos?",
+                "Você gosta de assistir vídeos de animais na internet?",
+                "Você gosta de ir ao zoológico?",
+                "Você gosta de ir ao circo?",
+                "Você é contra o uso de animais em circos?",
+                "Você gosta de ir ao aquário?",
+                "Você gosta de mergulhar?",
+                "Você gosta de nadar?",
+                "Você tem medo de algum animal?",
+                "Qual é o seu animal mais perigoso?",
+                "Você já foi mordido por um animal?",
+                "Você já foi picado por um animal?",
+                "Você já viu algum animal selvagem?",
+                "Você gostaria de trabalhar com animais?",
+                "Você é vegetariano?",
+                "Você é vegano?",
+                "Você gosta de comida vegetariana?",
+                "Você gosta de comida vegana?",
+                "Qual é o seu prato vegetariano favorito?",
+                "Qual é o seu prato vegano favorito?",
+                "Você gosta de frutas?",
+                "Qual é a sua fruta favorita?",
+                "Você gosta de legumes?",
+                "Qual é o seu legume favorito?",
+                "Você gosta de saladas?",
+                "Qual é a sua salada favorita?",
+                "Você gosta de sopa?",
+                "Qual é a sua sopa favorita?",
+                "Você gosta de macarrão?",
+                "Qual é o seu macarrão favorito?",
+                "Você gosta de arroz?",
+                "Qual é o seu arroz favorito?",
+                "Você gosta de feijão?",
+                "Qual é o seu feijão favorito?",
+                "Você gosta de lentilha?",
+                "Você gosta de grão de bico?",
+                "Você gosta de quinoa?",
+                "Você gosta de tofu?",
+                "Você gosta de cogumelos?",
+                "Você gosta de algas marinhas?",
+                "Você gosta de especiarias?",
+                "Qual é a sua especiaria favorita?",
+                "Você gosta de ervas aromáticas?",
+                "Qual é a sua erva aromática favorita?",
+                "Você gosta de azeite de oliva?",
+                "Você gosta de vinagre?",
+                "Você gosta de limão?",
+                "Você gosta de alho?",
+                "Você gosta de cebola?",
+                "Você gosta de pimenta?",
+                "Você gosta de sal?",
+                "Você gosta de açúcar?",
+                "Você prefere açúcar mascavo ou açúcar branco?",
+                "Você gosta de adoçantes artificiais?",
+                "Você usa adoçantes artificiais?",
+                "Você gosta de mel?",
+                "Você gosta de melado?",
+                "Você gosta de geleia?",
+                "Qual é a sua geleia favorita?",
+                "Você gosta de compota?",
+                "Qual é a sua compota favorita?",
+                "Você gosta de frutas secas?",
+                "Qual é a sua fruta seca favorita?",
+                "Você gosta de castanhas?",
+                "Qual é a sua castanha favorita?",
+                "Você gosta de sementes?",
+                "Qual é a sua semente favorita?",
+                "Você gosta de cereais?",
+                "Qual é o seu cereal favorito?",
+                "Você gosta de pão?",
+                "Qual é o seu pão favorito?",
+                "Você gosta de bolachas?",
+                "Qual é a sua bolacha favorita?",
+                "Você gosta de biscoitos?",
+                "Qual é o seu biscoito favorito?",
+                "Você gosta de bolo?",
+                "Qual é o seu bolo favorito?",
+                "Você gosta de torta?",
+                "Qual é a sua torta favorita?",
+                "Você gosta de pudim?",
+                "Qual é o seu pudim favorito?",
+                "Você gosta de mousse?",
+                "Qual é a sua mousse favorita?",
+                "Você gosta de sorvete?",
+                "Qual é o seu sabor de sorvete favorito?",
+                "Você gosta de chocolate?",
+                "Qual é o seu chocolate favorito?",
+                "Você gosta de bala?",
+                "Qual é a sua bala favorita?",
+                "Você gosta de chiclete?",
+                "Qual é o seu chiclete favorito?",
+                "Você gosta de pipoca?",
+                "Você gosta de nachos?",
+                "Você gosta de batata frita?",
+                "Você gosta de amendoim?",
+                "Você gosta de castanha de caju?",
+                "Você gosta de avelã?",
+                "Você gosta de nozes?",
+                "Você gosta de amêndoas?",
+                "Você gosta de pistache?",
+                "Você gosta de macadâmia?",
+                "Você gosta de coco?",
+                "Você gosta de uvas passas?",
+                "Você gosta de damasco seco?",
+                "Você gosta de ameixa seca?",
+                "Você gosta de tâmaras?",
+                "Você gosta de figos secos?",
+                "Você gosta de banana passa?",
+                "Você gosta de maçã desidratada?",
+                "Você gosta de chips de coco?",
+                "Você gosta de biscoitos de arroz?",
+                "Você gosta de pão de queijo?",
+                "Você gosta de quibe?",
+                "Você gosta de esfirra?",
+                "Você gosta de coxinha?",
+                "Você gosta de pastel?",
+                "Você gosta de risole?",
+                "Você gosta de croquete?",
+                "Você gosta de bolinho de bacalhau?",
+                "Você gosta de acarajé?",
+                "Você gosta de abará?",
+                "Você gosta de pamonha?",
+                "Você gosta de curau?",
+                "Você gosta de bolo de fubá?",
+                "Você gosta de canjica?",
+                "Você gosta de arroz doce?",
+                "Você gosta de paçoca?",
+                "Você gosta de pé de moleque?",
+                "Você gosta de cocada?",
+                "Você gosta de brigadeiro?",
+                "Você gosta de beijinho?",
+                "Você gosta de cajuzinho?",
+                "Você gosta de olho de sogra?",
+                "Você gosta de quindim?",
+                "Você gosta de maria mole?",
+                "Você gosta de suspiro?",
+                "Você gosta de algodão doce?",
+                "Você gosta de pipoca doce?",
+                "Você gosta de maçã do amor?",
+                "Você gosta de churros?",
+                "Você gosta de bolo de rolo?",
+                "Você gosta de bem casado?",
+                "Você gosta de brownie?",
+                "Você gosta de cupcake?",
+                "Você gosta de cookie?",
+                "Você gosta de waffle?",
+                "Você gosta de panqueca?",
+                "Você gosta de torrada?",
+                "Você gosta de croissante?",
+                "Você gosta de pão de mel?",
+                "Você gosta de rocambole?",
+                "Você gosta de pudim de leite?",
+                "Você gosta de gelatina?",
+                "Você gosta de manjar de coco?",
+                "Você gosta de sagu?",
+                "Você gosta de ambrosia?",
+                "Você gosta de pavê?",
+                "Você gosta de torta de limão?",
+                "Você gosta de torta de maçã?",
+                "Você gosta de mousse de maracujá?",
+                "Você gosta de Romeu e Julieta?",
+                "Você gosta de doce de leite?",
+                "Você gosta de goiabada?",
+                "Você gosta de marmelada?",
+                "Você gosta de doce de abóbora?",
+                "Você gosta de doce de banana?",
+                "Você gosta de doce de figo?",
+                "Você gosta de doce de batata doce?",
+                "Você gosta de doce de amendoim?",
+                "Você gosta de doce de coco?",
+                "Você gosta de doce de abóbora com coco?",
+                "Você gosta de doce de banana com canela?",
+                "Você gosta de doce de leite com ameixa?",
+                "Você gosta de goiabada com queijo?",
+                "Você gosta de marmelada com queijo?",
+                "Você gosta de paçoca com doce de leite?",
+                "Você gosta de pé de moleque com cocada?",
+                "Você gosta de brigadeiro com beijinho?",
+                "Você gosta de cajuzinho com olho de sogra?",
+                "Você gosta de quindim com maria mole?",
+                "Você gosta de suspiro com algodão doce?",
+                "Você gosta de pipoca doce com maçã do amor?",
+                "Você gosta de churros com bolo de rolo?",
+                "Você gosta de bem casado com brownie?",
+                "Você gosta de cupcake com cookie?",
+                "Você gosta de waffle com panqueca?",
+                "Você gosta de torrada com croissante?",
+                "Você gosta de pão de mel com rocambole?",
+                "Você gosta de pudim de leite com gelatina?",
+                "Você gosta de manjar de coco com sagu?",
+                "Você gosta de ambrosia com pavê?",
+                "Você gosta de torta de limão com torta de maçã?",
+                "Você gosta de mousse de maracujá com Romeu e Julieta?",
+                "Você gosta de doce de leite com goiabada?",
+                "Você gosta de marmelada com doce de abóbora?",
+                "Você gosta de doce de banana com doce de figo?",
+                "Você gosta de doce de batata doce com doce de amendoim?",
+                "Você gosta de doce de coco com doce de abóbora com coco?",
+                "Você gosta de doce de banana com canela com leite condensado?",
+                "Você gosta de torta de limão com torta de maçã com chantilly?",
+                "Você gosta de mousse de maracujá com Romeu e Julieta com sorvete?",
+                "Você gosta de brigadeiro com beijinho com granulado?",
+                "Você gosta de cajuzinho com olho de sogra com coco ralado?",
+                "Você gosta de quindim com maria mole com ameixa?",
+                "Você gosta de suspiro com algodão doce com corante?",
+                "Você gosta de pipoca doce com maçã do amor com caramelo?"
+        ];
 
-<style>
-.book-catalog {
-  padding: 4rem 2rem;
-  background: linear-gradient(to bottom, #000, #000);
-  text-align: center;
-  font-family: 'Segoe UI', sans-serif;
-}
+        // Criar pétalas de sakura
+        function createSakuraPetals() {
+            const petalCount = 15;
+            const container = document.getElementById('sakuraContainer');
+            
+            for (let i = 0; i < petalCount; i++) {
+                setTimeout(() => {
+                    const petal = document.createElement('div');
+                    petal.classList.add('sakura-petal');
+                    
+                    // Posição inicial aleatória
+                    const startX = Math.random();
+                    petal.style.left = `${startX * 100}%`;
+                    petal.style.top = '-25px';
+                    
+                    // Tempo de animação aleatório (10-20s)
+                    const duration = 10 + Math.random() * 10;
+                    petal.style.animationDuration = `${duration}s`;
+                    
+                    // Variação no eixo X
+                    petal.style.setProperty('--random-x', Math.random() > 0.5 ? Math.random() : -Math.random());
+                    
+                    // Tamanho aleatório
+                    const size = 15 + Math.random() * 20;
+                    petal.style.width = `${size}px`;
+                    petal.style.height = `${size}px`;
+                    
+                    // Atraso inicial aleatório
+                    petal.style.animationDelay = `${Math.random() * 5}s`;
+                    
+                    container.appendChild(petal);
+                    
+                    // Remover pétala após a animação terminar
+                    setTimeout(() => {
+                        petal.remove();
+                    }, duration * 1000);
+                }, i * 1000);
+            }
+            
+            // Criar novas pétalas continuamente
+            setInterval(createSakuraPetals, 15000);
+        }
 
-.book-catalog h2 {
-  font-size: 2.5rem;
-  margin-bottom: 3rem;
-  color: #FFC0CB;
-}
+        // Função para enviar mensagem
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (message && isConnected) {
+                addMessage(message, 'user');
+                input.value = '';
+                
+                // Simular resposta do estranho
+                setTimeout(() => {
+                    if (isConnected) {
+                        showTypingIndicator();
+                        setTimeout(() => {
+                            removeTypingIndicator();
+                            const randomResponse = strangerMessages[Math.floor(Math.random() * strangerMessages.length)];
+                            addMessage(randomResponse, 'stranger');
+                        }, 1500 + Math.random() * 2000);
+                    }
+                }, 500 + Math.random() * 1000);
+            }
+        }
 
-.book-grid {
-  display: grid;
-  gap: 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  justify-content: center;
-  align-items: stretch;
-}
+        // Função para lidar com tecla Enter
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
 
-.book-card {
-  background: #FFC0CB;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
+        // Função para adicionar mensagem
+        function addMessage(text, sender) {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(sender + '-message');
+            messageDiv.textContent = text;
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
 
-.book-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-}
+        // Função para mostrar indicador de digitação
+        function showTypingIndicator() {
+            const messagesDiv = document.getElementById('messages');
+            const typingDiv = document.createElement('div');
+            
+            typingDiv.classList.add('typing-indicator');
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+            
+            messagesDiv.appendChild(typingDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
 
-.book-cover {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-bottom: 1px solid #eee;
-}
+        // Função para remover indicador de digitação
+        function removeTypingIndicator() {
+            const typingDiv = document.getElementById('typingIndicator');
+            if (typingDiv) {
+                typingDiv.remove();
+            }
+        }
 
-.book-info {
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-grow: 1;
-}
+        // Função para desconectar
+        function disconnect() {
+            isConnected = false;
+            document.getElementById('messageInput').placeholder = "Conexão encerrada";
+            document.getElementById('messageInput').disabled = true;
+            
+            // Adicionar mensagem de desconexão
+            const messagesDiv = document.getElementById('messages');
+            const disconnectDiv = document.createElement('div');
+            disconnectDiv.classList.add('info-text');
+            disconnectDiv.textContent = "A conversa foi encerrada";
+            messagesDiv.appendChild(disconnectDiv);
+            
+            // Remover o botão de desconectar
+            document.querySelector('.disconnect-button').style.display = 'none';
+        }
 
-.book-info h3 {
-  font-size: 1.4rem;
-  color: #333;
-  margin-bottom: 0.5rem;
-}
-
-.book-info p {
-  font-size: 0.95rem;
-  color: #555;
-  margin-bottom: 1rem;
-}
-
-.tags {
-  font-size: 0.85rem;
-  color: #777;
-  margin-bottom: 1.5rem;
-  display: block;
-}
-
-.buy-button {
-  background-color: #FF69B4;
-  color: #fff;
-  text-decoration: none;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.buy-button:hover {
-  background-color: #e38200;
-}
-</style>
-
-  <section id="comunidade" class="reveal">
-    <h2>Redes Sociais</h2>
-    <div class="grid">
-  <head>
-  <!-- Font Awesome -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    integrity="sha512-papNm3UNc+6xD3kTBSW6h1vYp5r6Ziwc+n4WvTe0WOM20P3OAHhHDb/j3w+mGZj4a2eF+KkZhMfV+08tYq0lEg=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
-  <style>
-    .services {
-      text-align: center;
-      padding: 40px 20px;
-      background-color: #f9f9f9;
-    }
-
-    .services h2 {
-      font-size: 2rem;
-      margin-bottom: 30px;
-      color: #333;
-    }
-
-    .services-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-    }
-
-    .service-card {
-      background: #ffffff;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      width: 220px;
-      padding: 20px;
-      text-align: center;
-      transition: all 0.3s ease;
-    }
-
-    .service-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .service-icon img {
-      width: 60px;
-      height: 60px;
-      object-fit: contain;
-      margin-bottom: 10px;
-    }
-
-    .service-title {
-      font-size: 1.2rem;
-      font-weight: bold;
-      margin-bottom: 10px;
-      color: #222;
-    }
-
-    .service-desc {
-      font-size: 0.95rem;
-      color: #555;
-    }
-
-    .service-link {
-      text-decoration: none;
-      color: inherit;
-    }
-  </style>
-</head>
-
-<body>
-  <main>
-      <div class="services-grid">
-        <a href="https://www.facebook.com/share/1BoZ4hMGoo/" target="_blank" class="service-link">
-          <div class="service-card">
-            <div class="service-icon">
-              <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook">
-            </div>
-            <div class="service-title">Facebook</div>
-            <div class="service-desc">Notícias, Curiosidades, Memes e tudo sobre o universo dos animes</div>
-          </div>
-        </a>
-        <a href="https://www.instagram.com/mundootakuhq/profilecard/?igsh=MW93NzQyMzJmbWpkMA==" target="_blank" class="service-link">
-          <div class="service-card">
-            <div class="service-icon">
-              <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram">
-            </div>
-            <div class="service-title">Instagram</div>
-            <div class="service-desc">Reels, memes, Curiosidades, recomendações e mais...</div>
-          </div>
-        </a>
-        <a href="https://www.tiktok.com/@shiunjianimes?_t=" target="_blank" class="service-link">
-          <div class="service-card">
-            <div class="service-icon">
-              <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TikTok">
-            </div>
-            <div class="service-title">TikTok</div>
-            <div class="service-desc">Vídeos curtos de episódios de animes diversos.</div>
-          </div>
-        </a>
-        <a href="https://discord.gg/9hMFF8ruYS" target="_blank" class="service-link">
-          <div class="service-card">
-            <div class="service-icon">
-              <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord">
-            </div>
-            <div class="service-title">Discord</div>
-            <div class="service-desc">Entre na comunidade, participe de eventos e interaja com outros otakus.</div>
-          </div>
-        </a>
-      </div>
-    </section>
-  </main>
-</body>
-  </section>
-
-</main>
-<section id="contato" style="text-align:center; padding: 80px 20px;">
-  <h2>Seja Membro</h2>
-  <p>Você já é top, mas e se pudesse ser… <strong>ultra top premium deluxe edition?</strong><br>
-  Vira VIP e garante acesso ao conteúdo secreto que nem o L da Death Note descobriria.</p>
-  <a href="https://www.facebook.com/animegamefusion/subscribenow?surface=pinned_comments"
-     style="display:inline-block; margin-top:20px; background:#ff3399; color:#fff; padding:15px 30px; border-radius:30px; font-weight:700; text-decoration:none; transition: background-color 0.3s;">
-    Vem ser VIP
-  </a>
-</section>
-<footer class="footer">
-  <div class="footer-container">
-    <p class=<span>Studio Tsukiyo</span></p>
-    <div class="footer-socials">
-      <a href="https://www.instagram.com/mundootakuhq/profilecard/?igsh=MW93NzQyMzJmbWpkMA==" target="_blank" aria-label="Instagram">
-        <i class="fab fa-instagram"></i>
-      </a>
-      <a href="https://www.facebook.com/share/1BoZ4hMGoo/" target="_blank" aria-label="Facebook">
-        <i class="fab fa-facebook"></i>
-      </a>
-      <a href="https://www.tiktok.com/@shiunjianimes?_t=" target="_blank" aria-label="TikTok">
-        <i class="fab fa-tiktok"></i>
-      </a>
-    </div>
-  </div>
-</footer>
-
-<style>
-  @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
-
-  .footer {
-    background: linear-gradient(90deg, #1b1b2f, #232931);
-    color: #eee;
-    padding: 2rem 1rem;
-    font-family: 'Segoe UI', sans-serif;
-    border-top: 1px solid #444;
-    margin-top: 4rem;
-  }
-
-  .footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .brand {
-    font-size: 1rem;
-    color: #ccc;
-    margin-bottom: 1rem;
-  }
-
-  .brand span {
-    color: #ff8fbd;
-    font-weight: 600;
-  }
-
-  .footer-socials {
-    display: flex;
-    justify-content: center;
-    gap: 1.2rem;
-    font-size: 1.5rem;
-  }
-
-  .footer-socials a {
-    color: #ffdee9;
-    transition: all 0.3s ease;
-  }
-
-  .footer-socials a:hover {
-    color: #ffc3a0;
-    transform: scale(1.1);
-  }
-
-  @media (max-width: 600px) {
-    .footer-socials {
-      font-size: 1.2rem;
-    }
-  }
-</style>
-
-<!-- Three.js & GSAP -->
-<script src="https://cdn.jsdelivr.net/npm/three@0.158/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.158/examples/js/controls/OrbitControls.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-
-
-
-<script>
-/* ===== Scroll Reveal ===== */
-const reveals=document.querySelectorAll('.reveal');
-window.addEventListener('scroll',()=>{
-  const trigger=window.innerHeight*0.85;
-  reveals.forEach(el=>{
-    const top=el.getBoundingClientRect().top;
-    if(top<trigger)el.classList.add('active');
-  });
-});
-
-/* ===== Header Scroll ===== */
-window.addEventListener('scroll',()=>{
-  document.getElementById('header').classList.toggle('scrolled',window.scrollY>50);
-});
-
-/* ===== Three.js Background ===== */
-let scene=new THREE.Scene();
-let camera=new THREE.PerspectiveCamera(60,window.innerWidth/window.innerHeight,0.1,1000);
-camera.position.z=5;
-
-let renderer=new THREE.WebGLRenderer({canvas:document.getElementById('bg3d'),antialias:true,alpha:true});
-renderer.setSize(window.innerWidth,window.innerHeight);
-renderer.setPixelRatio(window.devicePixelRatio);
-
-/* Lights */
-let pointLight=new THREE.PointLight(0xff4d9d,1);
-pointLight.position.set(5,5,5);
-scene.add(pointLight);
-let ambientLight=new THREE.AmbientLight(0x404040,2);
-scene.add(ambientLight);
-
-/* Particles */
-const particlesGeometry=new THREE.BufferGeometry();
-const particlesCount=5000;
-const posArray=new Float32Array(particlesCount*3);
-for(let i=0;i<particlesCount*3;i++){
-  posArray[i]=(Math.random()-0.5)*20;
-}
-particlesGeometry.setAttribute('position',new THREE.BufferAttribute(posArray,3));
-const particlesMaterial=new THREE.PointsMaterial({color:0xff4d9d,size:0.02});
-const particlesMesh=new THREE.Points(particlesGeometry,particlesMaterial);
-scene.add(particlesMesh);
-
-/* Rotating Torus (Logo Placeholder) */
-const geometry=new THREE.TorusKnotGeometry(1,0.3,200,32);
-const material=new THREE.MeshStandardMaterial({color:0xff4d9d,metalness:0.7,roughness:0.2});
-const torus=new THREE.Mesh(geometry,material);
-scene.add(torus);
-
-/* Animate */
-function animate(){
-  requestAnimationFrame(animate);
-  torus.rotation.x+=0.003;
-  torus.rotation.y+=0.004;
-  particlesMesh.rotation.y+=0.0008;
-  renderer.render(scene,camera);
-}
-animate();
-
-/* Resize */
-window.addEventListener('resize',()=>{
-  camera.aspect=window.innerWidth/window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth,window.innerHeight);
-});
-
-/* GSAP Camera Animation */
-gsap.to(camera.position,{z:3,duration:3,ease:'power2.inOut'});
-</script>
+        // Iniciar animação das pétalas quando a página carregar
+        window.onload = function() {
+            createSakuraPetals();
+            
+            // Iniciar conversa com mensagem automática após 2 segundos
+            setTimeout(() => {
+                if (isConnected) {
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        removeTypingIndicator();
+                        addMessage("Oi! Tudo bem? 🌸", 'stranger');
+                    }, 1500);
+                }
+            }, 2000);
+        };
+    </script>
 </body>
 </html>
-
-
-
