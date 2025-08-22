@@ -1,866 +1,120 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌸 CherryChat - Chat Aleatório</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='%23ff6b8b'/><path d='M16 8c-4.42 0-8 2.58-8 5.75 0 1.6.98 3.05 2.55 4.1-.33.95-1.05 2.65-.75 3.4.4 1 1.9.75 2.9.25 1.25-.6 2.05-1.75 3.3-2.5 1.75 1.25 3.75 2 6 2 4.42 0 8-2.58 8-5.75S20.42 8 16 8z' fill='white'/></svg>">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
-        }
-
-        body {
-            background-color: #fff0f5;
-            color: #333;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Header com Logo */
-        .header {
-            background: linear-gradient(135deg, #ff6b8b, #ff8fab);
-            color: white;
-            padding: 12px 15px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            box-shadow: 0 2px 10px rgba(255, 107, 139, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
-        }
-
-        .logo-text {
-            font-family: 'Arial Rounded MT Bold', sans-serif;
-            font-size: 22px;
-            background: linear-gradient(135deg, white, #ffecef);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-weight: bold;
-            text-shadow: 0 1px 2px rgba(255, 107, 139, 0.5);
-            letter-spacing: 0.5px;
-        }
-
-        .chat-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 10px;
-            max-width: 600px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .info-text {
-            text-align: center;
-            padding: 20px;
-            color: #ff6b8b;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .messages {
-            flex: 1;
-            overflow-y: auto;
-            margin-bottom: 10px;
-            padding: 15px;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border: 1px solid #ffebf0;
-        }
-
-        .message {
-            margin-bottom: 12px;
-            padding: 10px 15px;
-            border-radius: 20px;
-            max-width: 85%;
-            word-wrap: break-word;
-            font-size: 15px;
-            line-height: 1.4;
-        }
-
-        .stranger-message {
-            background-color: #f8f8f8;
-            color: #555;
-            align-self: flex-start;
-            border-bottom-left-radius: 5px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-            border: 1px solid #eee;
-        }
-
-        .user-message {
-            background: linear-gradient(to right, #ff6b8b, #ff8fab);
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 5px;
-            margin-left: auto;
-            box-shadow: 0 1px 3px rgba(255,107,139,0.3);
-        }
-
-        .input-area {
-            display: flex;
-            padding: 10px;
-            background-color: white;
-            border-radius: 25px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 10px;
-            border: 1px solid #ffebf0;
-        }
-
-        .message-input {
-            flex: 1;
-            padding: 12px 15px;
-            border: 2px solid #ffd6e7;
-            border-radius: 20px;
-            outline: none;
-            font-size: 16px;
-            transition: border 0.3s;
-            color: #555;
-        }
-
-        .message-input:focus {
-            border-color: #ff8fab;
-        }
-
-        .message-input::placeholder {
-            color: #ffb7c5;
-        }
-
-        .disconnect-button {
-            background: linear-gradient(to right, #ff4757, #ff6b8b);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            margin-top: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            align-self: center;
-            box-shadow: 0 2px 5px rgba(255,71,87,0.3);
-            transition: all 0.3s;
-            font-size: 15px;
-        }
-
-        .disconnect-button:hover {
-            transform: scale(1.03);
-            box-shadow: 0 3px 8px rgba(255,71,87,0.4);
-        }
-
-        .footer {
-            text-align: center;
-            padding: 15px;
-            color: #ff6b8b;
-            font-size: 13px;
-            font-weight: bold;
-            background-color: #fff0f5;
-        }
-
-        .typing-indicator {
-            display: inline-block;
-            background-color: #f8f8f8;
-            padding: 10px 15px;
-            border-radius: 20px;
-            margin-bottom: 10px;
-            border-bottom-left-radius: 5px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-            border: 1px solid #eee;
-        }
-
-        .typing-dots {
-            display: inline-flex;
-        }
-
-        .typing-dots span {
-            height: 8px;
-            width: 8px;
-            background-color: #ff8fab;
-            border-radius: 50%;
-            display: inline-block;
-            margin: 0 2px;
-            animation: typing 1s infinite ease-in-out;
-        }
-
-        .typing-dots span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .typing-dots span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes typing {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
-        }
-
-        .sakura-petal {
-            position: absolute;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff8fab"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8 0-.71.13-1.39.35-2.03C7.57 14.16 10 16 12 16s4.43-1.84 7.65-6.03c.22.64.35 1.32.35 2.03 0 4.42-3.58 8-8 8z"/></svg>');
-            background-size: contain;
-            background-repeat: no-repeat;
-            height: 25px;
-            width: 25px;
-            opacity: 0.7;
-            z-index: -1;
-            animation: falling linear infinite;
-            filter: drop-shadow(0 1px 1px rgba(255, 143, 171, 0.5));
-        }
-
-        @keyframes falling {
-            0% {
-                transform: translate(0, -10vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.7;
-            }
-            90% {
-                opacity: 0.7;
-            }
-            100% {
-                transform: translate(calc(var(--random-x) * 10vw), 100vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        /* Animação de pulsação para o logo */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .logo-icon {
-            animation: pulse 2s infinite;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hanabi - Assistente Studio Tsukiyo</title>
+<link rel="manifest" href="manifest.json">
+<style>
+body {margin:0;font-family:sans-serif;background:#071425;color:white;}
+header {background:#ff6b81;padding:1rem;text-align:center;font-size:1.4rem;font-weight:bold;}
+nav{display:flex;justify-content:space-around;background:#ff2b81;}
+nav button{flex:1;padding:0.8rem;background:none;color:white;border:none;font-weight:bold;font-size:1rem;}
+nav button.active{background:#ff4567;}
+main{padding:1rem;min-height:80vh;}
+#chatBox{height:50vh;overflow-y:auto;border:1px solid #ff4567;padding:0.5rem;margin-bottom:0.5rem;background:#071b35;}
+.message{margin:0.2rem 0;}
+.message.user{text-align:right;color:#FFD700;}
+.message.hanabi{text-align:left;color:#00FFFF;}
+input[type="text"]{width:80%;padding:0.5rem;}
+button.send{padding:0.5rem 1rem;background:#ff6b81;border:none;color:white;font-weight:bold;}
+.card{background:#0f2145;padding:0.5rem;margin:0.5rem 0;border-radius:6px;border:1px solid #ff4567;}
+</style>
 </head>
 <body>
-    <!-- Pétalas de Sakura -->
-    <div id="sakuraContainer"></div>
 
-    <!-- Header com Logo -->
-    <div class="header">
-        <svg class="logo-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#ff6b8b"/>
-                    <stop offset="100%" stop-color="#ff8fab"/>
-                </linearGradient>
-            </defs>
-            <circle cx="32" cy="32" r="30" fill="url(#gradient)"/>
-            <path d="M32 16c-8.84 0-16 5.16-16 11.5 0 3.2 1.95 6.1 5.1 8.2-.65 1.9-2.1 5.3-1.5 6.8.8 2 3.8 1.5 5.8.5 2.5-1.2 4.1-3.5 6.6-5 3.5 2.5 7.5 4 12 4 8.84 0 16-5.16 16-11.5S40.84 16 32 16z" fill="white"/>
-            <path d="M26 28c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm12 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" fill="#ff6b8b"/>
-        </svg>
-        <h1 class="logo-text">CherryChat</h1>
-    </div>
+<header>Hanabi ✨ - Assistente</header>
+<nav>
+<button id="tabChat" class="active">Chat</button>
+<button id="tabProducts">Produtos</button>
+<button id="tabPolicies">Políticas</button>
+</nav>
 
-    <div class="chat-container">
-        <div class="info-text">
-            Você está conversando com um estranho aleatório. Diga oi!
-        </div>
+<main>
+<!-- Chat -->
+<div id="chatSection">
+  <div id="chatBox"></div>
+  <input type="text" id="chatInput" placeholder="Escreva aqui...">
+  <button class="send" id="sendBtn">Enviar</button>
+</div>
 
-        <div class="messages" id="messages">
-            <!-- Mensagens serão adicionadas aqui -->
-        </div>
+<!-- Produtos -->
+<div id="productsSection" style="display:none;">
+  <div class="card"><b>Por Favor, Me Note</b> - Light Novel original.</div>
+  <div class="card"><b>Kenji Animes</b> - Página de cultura otaku.</div>
+  <div class="card"><b>Tsukiyo Writer School</b> - Cursos e mentorias.</div>
+</div>
 
-        <div class="input-area">
-            <input type="text" class="message-input" id="messageInput" placeholder="Digite sua mensagem..." onkeypress="handleKeyPress(event)">
-        </div>
+<!-- Políticas -->
+<div id="policiesSection" style="display:none;">
+  <div class="card"><b>Termos de Uso</b>: Ao usar nossos produtos, você concorda com os termos Studio Tsukiyo Platforms.</div>
+  <div class="card"><b>Política de Privacidade</b>: Seu uso é registrado apenas localmente e usamos seu feedback para melhoria. Contato: <a href="mailto:sac.studiotsukiyo@outlook.com">sac.studiotsukiyo@outlook.com</a></div>
+</div>
 
-        <button class="disconnect-button" onclick="disconnect()">Parar Conversa</button>
-    </div>
+</main>
 
-    <div class="footer">
-        Powered by Studio Tsukiyo Platforms
-    </div>
+<script>
+// ---------- Tabs ----------
+const tabChat = document.getElementById('tabChat');
+const tabProducts = document.getElementById('tabProducts');
+const tabPolicies = document.getElementById('tabPolicies');
+const chatSection = document.getElementById('chatSection');
+const productsSection = document.getElementById('productsSection');
+const policiesSection = document.getElementById('policiesSection');
 
-    <script>
-        // Variáveis globais
-        let isConnected = true;
-        let strangerMessages = [
-            "Oi! Tudo bem? 🌸",
-            "Como você está hoje?",
-            "De onde você está conversando?",
-            "Você gosta de CherryChat?",
-            "Algum hobby ou interesse especial?",
-            "Já usou o Hanabi antes? É bem parecido!",
-            "Qual seu tipo de música favorita?",
-            "Recomenda algum filme ou série?",
-            "Praia ou montanha? Qual você prefere?",
-            "Qual foi a última coisa que te fez rir muito?",
-            "Você acredita em amor à primeira vista?",
-            "Se pudesse viajar para qualquer lugar agora, onde iria?",
-            "Qual sua comida favorita?",
-            "Você tem algum talento incomum?",
-            "Qual foi o melhor dia da sua vida?",
-            "Se você pudesse ter qualquer superpoder, qual seria?",
-            "Qual seu sonho mais louco?",
-            "Você coleciona alguma coisa?",
-            "Qual seu animal favorito?",
-            "Prefere dia ou noite?",
-            "Se sua vida fosse um filme, qual seria o título?",
-            "Qual a coisa mais aleatória que você já fez?",
-            "Você acredita em aliens?",
-            "Qual a melhor lembrança da sua infância?",
-            "Se pudesse jantar com qualquer pessoa da história, quem seria?"
-            "Olá!",
-                "E aí?",
-                "Tudo bem?",
-                "Como vai você?",
-                "Que legal!",
-                "Interessante...",
-                "Entendi.",
-                "Sim.",
-                "Não.",
-                "Talvez.",
-                "Quem sabe?",
-                "O que você acha?",
-                "Concordo.",
-                "Discordo.",
-                "Não sei.",
-                "Preciso pensar sobre isso.",
-                "Conte-me mais.",
-                "Isso é ótimo!",
-                "Que pena...",
-                "Sério?",
-                "Incrível!",
-                "Impressionante.",
-                "Eu também!",
-                "Eu não.",
-                "Boa ideia!",
-                "Má ideia...",
-                "Por quê?",
-                "Como assim?",
-                "Onde?",
-                "Quando?",
-                "Quem?",
-                "O quê?",
-                "Qual?",
-                "De qual você gosta mais?",
-                "Qual é a sua opinião?",
-                "O que você está fazendo?",
-                "O que você gosta de fazer?",
-                "Qual é o seu hobby?",
-                "Que tipo de música você ouve?",
-                "Qual é o seu filme favorito?",
-                "Você gosta de ler?",
-                "Qual é o seu livro favorito?",
-                "Você gosta de viajar?",
-                "Para onde você gostaria de viajar?",
-                "Qual é o seu lugar favorito?",
-                "Você gosta de animais?",
-                "Qual é o seu animal favorito?",
-                "Qual é a sua cor favorita?",
-                "O que você está pensando?",
-                "Você tem alguma pergunta?",
-                "Quer conversar sobre o quê?",
-                "Que dia é hoje?",
-                "Qual é a data de hoje?",
-                "Como está o tempo aí?",
-                "Está calor ou frio?",
-                "Você gosta de esportes?",
-                "Qual é o seu esporte favorito?",
-                "Você gosta de cozinhar?",
-                "Qual é o seu prato favorito?",
-                "Você gosta de jardinagem?",
-                "Você tem plantas em casa?",
-                "Você gosta de arte?",
-                "Qual é o seu artista favorito?",
-                "Você gosta de história?",
-                "Qual é o seu período histórico favorito?",
-                "Você gosta de ciência?",
-                "Qual é o seu ramo da ciência favorito?",
-                "Você gosta de matemática?",
-                "Você é bom em matemática?",
-                "Você gosta de tecnologia?",
-                "Qual é o seu gadget favorito?",
-                "Você gosta de videogames?",
-                "Qual é o seu videogame favorito?",
-                "Você gosta de redes sociais?",
-                "Qual é a sua rede social favorita?",
-                "Você gosta de memes?",
-                "Qual é o seu meme favorito?",
-                "Você gosta de piadas?",
-                "Conte uma piada.",
-                "Você está entediado?",
-                "O que você faz para não ficar entediado?",
-                "Você tem algum talento especial?",
-                "O que você sabe fazer bem?",
-                "Você gosta de desafios?",
-                "Qual foi o seu maior desafio?",
-                "Você tem algum arrependimento?",
-                "O que você mudaria no passado?",
-                "Você tem alguma meta para o futuro?",
-                "O que você quer realizar?",
-                "Você gosta de ajudar os outros?",
-                "Como você gosta de ajudar os outros?",
-                "Você se considera uma pessoa feliz?",
-                "O que te faz feliz?",
-                "Você acredita em destino?",
-                "Você acredita em vida após a morte?",
-                "Você acredita em extraterrestres?",
-                "Você gosta de filosofia?",
-                "Qual é a sua filosofia de vida?",
-                "Você gosta de política?",
-                "Qual é a sua ideologia política?",
-                "Você gosta de religião?",
-                "Qual é a sua religião?",
-                "Você gosta de mistérios?",
-                "Qual é o seu mistério favorito?",
-                "Você gosta de teorias da conspiração?",
-                "Qual é a sua teoria da conspiração favorita?",
-                "Você gosta de filmes de terror?",
-                "Qual é o seu filme de terror favorito?",
-                "Você gosta de contos de fadas?",
-                "Qual é o seu conto de fadas favorito?",
-                "Você gosta de mitos e lendas?",
-                "Qual é o seu mito ou lenda favorito?",
-                "Você gosta de jogos de RPG?",
-                "Qual é o seu jogo de RPG favorito?",
-                "Você gosta de magia?",
-                "Você acredita em magia?",
-                "Você gosta de sonhos?",
-                "Você tem sonhos lúcidos?",
-                "Você gosta de astrologia?",
-                "Qual é o seu signo?",
-                "Você gosta de numerologia?",
-                "Qual é o seu número favorito?",
-                "Você gosta de tarot?",
-                "Você sabe ler tarot?",
-                "Você gosta de café?",
-                "Como você toma o seu café?",
-                "Você gosta de chá?",
-                "Qual é o seu chá favorito?",
-                "Você gosta de chocolate?",
-                "Qual é o seu chocolate favorito?",
-                "Você gosta de sorvete?",
-                "Qual é o seu sabor de sorvete favorito?",
-                "Você gosta de pizza?",
-                "Qual é o seu sabor de pizza favorito?",
-                "Você gosta de sushi?",
-                "Qual é o seu tipo de sushi favorito?",
-                "Você gosta de comida japonesa?",
-                "Qual é o seu prato japonês favorito?",
-                "Você gosta de comida italiana?",
-                "Qual é o seu prato italiano favorito?",
-                "Você gosta de comida chinesa?",
-                "Qual é o seu prato chinês favorito?",
-                "Você gosta de comida mexicana?",
-                "Qual é o seu prato mexicano favorito?",
-                "Você gosta de comida indiana?",
-                "Qual é o seu prato indiano favorito?",
-                "Você gosta de comida tailandesa?",
-                "Qual é o seu prato tailandês favorito?",
-                "Você gosta de comida vietnamita?",
-                "Qual é o seu prato vietnamita favorito?",
-                "Você gosta de comida coreana?",
-                "Qual é o seu prato coreano favorito?",
-                "Você gosta de comida brasileira?",
-                "Qual é o seu prato brasileiro favorito?",
-                "Você gosta de comida argentina?",
-                "Qual é o seu prato argentino favorito?",
-                "Você gosta de comida peruana?",
-                "Qual é o seu prato peruano favorito?",
-                "Você gosta de comida espanhola?",
-                "Qual é o seu prato espanhol favorito?",
-                "Você gosta de comida portuguesa?",
-                "Qual é o seu prato português favorito?",
-                "Você gosta de comida francesa?",
-                "Qual é o seu prato francês favorito?",
-                "Você gosta de comida alemã?",
-                "Qual é o seu prato alemão favorito?",
-                "Você gosta de comida russa?",
-                "Qual é o seu prato russo favorito?",
-                "Você gosta de comida africana?",
-                "Qual é o seu prato africano favorito?",
-                "Você gosta de comida do Oriente Médio?",
-                "Qual é o seu prato do Oriente Médio favorito?",
-                "Você gosta de comida vegana?",
-                "Você é vegano?",
-                "Você é vegetariano?",
-                "Você é alérgico a alguma coisa?",
-                "Você tem alguma intolerância alimentar?",
-                "Você gosta de animais de estimação?",
-                "Você tem animais de estimação?",
-                "Qual é o nome do seu animal de estimação?",
-                "Que raça é o seu animal de estimação?",
-                "Quantos anos tem o seu animal de estimação?",
-                "Você gosta de passear com o seu animal de estimação?",
-                "Você gosta de brincar com o seu animal de estimação?",
-                "Você gosta de dar carinho para o seu animal de estimação?",
-                "Você gosta de tirar fotos do seu animal de estimação?",
-                "Você gosta de postar fotos do seu animal de estimação nas redes sociais?",
-                "Você gosta de ir ao veterinário?",
-                "Você já teve algum problema com o seu animal de estimação?",
-                "Você já perdeu um animal de estimação?",
-                "Você já encontrou um animal de estimação perdido?",
-                "Você já salvou um animal de estimação?",
-                "Você já adotou um animal de estimação?",
-                "Você já doou um animal de estimação?",
-                "Você gostaria de ter mais animais de estimação?",
-                "Você acha que os animais têm alma?",
-                "Você acha que os animais deveriam ter os mesmos direitos que os humanos?",
-                "Você gosta de assistir vídeos de animais na internet?",
-                "Você gosta de ir ao zoológico?",
-                "Você gosta de ir ao circo?",
-                "Você é contra o uso de animais em circos?",
-                "Você gosta de ir ao aquário?",
-                "Você gosta de mergulhar?",
-                "Você gosta de nadar?",
-                "Você tem medo de algum animal?",
-                "Qual é o seu animal mais perigoso?",
-                "Você já foi mordido por um animal?",
-                "Você já foi picado por um animal?",
-                "Você já viu algum animal selvagem?",
-                "Você gostaria de trabalhar com animais?",
-                "Você é vegetariano?",
-                "Você é vegano?",
-                "Você gosta de comida vegetariana?",
-                "Você gosta de comida vegana?",
-                "Qual é o seu prato vegetariano favorito?",
-                "Qual é o seu prato vegano favorito?",
-                "Você gosta de frutas?",
-                "Qual é a sua fruta favorita?",
-                "Você gosta de legumes?",
-                "Qual é o seu legume favorito?",
-                "Você gosta de saladas?",
-                "Qual é a sua salada favorita?",
-                "Você gosta de sopa?",
-                "Qual é a sua sopa favorita?",
-                "Você gosta de macarrão?",
-                "Qual é o seu macarrão favorito?",
-                "Você gosta de arroz?",
-                "Qual é o seu arroz favorito?",
-                "Você gosta de feijão?",
-                "Qual é o seu feijão favorito?",
-                "Você gosta de lentilha?",
-                "Você gosta de grão de bico?",
-                "Você gosta de quinoa?",
-                "Você gosta de tofu?",
-                "Você gosta de cogumelos?",
-                "Você gosta de algas marinhas?",
-                "Você gosta de especiarias?",
-                "Qual é a sua especiaria favorita?",
-                "Você gosta de ervas aromáticas?",
-                "Qual é a sua erva aromática favorita?",
-                "Você gosta de azeite de oliva?",
-                "Você gosta de vinagre?",
-                "Você gosta de limão?",
-                "Você gosta de alho?",
-                "Você gosta de cebola?",
-                "Você gosta de pimenta?",
-                "Você gosta de sal?",
-                "Você gosta de açúcar?",
-                "Você prefere açúcar mascavo ou açúcar branco?",
-                "Você gosta de adoçantes artificiais?",
-                "Você usa adoçantes artificiais?",
-                "Você gosta de mel?",
-                "Você gosta de melado?",
-                "Você gosta de geleia?",
-                "Qual é a sua geleia favorita?",
-                "Você gosta de compota?",
-                "Qual é a sua compota favorita?",
-                "Você gosta de frutas secas?",
-                "Qual é a sua fruta seca favorita?",
-                "Você gosta de castanhas?",
-                "Qual é a sua castanha favorita?",
-                "Você gosta de sementes?",
-                "Qual é a sua semente favorita?",
-                "Você gosta de cereais?",
-                "Qual é o seu cereal favorito?",
-                "Você gosta de pão?",
-                "Qual é o seu pão favorito?",
-                "Você gosta de bolachas?",
-                "Qual é a sua bolacha favorita?",
-                "Você gosta de biscoitos?",
-                "Qual é o seu biscoito favorito?",
-                "Você gosta de bolo?",
-                "Qual é o seu bolo favorito?",
-                "Você gosta de torta?",
-                "Qual é a sua torta favorita?",
-                "Você gosta de pudim?",
-                "Qual é o seu pudim favorito?",
-                "Você gosta de mousse?",
-                "Qual é a sua mousse favorita?",
-                "Você gosta de sorvete?",
-                "Qual é o seu sabor de sorvete favorito?",
-                "Você gosta de chocolate?",
-                "Qual é o seu chocolate favorito?",
-                "Você gosta de bala?",
-                "Qual é a sua bala favorita?",
-                "Você gosta de chiclete?",
-                "Qual é o seu chiclete favorito?",
-                "Você gosta de pipoca?",
-                "Você gosta de nachos?",
-                "Você gosta de batata frita?",
-                "Você gosta de amendoim?",
-                "Você gosta de castanha de caju?",
-                "Você gosta de avelã?",
-                "Você gosta de nozes?",
-                "Você gosta de amêndoas?",
-                "Você gosta de pistache?",
-                "Você gosta de macadâmia?",
-                "Você gosta de coco?",
-                "Você gosta de uvas passas?",
-                "Você gosta de damasco seco?",
-                "Você gosta de ameixa seca?",
-                "Você gosta de tâmaras?",
-                "Você gosta de figos secos?",
-                "Você gosta de banana passa?",
-                "Você gosta de maçã desidratada?",
-                "Você gosta de chips de coco?",
-                "Você gosta de biscoitos de arroz?",
-                "Você gosta de pão de queijo?",
-                "Você gosta de quibe?",
-                "Você gosta de esfirra?",
-                "Você gosta de coxinha?",
-                "Você gosta de pastel?",
-                "Você gosta de risole?",
-                "Você gosta de croquete?",
-                "Você gosta de bolinho de bacalhau?",
-                "Você gosta de acarajé?",
-                "Você gosta de abará?",
-                "Você gosta de pamonha?",
-                "Você gosta de curau?",
-                "Você gosta de bolo de fubá?",
-                "Você gosta de canjica?",
-                "Você gosta de arroz doce?",
-                "Você gosta de paçoca?",
-                "Você gosta de pé de moleque?",
-                "Você gosta de cocada?",
-                "Você gosta de brigadeiro?",
-                "Você gosta de beijinho?",
-                "Você gosta de cajuzinho?",
-                "Você gosta de olho de sogra?",
-                "Você gosta de quindim?",
-                "Você gosta de maria mole?",
-                "Você gosta de suspiro?",
-                "Você gosta de algodão doce?",
-                "Você gosta de pipoca doce?",
-                "Você gosta de maçã do amor?",
-                "Você gosta de churros?",
-                "Você gosta de bolo de rolo?",
-                "Você gosta de bem casado?",
-                "Você gosta de brownie?",
-                "Você gosta de cupcake?",
-                "Você gosta de cookie?",
-                "Você gosta de waffle?",
-                "Você gosta de panqueca?",
-                "Você gosta de torrada?",
-                "Você gosta de croissante?",
-                "Você gosta de pão de mel?",
-                "Você gosta de rocambole?",
-                "Você gosta de pudim de leite?",
-                "Você gosta de gelatina?",
-                "Você gosta de manjar de coco?",
-                "Você gosta de sagu?",
-                "Você gosta de ambrosia?",
-                "Você gosta de pavê?",
-                "Você gosta de torta de limão?",
-                "Você gosta de torta de maçã?",
-                "Você gosta de mousse de maracujá?",
-                "Você gosta de Romeu e Julieta?",
-                "Você gosta de doce de leite?",
-                "Você gosta de goiabada?",
-                "Você gosta de marmelada?",
-                "Você gosta de doce de abóbora?",
-                "Você gosta de doce de banana?",
-                "Você gosta de doce de figo?",
-                "Você gosta de doce de batata doce?",
-                "Você gosta de doce de amendoim?",
-                "Você gosta de doce de coco?",
-                "Você gosta de doce de abóbora com coco?",
-                "Você gosta de doce de banana com canela?",
-                "Você gosta de doce de leite com ameixa?",
-                "Você gosta de goiabada com queijo?",
-                "Você gosta de marmelada com queijo?",
-                "Você gosta de paçoca com doce de leite?",
-                "Você gosta de pé de moleque com cocada?",
-                "Você gosta de brigadeiro com beijinho?",
-                "Você gosta de cajuzinho com olho de sogra?",
-                "Você gosta de quindim com maria mole?",
-                "Você gosta de suspiro com algodão doce?",
-                "Você gosta de pipoca doce com maçã do amor?",
-                "Você gosta de churros com bolo de rolo?",
-                "Você gosta de bem casado com brownie?",
-                "Você gosta de cupcake com cookie?",
-                "Você gosta de waffle com panqueca?",
-                "Você gosta de torrada com croissante?",
-                "Você gosta de pão de mel com rocambole?",
-                "Você gosta de pudim de leite com gelatina?",
-                "Você gosta de manjar de coco com sagu?",
-                "Você gosta de ambrosia com pavê?",
-                "Você gosta de torta de limão com torta de maçã?",
-                "Você gosta de mousse de maracujá com Romeu e Julieta?",
-                "Você gosta de doce de leite com goiabada?",
-                "Você gosta de marmelada com doce de abóbora?",
-                "Você gosta de doce de banana com doce de figo?",
-                "Você gosta de doce de batata doce com doce de amendoim?",
-                "Você gosta de doce de coco com doce de abóbora com coco?",
-                "Você gosta de doce de banana com canela com leite condensado?",
-                "Você gosta de torta de limão com torta de maçã com chantilly?",
-                "Você gosta de mousse de maracujá com Romeu e Julieta com sorvete?",
-                "Você gosta de brigadeiro com beijinho com granulado?",
-                "Você gosta de cajuzinho com olho de sogra com coco ralado?",
-                "Você gosta de quindim com maria mole com ameixa?",
-                "Você gosta de suspiro com algodão doce com corante?",
-                "Você gosta de pipoca doce com maçã do amor com caramelo?"
-        ];
+tabChat.onclick = ()=>{chatSection.style.display='block';productsSection.style.display='none';policiesSection.style.display='none';setActive(tabChat);}
+tabProducts.onclick = ()=>{chatSection.style.display='none';productsSection.style.display='block';policiesSection.style.display='none';setActive(tabProducts);}
+tabPolicies.onclick = ()=>{chatSection.style.display='none';productsSection.style.display='none';policiesSection.style.display='block';setActive(tabPolicies);}
+function setActive(el){[tabChat,tabProducts,tabPolicies].forEach(b=>b.classList.remove('active'));el.classList.add('active');}
 
-        // Criar pétalas de sakura
-        function createSakuraPetals() {
-            const petalCount = 15;
-            const container = document.getElementById('sakuraContainer');
-            
-            for (let i = 0; i < petalCount; i++) {
-                setTimeout(() => {
-                    const petal = document.createElement('div');
-                    petal.classList.add('sakura-petal');
-                    
-                    // Posição inicial aleatória
-                    const startX = Math.random();
-                    petal.style.left = `${startX * 100}%`;
-                    petal.style.top = '-25px';
-                    
-                    // Tempo de animação aleatório (10-20s)
-                    const duration = 10 + Math.random() * 10;
-                    petal.style.animationDuration = `${duration}s`;
-                    
-                    // Variação no eixo X
-                    petal.style.setProperty('--random-x', Math.random() > 0.5 ? Math.random() : -Math.random());
-                    
-                    // Tamanho aleatório
-                    const size = 15 + Math.random() * 20;
-                    petal.style.width = `${size}px`;
-                    petal.style.height = `${size}px`;
-                    
-                    // Atraso inicial aleatório
-                    petal.style.animationDelay = `${Math.random() * 5}s`;
-                    
-                    container.appendChild(petal);
-                    
-                    // Remover pétala após a animação terminar
-                    setTimeout(() => {
-                        petal.remove();
-                    }, duration * 1000);
-                }, i * 1000);
-            }
-            
-            // Criar novas pétalas continuamente
-            setInterval(createSakuraPetals, 15000);
-        }
+// ---------- Chat ----------
+const chatBox = document.getElementById('chatBox');
+const chatInput = document.getElementById('chatInput');
+const sendBtn = document.getElementById('sendBtn');
 
-        // Função para enviar mensagem
-        function sendMessage() {
-            const input = document.getElementById('messageInput');
-            const message = input.value.trim();
-            
-            if (message && isConnected) {
-                addMessage(message, 'user');
-                input.value = '';
-                
-                // Simular resposta do estranho
-                setTimeout(() => {
-                    if (isConnected) {
-                        showTypingIndicator();
-                        setTimeout(() => {
-                            removeTypingIndicator();
-                            const randomResponse = strangerMessages[Math.floor(Math.random() * strangerMessages.length)];
-                            addMessage(randomResponse, 'stranger');
-                        }, 1500 + Math.random() * 2000);
-                    }
-                }, 500 + Math.random() * 1000);
-            }
-        }
+function appendMessage(text,who){
+  const div=document.createElement('div');
+  div.className='message '+who;
+  div.textContent=text;
+  chatBox.appendChild(div);
+  chatBox.scrollTop=chatBox.scrollHeight;
+}
 
-        // Função para lidar com tecla Enter
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
-        }
+function generateReply(msg){
+  let t=msg.toLowerCase();
+  if(t.includes("alarme")) return "⏰ Alarme: ainda não implementado no browser, mas posso lembrar localmente!";
+  if(t.includes("lembrete")) return "📝 Lembrete salvo localmente!";
+  if(t.includes("livro")) return "📚 Temos Light Novels e histórias originais. Veja Produtos!";
+  if(t.includes("curso")) return "🎓 Escola de Novos Autores: cursos e mentorias disponíveis.";
+  if(t.includes("naoto")) return "💻 Espaço Naoto Developer: tutoriais e automações.";
+  if(t.includes("oi")||t.includes("olá")) return "Oi! Eu sou Hanabi. Posso te ajudar com nossos produtos.";
+  return "Desculpe, não entendi. Pergunte sobre livros, cursos ou digite 'ajuda'.";
+}
 
-        // Função para adicionar mensagem
-        function addMessage(text, sender) {
-            const messagesDiv = document.getElementById('messages');
-            const messageDiv = document.createElement('div');
-            
-            messageDiv.classList.add('message');
-            messageDiv.classList.add(sender + '-message');
-            messageDiv.textContent = text;
-            
-            messagesDiv.appendChild(messageDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
+function saveMessage(user,msg){
+  let db=JSON.parse(localStorage.getItem("hanabiDB")||"[]");
+  db.push({user:user,msg:msg,time:new Date().toISOString()});
+  localStorage.setItem("hanabiDB",JSON.stringify(db));
+}
 
-        // Função para mostrar indicador de digitação
-        function showTypingIndicator() {
-            const messagesDiv = document.getElementById('messages');
-            const typingDiv = document.createElement('div');
-            
-            typingDiv.classList.add('typing-indicator');
-            typingDiv.id = 'typingIndicator';
-            typingDiv.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
-            
-            messagesDiv.appendChild(typingDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
+function loadMessages(){
+  let db=JSON.parse(localStorage.getItem("hanabiDB")||"[]");
+  db.forEach(d=>appendMessage(d.msg,d.user));
+}
 
-        // Função para remover indicador de digitação
-        function removeTypingIndicator() {
-            const typingDiv = document.getElementById('typingIndicator');
-            if (typingDiv) {
-                typingDiv.remove();
-            }
-        }
+sendBtn.onclick=()=>{
+  let txt=chatInput.value.trim();
+  if(!txt)return;
+  appendMessage(txt,'user');
+  saveMessage('user',txt);
+  chatInput.value='';
+  let reply=generateReply(txt);
+  setTimeout(()=>{appendMessage(reply,'hanabi');saveMessage('hanabi',reply);},300);
+}
 
-        // Função para desconectar
-        function disconnect() {
-            isConnected = false;
-            document.getElementById('messageInput').placeholder = "Conexão encerrada";
-            document.getElementById('messageInput').disabled = true;
-            
-            // Adicionar mensagem de desconexão
-            const messagesDiv = document.getElementById('messages');
-            const disconnectDiv = document.createElement('div');
-            disconnectDiv.classList.add('info-text');
-            disconnectDiv.textContent = "A conversa foi encerrada";
-            messagesDiv.appendChild(disconnectDiv);
-            
-            // Remover o botão de desconectar
-            document.querySelector('.disconnect-button').style.display = 'none';
-        }
+// Load history
+loadMessages();
+</script>
 
-        // Iniciar animação das pétalas quando a página carregar
-        window.onload = function() {
-            createSakuraPetals();
-            
-            // Iniciar conversa com mensagem automática após 2 segundos
-            setTimeout(() => {
-                if (isConnected) {
-                    showTypingIndicator();
-                    setTimeout(() => {
-                        removeTypingIndicator();
-                        addMessage("Oi! Tudo bem? 🌸", 'stranger');
-                    }, 1500);
-                }
-            }, 2000);
-        };
-    </script>
 </body>
 </html>
