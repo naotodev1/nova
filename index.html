@@ -4,189 +4,229 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hanabi - Assistente</title>
-<link rel="manifest" href="manifest.json">
 <style>
-body {margin:0;font-family:sans-serif;background:#071425;color:white;}
-header {background:#ff6b81;padding:1rem;text-align:center;font-size:1.4rem;font-weight:bold;}
-nav{display:flex;justify-content:space-around;background:#ff2b81;}
-nav button{flex:1;padding:0.8rem;background:none;color:white;border:none;font-weight:bold;font-size:1rem;}
-nav button.active{background:#ff4567;}
-main{padding:1rem;min-height:80vh;}
-#chatBox{height:50vh;overflow-y:auto;border:1px solid #ff4567;padding:0.5rem;margin-bottom:0.5rem;background:#071b35;}
-.message{margin:0.2rem 0;}
-.message.user{text-align:right;color:#FFD700;}
-.message.hanabi{text-align:left;color:#00FFFF;}
-input[type="text"]{width:75%;padding:0.5rem;}
-button.send{padding:0.5rem 1rem;background:#ff6b81;border:none;color:white;font-weight:bold;}
-.card{background:#0f2145;padding:0.5rem;margin:0.5rem 0;border-radius:6px;border:1px solid #ff4567;}
-.card a{color:#FFD700;text-decoration:none;}
-.card a:hover{text-decoration:underline;}
+/* ---------------- Hanabi ---------------- */
+#hanabiContainer {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 300px;
+  max-height: 400px;
+  background: #071425;
+  border: 2px solid #ff6b81;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 9980;
+  font-family: sans-serif;
+}
+#hanabiHeader {background: #ff6b81;color:white;padding:8px;text-align:center;font-weight:bold;}
+#hanabiMessages {flex:1;padding:5px;overflow-y:auto;font-size:14px;}
+.hMessage.user {text-align:right;color:#FFD700;margin:3px 0;}
+.hMessage.hanabi {text-align:left;color:#00FFFF;margin:3px 0;}
+#hanabiInputArea {display:flex;border-top:1px solid #ff6b81;}
+#hanabiInput {flex:1;padding:5px;border:none;outline:none;background:#0f2145;color:white;}
+#hanabiSend {background:#ff6b81;border:none;color:white;padding:5px 10px;cursor:pointer;}
+#hanabiReminders {padding:5px;margin-top:5px;}
+
+/* ---------------- Aura ---------------- */
+#auraCard {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  background: #0f2145;
+  color: #00ffff;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  font-weight: bold;
+  z-index: 9998;
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+#auraBalloon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #ff6b81;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  color: white;
+  z-index: 9999;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: transform 0.2s;
+}
+#auraBalloon:hover {transform: scale(1.1);}
+#auraChat {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 300px;
+  max-height: 400px;
+  background: #071425;
+  border: 2px solid #ff6b81;
+  border-radius: 8px;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 10000;
+}
+#auraChatHeader {background: #ff6b81;color:white;padding:8px;text-align:center;font-weight:bold;}
+#auraMessages {flex:1;padding:5px;overflow-y:auto;font-size:14px;}
+.aMessage.user {text-align:right;color:#FFD700;margin:3px 0;}
+.aMessage.aura {text-align:left;color:#00ffff;margin:3px 0;}
+#auraInputArea {display:flex;border-top:1px solid #ff6b81;}
+#auraInput {flex:1;padding:5px;border:none;outline:none;background:#0f2145;color:white;}
+#auraSend {background:#ff6b81;border:none;color:white;padding:5px 10px;cursor:pointer;}
 </style>
 </head>
 <body>
 
-<header>Hanabi ✨ - Assistente</header>
-<nav>
-<button id="tabChat" class="active">Chat</button>
-<button id="tabProducts">Produtos</button>
-<button id="tabPolicies">Termos/Políticas</button>
-</nav>
-
-<main>
-<!-- Chat -->
-<div id="chatSection">
-  <div id="chatBox"></div>
-  <input type="text" id="chatInput" placeholder="Escreva aqui...">
-  <button class="send" id="sendBtn">Enviar</button>
+<!-- ---------------- Hanabi ---------------- -->
+<div id="hanabiContainer">
+  <div id="hanabiHeader">Hanabi ✨ - Assistente Pessoal</div>
+  <div id="hanabiMessages"></div>
+  <div id="hanabiInputArea">
+    <input type="text" id="hanabiInput" placeholder="Escreva aqui...">
+    <button id="hanabiSend">Enviar</button>
+  </div>
+  <div id="hanabiReminders"></div>
 </div>
 
-<!-- Produtos -->
-<div id="productsSection" style="display:none;">
-  <h3>Obras Originais</h3>
-  <div class="card"><a href="#" target="_blank">Abunai Aisuru</a></div>
-  <div class="card"><a href="#" target="_blank">Married at 16</a></div>
-  <div class="card"><a href="#" target="_blank">Emilly: Além do Horizonte</a></div>
-  <div class="card"><a href="#" target="_blank">Kizuite Kudassai - Please Notice, Me</a></div>
-  <h3>Escola de Autores</h3>
-  <div class="card"><a href="#" target="_blank">Tsukiyo Writer Class</a></div>
-  <h3>Redes Sociais Studio Tsukiyo</h3>
-  <div class="card"><a href="https://instagram.com/" target="_blank">Instagram</a></div>
-  <div class="card"><a href="https://facebook.com/" target="_blank">Facebook</a></div>
-  <div class="card"><a href="https://tiktok.com/" target="_blank">TikTok</a></div>
+<!-- ---------------- Aura ---------------- -->
+<div id="auraCard">Posso ajudar?</div>
+<div id="auraBalloon">💫</div>
+<div id="auraChat">
+  <div id="auraChatHeader">Aura - Assistente Studio Tsukiyo</div>
+  <div id="auraMessages"></div>
+  <div id="auraInputArea">
+    <input type="text" id="auraInput" placeholder="Escreva aqui...">
+    <button id="auraSend">Enviar</button>
+  </div>
 </div>
-
-<!-- Políticas/Termos -->
-<div id="policiesSection" style="display:none;">
-  <div class="card"><a href="https://naotodev1.github.io/studiotsukiyo-terms" target="_blank">Ver Termos e Políticas Studio Tsukiyo Platforms</a></div>
-</div>
-
-</main>
 
 <script>
-// ---------- Tabs ----------
-const tabChat = document.getElementById('tabChat');
-const tabProducts = document.getElementById('tabProducts');
-const tabPolicies = document.getElementById('tabPolicies');
-const chatSection = document.getElementById('chatSection');
-const productsSection = document.getElementById('productsSection');
-const policiesSection = document.getElementById('policiesSection');
+/* ---------------- Hanabi JS ---------------- */
+const hMessages = document.getElementById('hanabiMessages');
+const hInput = document.getElementById('hanabiInput');
+const hSend = document.getElementById('hanabiSend');
 
-tabChat.onclick = ()=>{chatSection.style.display='block';productsSection.style.display='none';policiesSection.style.display='none';setActive(tabChat);}
-tabProducts.onclick = ()=>{chatSection.style.display='none';productsSection.style.display='block';policiesSection.style.display='none';setActive(tabProducts);}
-tabPolicies.onclick = ()=>{chatSection.style.display='none';productsSection.style.display='none';policiesSection.style.display='block';setActive(tabPolicies);}
-function setActive(el){[tabChat,tabProducts,tabPolicies].forEach(b=>b.classList.remove('active'));el.classList.add('active');}
-
-// ---------- Chat ----------
-const chatBox = document.getElementById('chatBox');
-const chatInput = document.getElementById('chatInput');
-const sendBtn = document.getElementById('sendBtn');
-
-function appendMessage(text,who){
-  const div=document.createElement('div');
-  div.className='message '+who;
-  div.textContent=text;
-  chatBox.appendChild(div);
-  chatBox.scrollTop=chatBox.scrollHeight;
+function hAppend(msg,who){
+  const div = document.createElement('div');
+  div.className = 'hMessage '+who;
+  div.textContent = msg;
+  hMessages.appendChild(div);
+  hMessages.scrollTop = hMessages.scrollHeight;
+  if(who==='hanabi' && 'speechSynthesis' in window){
+    const utter = new SpeechSynthesisUtterance(msg);
+    utter.lang='pt-BR';
+    window.speechSynthesis.speak(utter);
+  }
+  let db = JSON.parse(localStorage.getItem('hanabiDB')||'[]');
+  db.push({who,msg,time:new Date().toISOString()});
+  localStorage.setItem('hanabiDB',JSON.stringify(db));
 }
 
-function saveMessage(user,msg){
-  let db=JSON.parse(localStorage.getItem("hanabiDB")||"[]");
-  db.push({user:user,msg:msg,time:new Date().toISOString()});
-  localStorage.setItem("hanabiDB",JSON.stringify(db));
-}
+function hLoad(){let db = JSON.parse(localStorage.getItem('hanabiDB')||'[]');db.forEach(d=>hAppend(d.msg,d.who));}
 
-function loadMessages(){
-  let db=JSON.parse(localStorage.getItem("hanabiDB")||"[]");
-  db.forEach(d=>appendMessage(d.msg,d.user));
-}
-
-// ---------- Mini IA com +50 respostas ----------
-function generateReply(msg){
-  let t=msg.toLowerCase();
-  const responses=[
-    "Oi! Eu sou a Hanabi. Posso te ajudar com nossos produtos.",
-    "📚 Quer conhecer nossas Light Novels originais?",
-    "🎓 Temos cursos na Tsukiyo Writer Class.",
-    "💻 Espaço Naoto Developer: tutoriais e automações.",
-    "Você pode me perguntar sobre livros, cursos ou redes sociais.",
-    "Ah! Você quer ver nossas obras originais?",
-    "Kizuite Kudassai é muito popular entre nossos leitores!",
-    "Emilly: Além do Horizonte é cheia de aventuras.",
-    "Abunai Aisuru é nossa obra mais intensa.",
-    "Married at 16 aborda romance e drama.",
-    "Nosso Instagram tem novidades diárias!",
-    "Facebook e TikTok também trazem conteúdos exclusivos.",
-    "Quer que eu salve um lembrete para você?",
-    "Você sabia que temos cursos de escrita criativa?",
-    "Se quiser, posso listar todas as obras originais.",
-    "Estou aprendendo sempre, posso entender melhor suas perguntas.",
-    "Precisa de ajuda com o Tsukiyo Writer Class?",
-    "Quer que eu te envie links para nossas redes sociais?",
-    "Hanabi aqui, pronta para tirar dúvidas!",
-    "Você quer dicas de leitura?",
-    "Posso ajudar com agendamento de alarmes.",
-    "Quer que eu te mostre nosso catálogo completo?",
-    "Você pode me chamar de assistente Hanabi!",
-    "Quer ver obras por categoria?",
-    "Posso salvar notas para você localmente.",
-    "Precisa de ajuda com login em alguma plataforma?",
-    "Quer que eu explique sobre cada obra?",
-    "Sabia que temos mentorias para novos autores?",
-    "Quer uma recomendação personalizada de leitura?",
-    "Você pode me perguntar sobre qualquer produto Studio Tsukiyo.",
-    "Precisa de ajuda com redes sociais da Studio Tsukiyo?",
-    "Quer que eu explique as políticas de uso?",
-    "Posso te ajudar a navegar entre abas.",
-    "Quer que eu abra o link da Tsukiyo Writer Class?",
-    "Posso listar links das nossas obras originais.",
-    "Você quer dicas de escrita criativa?",
-    "Quer ver os últimos lançamentos?",
-    "Quer que eu te explique Abunai Aisuru?",
-    "Posso criar lembretes simples aqui.",
-    "Quer ver obras mais populares?",
-    "Precisa de ajuda com algum autor?",
-    "Quer dicas sobre Married at 16?",
-    "Posso te lembrar de eventos especiais.",
-    "Quer que eu explique como usar Tsukiyo Writer Class?",
-    "Precisa de ajuda com cadastro nas plataformas?",
-    "Quer links diretos para nossas redes sociais?",
-    "Quer ver nossa galeria de obras?",
-    "Posso salvar suas preferências localmente.",
-    "Quer que eu te explique Kizuite Kudassai?",
-    "Precisa de ajuda para encontrar obras específicas?",
-    "Quer que eu organize obras por categoria?",
-    "Quer que eu abra o Instagram da Studio Tsukiyo?",
-    "Quer sugestões de leitura diária?"
+function hReply(msg){
+  let t = msg.toLowerCase();
+  const responses = [
+    "Oi! Eu sou Hanabi, sua assistente pessoal.",
+    "Quer ajuda com alarmes ou lembretes?",
+    "Você pode me perguntar qualquer coisa!",
+    "Posso te dar dicas de leitura ou automações.",
+    "Vamos explorar novas funções juntos!",
+    "Quer salvar um lembrete?",
+    "Precisa de ajuda com tarefas?",
+    "Vamos conversar sobre qualquer assunto!"
   ];
-
-  // palavras-chave simples
-  if(t.includes("alarme")) return "⏰ Alarmes ainda não implementados no browser, mas posso lembrar localmente!";
-  if(t.includes("lembrete")) return "📝 Lembrete salvo localmente!";
-  if(t.includes("livro")||t.includes("obra")) return "📚 Confira nossas obras na aba Produtos!";
-  if(t.includes("curso")||t.includes("escola")) return "🎓 Tsukiyo Writer Class na aba Produtos!";
-  if(t.includes("naoto")||t.includes("developer")) return "💻 Espaço Naoto Developer: tutoriais e automações!";
-  if(t.includes("instagram")||t.includes("facebook")||t.includes("tiktok")) return "Veja nossos links de redes sociais na aba Produtos!";
-  if(t.includes("oi")||t.includes("olá")||t.includes("hey")) return responses[0];
-  
-  // random response
+  if(t.includes("alarme")) return "⏰ Posso criar um alarme para você!";
+  if(t.includes("lembrete")) return "📝 Posso salvar um lembrete visual para você!";
+  if(t.includes("hora")||t.includes("data")) return "📅 Agora mesmo: "+new Date().toLocaleString();
   return responses[Math.floor(Math.random()*responses.length)];
 }
 
-// ---------- Envio ----------
-sendBtn.onclick=()=>{
-  let txt=chatInput.value.trim();
-  if(!txt)return;
-  appendMessage(txt,'user');
-  saveMessage('user',txt);
-  chatInput.value='';
-  let reply=generateReply(txt);
-  setTimeout(()=>{appendMessage(reply,'hanabi');saveMessage('hanabi',reply);},300);
+hSend.onclick=()=>{
+  let txt=hInput.value.trim();
+  if(!txt) return;
+  hAppend(txt,'user');
+  hInput.value='';
+  let reply=hReply(txt);
+  setTimeout(()=>hAppend(reply,'hanabi'),300);
+}
+hInput.addEventListener("keypress",(e)=>{if(e.key==='Enter'){hSend.click();}});
+hLoad();
+
+/* ---------------- Aura JS ---------------- */
+// Card desaparece
+setTimeout(()=>{document.getElementById('auraCard').style.opacity=0;},5000);
+
+const aBalloon = document.getElementById('auraBalloon');
+const aChat = document.getElementById('auraChat');
+const aMessages = document.getElementById('auraMessages');
+const aInput = document.getElementById('auraInput');
+const aSend = document.getElementById('auraSend');
+
+aBalloon.onclick=()=>{aChat.style.display=aChat.style.display==='flex'?'none':'flex';};
+
+function aAppend(msg,who){
+  const div=document.createElement('div');
+  div.className='aMessage '+who;
+  div.textContent=msg;
+  aMessages.appendChild(div);
+  aMessages.scrollTop = aMessages.scrollHeight;
+  if(who==='aura' && 'speechSynthesis' in window){
+    const utter = new SpeechSynthesisUtterance(msg);
+    utter.lang='pt-BR';
+    window.speechSynthesis.speak(utter);
+  }
+  let db = JSON.parse(localStorage.getItem('auraDB')||'[]');
+  db.push({who,msg,time:new Date().toISOString()});
+  localStorage.setItem('auraDB',JSON.stringify(db));
 }
 
-// ---------- Load history ----------
-loadMessages();
+function aLoad(){let db = JSON.parse(localStorage.getItem('auraDB')||'[]');db.forEach(d=>aAppend(d.msg,d.who));}
+
+function aReply(msg){
+  let t = msg.toLowerCase();
+  const responses = [
+    "Oi! Eu sou a Aura, sua assistente do Studio Tsukiyo.",
+    "Você pode me perguntar sobre nossos livros, cursos ou redes sociais.",
+    "Confira a aba Produtos para links e obras.",
+    "Tsukiyo Writer Class oferece cursos de escrita criativa.",
+    "Abunai Aisuru é nossa obra mais intensa.",
+    "Married at 16 é cheia de drama e romance.",
+    "Emilly: Além do Horizonte é cheia de aventuras.",
+    "Kizuite Kudassai - Please Notice Me é muito popular!",
+    "Nosso Instagram, Facebook e TikTok possuem novidades diárias.",
+    "Quer que eu te indique alguma obra ou curso?"
+  ];
+  if(t.includes("livro")||t.includes("obra")) return "📚 Confira nossos livros na aba Produtos!";
+  if(t.includes("curso")||t.includes("escola")) return "🎓 Tsukiyo Writer Class na aba Produtos!";
+  if(t.includes("instagram")||t.includes("facebook")||t.includes("tiktok")) return "Veja nossos links de redes sociais na aba Produtos!";
+  if(t.includes("oi")||t.includes("olá")||t.includes("hey")) return responses[0];
+  return responses[Math.floor(Math.random()*responses.length)];
+}
+
+aSend.onclick=()=>{
+  let txt=aInput.value.trim();
+  if(!txt) return;
+  aAppend(txt,'user');
+  aInput.value='';
+  let reply=aReply(txt);
+  setTimeout(()=>aAppend(reply,'aura'),300);
+}
+aInput.addEventListener("keypress",(e)=>{if(e.key==='Enter'){aSend.click();}});
+aLoad();
 </script>
 
 </body>
 </html>
-
