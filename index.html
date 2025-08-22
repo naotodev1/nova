@@ -3,102 +3,118 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hanabi - Assistente</title>
+<title>Studio Tsukiyo Platforms</title>
 <style>
-/* ---------------- Hanabi ---------------- */
-#hanabiContainer {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  width: 300px;
-  max-height: 400px;
-  background: #071425;
-  border: 2px solid #ff6b81;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  z-index: 9980;
-  font-family: sans-serif;
-}
-#hanabiHeader {background: #ff6b81;color:white;padding:8px;text-align:center;font-weight:bold;}
-#hanabiMessages {flex:1;padding:5px;overflow-y:auto;font-size:14px;}
-.hMessage.user {text-align:right;color:#FFD700;margin:3px 0;}
-.hMessage.hanabi {text-align:left;color:#00FFFF;margin:3px 0;}
-#hanabiInputArea {display:flex;border-top:1px solid #ff6b81;}
-#hanabiInput {flex:1;padding:5px;border:none;outline:none;background:#0f2145;color:white;}
-#hanabiSend {background:#ff6b81;border:none;color:white;padding:5px 10px;cursor:pointer;}
-#hanabiReminders {padding:5px;margin-top:5px;}
+/* ---------------- Reset & Fonte ---------------- */
+* {margin:0;padding:0;box-sizing:border-box;}
+body{font-family:Arial,sans-serif;background:#f5f5f5;color:#111;}
+
+/* ---------------- Navbar ---------------- */
+nav{background:#ff6b81;display:flex;justify-content:space-around;align-items:center;padding:10px;position:fixed;top:0;width:100%;z-index:100;}
+nav a{color:white;text-decoration:none;font-weight:bold;padding:8px 12px;border-radius:5px;transition:0.3s;}
+nav a:hover, nav a.active{background:rgba(255,255,255,0.3);}
+
+/* ---------------- Sections ---------------- */
+section{padding:80px 20px 20px 20px;display:none;}
+section.active{display:block;}
+h2{margin-bottom:15px;color:#ff6b81;}
+.card{background:white;padding:15px;border-radius:8px;box-shadow:0 3px 8px rgba(0,0,0,0.2);margin:10px 0;}
+
+/* ---------------- Sophia ---------------- */
+#sophiaContainer{background:#071425;color:white;padding:10px;border-radius:10px;max-width:600px;margin:auto;display:flex;flex-direction:column;max-height:400px;}
+#sophiaMessages{flex:1;overflow-y:auto;margin-bottom:5px;font-size:14px;}
+.sMessage.user{text-align:right;color:#FFD700;margin:3px 0;}
+.sMessage.sophia{text-align:left;color:#00FFFF;margin:3px 0;}
+#sophiaInputArea{display:flex;}
+#sophiaInput{flex:1;padding:6px;border:none;border-radius:5px;}
+#sophiaSend{background:#ff6b81;border:none;color:white;padding:6px 12px;cursor:pointer;border-radius:5px;}
+
+/* ---------------- Products ---------------- */
+.productCard{display:flex;flex-direction:column;margin:10px 0;}
+
+/* ---------------- Feedback ---------------- */
+#feedbackForm{max-width:600px;margin:auto;background:white;padding:15px;border-radius:8px;box-shadow:0 3px 8px rgba(0,0,0,0.2);}
+#feedbackForm input,#feedbackForm textarea{width:100%;padding:8px;margin:6px 0;border-radius:5px;border:1px solid #ccc;}
 
 /* ---------------- Aura ---------------- */
-#auraCard {
-  position: fixed;
-  bottom: 90px;
-  right: 20px;
-  background: #0f2145;
-  color: #00ffff;
-  padding: 10px 15px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  font-weight: bold;
-  z-index: 9998;
-  opacity: 1;
-  transition: opacity 0.5s;
-}
-#auraBalloon {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: #ff6b81;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 30px;
-  color: white;
-  z-index: 9999;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  transition: transform 0.2s;
-}
-#auraBalloon:hover {transform: scale(1.1);}
-#auraChat {
-  position: fixed;
-  bottom: 90px;
-  right: 20px;
-  width: 300px;
-  max-height: 400px;
-  background: #071425;
-  border: 2px solid #ff6b81;
-  border-radius: 8px;
-  display: none;
-  flex-direction: column;
-  overflow: hidden;
-  z-index: 10000;
-}
-#auraChatHeader {background: #ff6b81;color:white;padding:8px;text-align:center;font-weight:bold;}
-#auraMessages {flex:1;padding:5px;overflow-y:auto;font-size:14px;}
-.aMessage.user {text-align:right;color:#FFD700;margin:3px 0;}
-.aMessage.aura {text-align:left;color:#00ffff;margin:3px 0;}
-#auraInputArea {display:flex;border-top:1px solid #ff6b81;}
-#auraInput {flex:1;padding:5px;border:none;outline:none;background:#0f2145;color:white;}
-#auraSend {background:#ff6b81;border:none;color:white;padding:5px 10px;cursor:pointer;}
+#auraCard{position:fixed;bottom:90px;right:20px;background:#0f2145;color:#00ffff;padding:10px 15px;border-radius:8px;box-shadow:0 4px 8px rgba(0,0,0,0.3);font-weight:bold;z-index:9998;opacity:0;transition:opacity 1s;}
+#auraBalloon{position:fixed;bottom:20px;right:20px;width:60px;height:60px;border-radius:50%;background:#ff6b81;cursor:pointer;display:flex;justify-content:center;align-items:center;font-size:30px;color:white;z-index:9999;box-shadow:0 4px 8px rgba(0,0,0,0.3);}
+#auraBalloon:hover{transform:scale(1.1);}
+#auraChat{position:fixed;bottom:90px;right:20px;width:300px;max-height:400px;background:#071425;border:2px solid #ff6b81;border-radius:8px;display:none;flex-direction:column;overflow:hidden;z-index:10000;box-shadow:0 5px 15px rgba(0,0,0,0.3);}
+#auraChatHeader{background:#ff6b81;color:white;padding:8px;text-align:center;font-weight:bold;}
+#auraMessages{flex:1;padding:5px;overflow-y:auto;font-size:14px;}
+.aMessage.user{text-align:right;color:#FFD700;margin:3px 0;}
+.aMessage.aura{text-align:left;color:#00ffff;margin:3px 0;}
+#auraInputArea{display:flex;border-top:1px solid #ff6b81;}
+#auraInput{flex:1;padding:5px;border:none;outline:none;background:#0f2145;color:white;}
+#auraSend{background:#ff6b81;border:none;color:white;padding:5px 10px;cursor:pointer;}
 </style>
 </head>
 <body>
 
-<!-- ---------------- Hanabi ---------------- -->
-<div id="hanabiContainer">
-  <div id="hanabiHeader">Hanabi ✨ - Assistente Pessoal</div>
-  <div id="hanabiMessages"></div>
-  <div id="hanabiInputArea">
-    <input type="text" id="hanabiInput" placeholder="Escreva aqui...">
-    <button id="hanabiSend">Enviar</button>
+<!-- ---------------- Navbar ---------------- -->
+<nav>
+  <a href="#sophia" class="tab active">Sophia</a>
+  <a href="#produtos" class="tab">Produtos</a>
+  <a href="#termos" class="tab">Termos & Política</a>
+  <a href="#sobre" class="tab">Sobre</a>
+  <a href="#feedback" class="tab">Feedback</a>
+</nav>
+
+<!-- ---------------- Sections ---------------- -->
+<section id="sophia" class="active">
+  <h2>Sophia - Assistente Pessoal</h2>
+  <div id="sophiaContainer">
+    <div id="sophiaMessages"></div>
+    <div id="sophiaInputArea">
+      <input type="text" id="sophiaInput" placeholder="Escreva aqui...">
+      <button id="sophiaSend">Enviar</button>
+    </div>
   </div>
-  <div id="hanabiReminders"></div>
-</div>
+</section>
+
+<section id="produtos">
+  <h2>Produtos</h2>
+  <div class="productCard"><strong>Obras Originais:</strong>
+    <a href="#">Abunai Aisuru</a><br>
+    <a href="#">Married at 16</a><br>
+    <a href="#">Emilly: Além do Horizonte</a><br>
+    <a href="#">Kizuite Kudassai - Please Notice Me</a>
+  </div>
+  <div class="productCard"><strong>Escola de Autores:</strong>
+    <a href="#">Tsukiyo Writer Class</a>
+  </div>
+  <div class="productCard"><strong>Redes Sociais:</strong>
+    <a href="#">Instagram</a> | <a href="#">Facebook</a> | <a href="#">TikTok</a>
+  </div>
+</section>
+
+<section id="termos">
+  <h2>Termos & Política</h2>
+  <div class="card">
+    <p>Leia nossos <a href="https://naotodev1.github.io/studiotsukiyo-terms" target="_blank">Termos de Uso e Políticas de Privacidade</a>.</p>
+  </div>
+</section>
+
+<section id="sobre">
+  <h2>Sobre</h2>
+  <div class="card">
+    <p>Studio Tsukiyo Platforms - Cultura geek, universo literário e escola para novos autores.</p>
+  </div>
+</section>
+
+<section id="feedback">
+  <h2>Feedback da Sophia</h2>
+  <form id="feedbackForm">
+    <label>Nome:</label>
+    <input type="text" name="nome" placeholder="Seu nome">
+    <label>Email:</label>
+    <input type="email" name="email" placeholder="Seu email">
+    <label>Mensagem:</label>
+    <textarea name="mensagem" rows="5" placeholder="Digite seu feedback sobre a Sophia..."></textarea>
+    <button type="submit" style="background:#ff6b81;color:white;padding:8px 12px;border:none;border-radius:5px;cursor:pointer;">Enviar</button>
+  </form>
+</section>
 
 <!-- ---------------- Aura ---------------- -->
 <div id="auraCard">Posso ajudar?</div>
@@ -113,117 +129,66 @@
 </div>
 
 <script>
-/* ---------------- Hanabi JS ---------------- */
-const hMessages = document.getElementById('hanabiMessages');
-const hInput = document.getElementById('hanabiInput');
-const hSend = document.getElementById('hanabiSend');
+/* ---------------- Navbar Tabs ---------------- */
+const tabs=document.querySelectorAll('nav a');
+const sections=document.querySelectorAll('section');
+tabs.forEach(tab=>{
+  tab.addEventListener('click',e=>{
+    e.preventDefault();
+    tabs.forEach(t=>t.classList.remove('active'));
+    sections.forEach(s=>s.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelector(tab.getAttribute('href')).classList.add('active');
+  });
+});
 
-function hAppend(msg,who){
-  const div = document.createElement('div');
-  div.className = 'hMessage '+who;
-  div.textContent = msg;
-  hMessages.appendChild(div);
-  hMessages.scrollTop = hMessages.scrollHeight;
-  if(who==='hanabi' && 'speechSynthesis' in window){
-    const utter = new SpeechSynthesisUtterance(msg);
-    utter.lang='pt-BR';
-    window.speechSynthesis.speak(utter);
-  }
-  let db = JSON.parse(localStorage.getItem('hanabiDB')||'[]');
-  db.push({who,msg,time:new Date().toISOString()});
-  localStorage.setItem('hanabiDB',JSON.stringify(db));
+/* ---------------- Sophia JS ---------------- */
+const sMessages=document.getElementById('sophiaMessages');
+const sInput=document.getElementById('sophiaInput');
+const sSend=document.getElementById('sophiaSend');
+function sAppend(msg,who){
+  const div=document.createElement('div');div.className='sMessage '+who;div.textContent=msg;sMessages.appendChild(div);sMessages.scrollTop=sMessages.scrollHeight;
+  if(who==='sophia' && 'speechSynthesis' in window){const u=new SpeechSynthesisUtterance(msg);u.lang='pt-BR';window.speechSynthesis.speak(u);}
+  let db=JSON.parse(localStorage.getItem('sophiaDB')||'[]');db.push({who,msg,time:new Date().toISOString()});localStorage.setItem('sophiaDB',JSON.stringify(db));
 }
-
-function hLoad(){let db = JSON.parse(localStorage.getItem('hanabiDB')||'[]');db.forEach(d=>hAppend(d.msg,d.who));}
-
-function hReply(msg){
-  let t = msg.toLowerCase();
-  const responses = [
-    "Oi! Eu sou Hanabi, sua assistente pessoal.",
-    "Quer ajuda com alarmes ou lembretes?",
-    "Você pode me perguntar qualquer coisa!",
-    "Posso te dar dicas de leitura ou automações.",
-    "Vamos explorar novas funções juntos!",
-    "Quer salvar um lembrete?",
-    "Precisa de ajuda com tarefas?",
-    "Vamos conversar sobre qualquer assunto!"
-  ];
+function sLoad(){let db=JSON.parse(localStorage.getItem('sophiaDB')||'[]');db.forEach(d=>sAppend(d.msg,d.who));}
+function sReply(msg){
+  let t=msg.toLowerCase();
+  const res=["Oi! Eu sou Sophia, sua assistente pessoal.","Posso te ajudar com alarmes e lembretes.","Quer dicas de leitura?","Podemos explorar novas funções juntos!"];
   if(t.includes("alarme")) return "⏰ Posso criar um alarme para você!";
   if(t.includes("lembrete")) return "📝 Posso salvar um lembrete visual para você!";
   if(t.includes("hora")||t.includes("data")) return "📅 Agora mesmo: "+new Date().toLocaleString();
-  return responses[Math.floor(Math.random()*responses.length)];
+  return res[Math.floor(Math.random()*res.length)];
 }
-
-hSend.onclick=()=>{
-  let txt=hInput.value.trim();
-  if(!txt) return;
-  hAppend(txt,'user');
-  hInput.value='';
-  let reply=hReply(txt);
-  setTimeout(()=>hAppend(reply,'hanabi'),300);
-}
-hInput.addEventListener("keypress",(e)=>{if(e.key==='Enter'){hSend.click();}});
-hLoad();
+sSend.onclick=()=>{let txt=sInput.value.trim();if(!txt)return;sAppend(txt,'user');sInput.value='';let reply=sReply(txt);setTimeout(()=>sAppend(reply,'sophia'),500);}
+sInput.addEventListener("keypress",(e)=>{if(e.key==='Enter'){sSend.click();}});sLoad();
 
 /* ---------------- Aura JS ---------------- */
-// Card desaparece
-setTimeout(()=>{document.getElementById('auraCard').style.opacity=0;},5000);
+const aCard=document.getElementById('auraCard');
+const aBalloon=document.getElementById('auraBalloon');
+const aChat=document.getElementById('auraChat');
+const aMessages=document.getElementById('auraMessages');
+const aInput=document.getElementById('auraInput');
+const aSend=document.getElementById('auraSend');
 
-const aBalloon = document.getElementById('auraBalloon');
-const aChat = document.getElementById('auraChat');
-const aMessages = document.getElementById('auraMessages');
-const aInput = document.getElementById('auraInput');
-const aSend = document.getElementById('auraSend');
-
+setTimeout(()=>{aCard.style.opacity=1;setTimeout(()=>{aCard.style.opacity=0;},4000);},500);
 aBalloon.onclick=()=>{aChat.style.display=aChat.style.display==='flex'?'none':'flex';};
 
 function aAppend(msg,who){
-  const div=document.createElement('div');
-  div.className='aMessage '+who;
-  div.textContent=msg;
-  aMessages.appendChild(div);
-  aMessages.scrollTop = aMessages.scrollHeight;
-  if(who==='aura' && 'speechSynthesis' in window){
-    const utter = new SpeechSynthesisUtterance(msg);
-    utter.lang='pt-BR';
-    window.speechSynthesis.speak(utter);
-  }
-  let db = JSON.parse(localStorage.getItem('auraDB')||'[]');
-  db.push({who,msg,time:new Date().toISOString()});
-  localStorage.setItem('auraDB',JSON.stringify(db));
+  const div=document.createElement('div');div.className='aMessage '+who;div.textContent=msg;aMessages.appendChild(div);aMessages.scrollTop=aMessages.scrollHeight;
+  if(who==='aura' && 'speechSynthesis' in window){const u=new SpeechSynthesisUtterance(msg);u.lang='pt-BR';window.speechSynthesis.speak(u);}
+  let db=JSON.parse(localStorage.getItem('auraDB')||'[]');db.push({who,msg,time:new Date().toISOString()});localStorage.setItem('auraDB',JSON.stringify(db));
 }
-
-function aLoad(){let db = JSON.parse(localStorage.getItem('auraDB')||'[]');db.forEach(d=>aAppend(d.msg,d.who));}
-
+function aLoad(){let db=JSON.parse(localStorage.getItem('auraDB')||'[]');db.forEach(d=>aAppend(d.msg,d.who));}
 function aReply(msg){
-  let t = msg.toLowerCase();
-  const responses = [
-    "Oi! Eu sou a Aura, sua assistente do Studio Tsukiyo.",
-    "Você pode me perguntar sobre nossos livros, cursos ou redes sociais.",
-    "Confira a aba Produtos para links e obras.",
-    "Tsukiyo Writer Class oferece cursos de escrita criativa.",
-    "Abunai Aisuru é nossa obra mais intensa.",
-    "Married at 16 é cheia de drama e romance.",
-    "Emilly: Além do Horizonte é cheia de aventuras.",
-    "Kizuite Kudassai - Please Notice Me é muito popular!",
-    "Nosso Instagram, Facebook e TikTok possuem novidades diárias.",
-    "Quer que eu te indique alguma obra ou curso?"
-  ];
-  if(t.includes("livro")||t.includes("obra")) return "📚 Confira nossos livros na aba Produtos!";
+  let t=msg.toLowerCase();
+  const res=["Oi! Eu sou Aura, assistente Studio Tsukiyo.","Pergunte sobre livros, cursos ou redes sociais.","Confira a aba Produtos para links e obras.","Quer que eu te indique alguma obra ou curso?"];
+  if(t.includes("livro")||t.includes("obra")) return "📚 Veja nossos livros na aba Produtos!";
   if(t.includes("curso")||t.includes("escola")) return "🎓 Tsukiyo Writer Class na aba Produtos!";
-  if(t.includes("instagram")||t.includes("facebook")||t.includes("tiktok")) return "Veja nossos links de redes sociais na aba Produtos!";
-  if(t.includes("oi")||t.includes("olá")||t.includes("hey")) return responses[0];
-  return responses[Math.floor(Math.random()*responses.length)];
+  if(t.includes("instagram")||t.includes("facebook")||t.includes("tiktok")) return "🌐 Links de redes sociais estão na aba Produtos!";
+  return res[Math.floor(Math.random()*res.length)];
 }
-
-aSend.onclick=()=>{
-  let txt=aInput.value.trim();
-  if(!txt) return;
-  aAppend(txt,'user');
-  aInput.value='';
-  let reply=aReply(txt);
-  setTimeout(()=>aAppend(reply,'aura'),300);
-}
+aSend.onclick=()=>{let txt=aInput.value.trim();if(!txt)return;aAppend(txt,'user');aInput.value='';let reply=aReply(txt);setTimeout(()=>aAppend(reply,'aura'),500);}
 aInput.addEventListener("keypress",(e)=>{if(e.key==='Enter'){aSend.click();}});
 aLoad();
 </script>
