@@ -16,18 +16,20 @@ main{padding:1rem;min-height:80vh;}
 .message{margin:0.2rem 0;}
 .message.user{text-align:right;color:#FFD700;}
 .message.hanabi{text-align:left;color:#00FFFF;}
-input[type="text"]{width:80%;padding:0.5rem;}
+input[type="text"]{width:75%;padding:0.5rem;}
 button.send{padding:0.5rem 1rem;background:#ff6b81;border:none;color:white;font-weight:bold;}
 .card{background:#0f2145;padding:0.5rem;margin:0.5rem 0;border-radius:6px;border:1px solid #ff4567;}
+.card a{color:#FFD700;text-decoration:none;}
+.card a:hover{text-decoration:underline;}
 </style>
 </head>
 <body>
 
-<header>Hanabi ✨ - Assistente</header>
+<header>Hanabi ✨ - Assistente Studio Tsukiyo</header>
 <nav>
 <button id="tabChat" class="active">Chat</button>
 <button id="tabProducts">Produtos</button>
-<button id="tabPolicies">Políticas</button>
+<button id="tabPolicies">Termos/Políticas</button>
 </nav>
 
 <main>
@@ -40,15 +42,22 @@ button.send{padding:0.5rem 1rem;background:#ff6b81;border:none;color:white;font-
 
 <!-- Produtos -->
 <div id="productsSection" style="display:none;">
-  <div class="card"><b>Por Favor, Me Note</b> - Light Novel original.</div>
-  <div class="card"><b>Kenji Animes</b> - Página de cultura otaku.</div>
-  <div class="card"><b>Tsukiyo Writer School</b> - Cursos e mentorias.</div>
+  <h3>Obras Originais</h3>
+  <div class="card"><a href="#" target="_blank">Abunai Aisuru</a></div>
+  <div class="card"><a href="#" target="_blank">Married at 16</a></div>
+  <div class="card"><a href="#" target="_blank">Emilly: Além do Horizonte</a></div>
+  <div class="card"><a href="#" target="_blank">Kizuite Kudassai - Please Notice, Me</a></div>
+  <h3>Escola de Autores</h3>
+  <div class="card"><a href="#" target="_blank">Tsukiyo Writer Class</a></div>
+  <h3>Redes Sociais Studio Tsukiyo</h3>
+  <div class="card"><a href="https://instagram.com/" target="_blank">Instagram</a></div>
+  <div class="card"><a href="https://facebook.com/" target="_blank">Facebook</a></div>
+  <div class="card"><a href="https://tiktok.com/" target="_blank">TikTok</a></div>
 </div>
 
-<!-- Políticas -->
+<!-- Políticas/Termos -->
 <div id="policiesSection" style="display:none;">
-  <div class="card"><b>Termos de Uso</b>: Ao usar nossos produtos, você concorda com os termos Studio Tsukiyo Platforms.</div>
-  <div class="card"><b>Política de Privacidade</b>: Seu uso é registrado apenas localmente e usamos seu feedback para melhoria. Contato: <a href="mailto:sac.studiotsukiyo@outlook.com">sac.studiotsukiyo@outlook.com</a></div>
+  <div class="card"><a href="https://naotodev1.github.io/studiotsukiyo-terms" target="_blank">Ver Termos e Políticas Studio Tsukiyo Platforms</a></div>
 </div>
 
 </main>
@@ -80,17 +89,6 @@ function appendMessage(text,who){
   chatBox.scrollTop=chatBox.scrollHeight;
 }
 
-function generateReply(msg){
-  let t=msg.toLowerCase();
-  if(t.includes("alarme")) return "⏰ Alarme: ainda não implementado no browser, mas posso lembrar localmente!";
-  if(t.includes("lembrete")) return "📝 Lembrete salvo localmente!";
-  if(t.includes("livro")) return "📚 Temos Light Novels e histórias originais. Veja Produtos!";
-  if(t.includes("curso")) return "🎓 Escola de Novos Autores: cursos e mentorias disponíveis.";
-  if(t.includes("naoto")) return "💻 Espaço Naoto Developer: tutoriais e automações.";
-  if(t.includes("oi")||t.includes("olá")) return "Oi! Eu sou Hanabi. Posso te ajudar com nossos produtos.";
-  return "Desculpe, não entendi. Pergunte sobre livros, cursos ou digite 'ajuda'.";
-}
-
 function saveMessage(user,msg){
   let db=JSON.parse(localStorage.getItem("hanabiDB")||"[]");
   db.push({user:user,msg:msg,time:new Date().toISOString()});
@@ -102,6 +100,79 @@ function loadMessages(){
   db.forEach(d=>appendMessage(d.msg,d.user));
 }
 
+// ---------- Mini IA com +50 respostas ----------
+function generateReply(msg){
+  let t=msg.toLowerCase();
+  const responses=[
+    "Oi! Eu sou a Hanabi. Posso te ajudar com nossos produtos.",
+    "📚 Quer conhecer nossas Light Novels originais?",
+    "🎓 Temos cursos na Tsukiyo Writer Class.",
+    "💻 Espaço Naoto Developer: tutoriais e automações.",
+    "Você pode me perguntar sobre livros, cursos ou redes sociais.",
+    "Ah! Você quer ver nossas obras originais?",
+    "Kizuite Kudassai é muito popular entre nossos leitores!",
+    "Emilly: Além do Horizonte é cheia de aventuras.",
+    "Abunai Aisuru é nossa obra mais intensa.",
+    "Married at 16 aborda romance e drama.",
+    "Nosso Instagram tem novidades diárias!",
+    "Facebook e TikTok também trazem conteúdos exclusivos.",
+    "Quer que eu salve um lembrete para você?",
+    "Você sabia que temos cursos de escrita criativa?",
+    "Se quiser, posso listar todas as obras originais.",
+    "Estou aprendendo sempre, posso entender melhor suas perguntas.",
+    "Precisa de ajuda com o Tsukiyo Writer Class?",
+    "Quer que eu te envie links para nossas redes sociais?",
+    "Hanabi aqui, pronta para tirar dúvidas!",
+    "Você quer dicas de leitura?",
+    "Posso ajudar com agendamento de alarmes.",
+    "Quer que eu te mostre nosso catálogo completo?",
+    "Você pode me chamar de assistente Hanabi!",
+    "Quer ver obras por categoria?",
+    "Posso salvar notas para você localmente.",
+    "Precisa de ajuda com login em alguma plataforma?",
+    "Quer que eu explique sobre cada obra?",
+    "Sabia que temos mentorias para novos autores?",
+    "Quer uma recomendação personalizada de leitura?",
+    "Você pode me perguntar sobre qualquer produto Studio Tsukiyo.",
+    "Precisa de ajuda com redes sociais da Studio Tsukiyo?",
+    "Quer que eu explique as políticas de uso?",
+    "Posso te ajudar a navegar entre abas.",
+    "Quer que eu abra o link da Tsukiyo Writer Class?",
+    "Posso listar links das nossas obras originais.",
+    "Você quer dicas de escrita criativa?",
+    "Quer ver os últimos lançamentos?",
+    "Quer que eu te explique Abunai Aisuru?",
+    "Posso criar lembretes simples aqui.",
+    "Quer ver obras mais populares?",
+    "Precisa de ajuda com algum autor?",
+    "Quer dicas sobre Married at 16?",
+    "Posso te lembrar de eventos especiais.",
+    "Quer que eu explique como usar Tsukiyo Writer Class?",
+    "Precisa de ajuda com cadastro nas plataformas?",
+    "Quer links diretos para nossas redes sociais?",
+    "Quer ver nossa galeria de obras?",
+    "Posso salvar suas preferências localmente.",
+    "Quer que eu te explique Kizuite Kudassai?",
+    "Precisa de ajuda para encontrar obras específicas?",
+    "Quer que eu organize obras por categoria?",
+    "Quer que eu abra o Instagram da Studio Tsukiyo?",
+    "Quer sugestões de leitura diária?"
+  ];
+
+  // palavras-chave simples
+  if(t.includes("alarme")) return "⏰ Alarmes ainda não implementados no browser, mas posso lembrar localmente!";
+  if(t.includes("lembrete")) return "📝 Lembrete salvo localmente!";
+  if(t.includes("livro")||t.includes("obra")) return "📚 Confira nossas obras na aba Produtos!";
+  if(t.includes("curso")||t.includes("escola")) return "🎓 Tsukiyo Writer Class na aba Produtos!";
+  if(t.includes("naoto")||t.includes("developer")) return "💻 Espaço Naoto Developer: tutoriais e automações!";
+  if(t.includes("instagram")||t.includes("facebook")||t.includes("tiktok")) return "Veja nossos links de redes sociais na aba Produtos!";
+  if(t.includes("oi")||t.includes("olá")||t.includes("hey")) return responses[0];
+  
+  // random response
+  return responses[Math.floor(Math.random()*responses.length)];
+}
+
+// ---------- Envio ----------
 sendBtn.onclick=()=>{
   let txt=chatInput.value.trim();
   if(!txt)return;
@@ -112,7 +183,7 @@ sendBtn.onclick=()=>{
   setTimeout(()=>{appendMessage(reply,'hanabi');saveMessage('hanabi',reply);},300);
 }
 
-// Load history
+// ---------- Load history ----------
 loadMessages();
 </script>
 
