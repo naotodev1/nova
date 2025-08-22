@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Studio Tsukiyo Platforms</title>
+<link rel="icon" href="https://i.imgur.com/bTNNoeN.jpeg">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 /* ---------------- Reset & Fonte ---------------- */
@@ -16,7 +17,7 @@ button:hover{opacity:0.9;}
 
 /* ---------------- Navbar ---------------- */
 nav{background:#1e1e2f;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;position:fixed;top:0;width:100%;z-index:100;}
-nav .logo{font-weight:700;color:#ff6b81;font-size:20px;}
+nav .logo img{height:50px;}
 nav .menu a{margin-left:15px;color:white;font-weight:600;padding:6px 12px;border-radius:5px;}
 nav .menu a:hover, nav .menu a.active{background:rgba(255,107,129,0.2);}
 
@@ -27,20 +28,21 @@ nav .menu a:hover, nav .menu a.active{background:rgba(255,107,129,0.2);}
 .hero button{background:white;color:#ff6b81;padding:10px 20px;border:none;border-radius:8px;font-weight:600;}
 
 /* ---------------- Sections ---------------- */
-section{padding:80px 20px 40px 20px;display:none;}
+section{padding:100px 20px 40px 20px;display:none;}
 section.active{display:block;}
 h2{margin-bottom:20px;color:#ff6b81;font-size:28px;}
 .card{background:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);margin:10px 0;transition:0.3s;}
 .card:hover{transform:translateY(-5px);box-shadow:0 8px 18px rgba(0,0,0,0.2);}
 
-/* ---------------- Sophia ---------------- */
-#sophiaContainer{background:#071425;color:white;padding:15px;border-radius:12px;max-width:700px;margin:auto;display:flex;flex-direction:column;max-height:450px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,0.3);}
-#sophiaMessages{flex:1;overflow-y:auto;margin-bottom:8px;font-size:14px;}
+/* ---------------- Sophia - Chat Omegle ---------------- */
+#sophiaContainer{background:#071425;color:white;padding:15px;border-radius:12px;max-width:700px;margin:auto;display:flex;flex-direction:column;max-height:500px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,0.3);}
+#sophiaMessages{flex:1;overflow-y:auto;margin-bottom:8px;padding-right:5px;font-size:14px;}
 .sMessage.user{text-align:right;color:#FFD700;margin:4px 0;}
 .sMessage.sophia{text-align:left;color:#00FFFF;margin:4px 0;}
 #sophiaInputArea{display:flex;}
-#sophiaInput{flex:1;padding:8px;border:none;border-radius:6px;}
-#sophiaSend{background:#ff6b81;border:none;color:white;padding:8px 16px;margin-left:5px;border-radius:6px;}
+#sophiaInput{flex:1;padding:10px;border:none;border-radius:6px;background:#0f2145;color:white;}
+#sophiaSend{background:#ff6b81;border:none;color:white;padding:10px 16px;margin-left:5px;border-radius:6px;}
+#sophiaClear{background:#8e2de2;border:none;color:white;padding:10px 16px;margin-left:5px;border-radius:6px;}
 
 /* ---------------- Products ---------------- */
 .productGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px;}
@@ -50,7 +52,7 @@ h2{margin-bottom:20px;color:#ff6b81;font-size:28px;}
 
 /* ---------------- Feedback ---------------- */
 #feedbackForm{max-width:600px;margin:auto;background:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);}
-#feedbackForm input,#feedbackForm textarea{width:100%;padding:10px;margin:8px 0;border-radius:6px;border:1px solid #ccc;}
+#feedbackForm iframe{width:100%;height:600px;border:none;border-radius:12px;}
 
 /* ---------------- Aura ---------------- */
 #auraCard{position:fixed;bottom:90px;right:20px;background:#0f2145;color:#00ffff;padding:12px 18px;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.3);font-weight:bold;z-index:9998;opacity:0;transition:opacity 1s;}
@@ -70,11 +72,10 @@ h2{margin-bottom:20px;color:#ff6b81;font-size:28px;}
 
 <!-- ---------------- Navbar ---------------- -->
 <nav>
-  <div class="logo">Studio Tsukiyo</div>
+  <div class="logo"><img src="https://i.imgur.com/EDTbAuv.jpeg" alt="Studio Tsukiyo"></div>
   <div class="menu">
     <a href="#sophia" class="tab active">Sophia</a>
     <a href="#produtos" class="tab">Produtos</a>
-    <a href="#termos" class="tab">Termos & Política</a>
     <a href="#sobre" class="tab">Sobre</a>
     <a href="#feedback" class="tab">Feedback</a>
   </div>
@@ -83,7 +84,7 @@ h2{margin-bottom:20px;color:#ff6b81;font-size:28px;}
 <!-- ---------------- Hero Section ---------------- -->
 <div class="hero">
   <h1>Bem-vindo ao Studio Tsukiyo Platforms</h1>
-  <p>Explore nossa assistente Sophia e descubra nossos produtos literários e cursos exclusivos.</p>
+  <p>Explore nossa assistente Sophia, descubra nossos produtos literários e cursos exclusivos.</p>
   <button onclick="document.querySelector('#sophia').scrollIntoView({behavior:'smooth'})">Comece Agora</button>
 </div>
 
@@ -95,6 +96,7 @@ h2{margin-bottom:20px;color:#ff6b81;font-size:28px;}
     <div id="sophiaInputArea">
       <input type="text" id="sophiaInput" placeholder="Escreva aqui...">
       <button id="sophiaSend">Enviar</button>
+      <button id="sophiaClear">Limpar</button>
     </div>
   </div>
 </section>
@@ -120,31 +122,22 @@ h2{margin-bottom:20px;color:#ff6b81;font-size:28px;}
   </div>
 </section>
 
-<section id="termos">
-  <h2>Termos & Política</h2>
-  <div class="card">
-    <p>Leia nossos <a href="https://naotodev1.github.io/studiotsukiyo-terms" target="_blank">Termos de Uso e Políticas de Privacidade</a>.</p>
-  </div>
-</section>
-
 <section id="sobre">
-  <h2>Sobre</h2>
+  <h2>Sobre o Studio Tsukiyo Platforms</h2>
   <div class="card">
-    <p>Studio Tsukiyo Platforms - Cultura geek, universo literário e escola para novos autores.</p>
+    <p>O Studio Tsukiyo Platforms é dedicado a cultura geek, universo literário e formação de novos autores. Nossa missão é oferecer conteúdo de qualidade, ferramentas de aprendizado e experiências interativas para autores e fãs da literatura.</p>
+    <h3>História</h3>
+    <p>Fundado por Naoto, o Studio Tsukiyo conecta leitores e escritores por meio de obras originais, cursos e assistentes digitais inteligentes.</p>
+    <h3>Termos e Políticas</h3>
+    <p>Leia nossos <a href="https://naotodev1.github.io/terms-e-policy" target="_blank">Termos de Uso e Políticas de Privacidade</a>.</p>
   </div>
 </section>
 
 <section id="feedback">
   <h2>Feedback da Sophia</h2>
-  <form id="feedbackForm">
-    <label>Nome:</label>
-    <input type="text" name="nome" placeholder="Seu nome">
-    <label>Email:</label>
-    <input type="email" name="email" placeholder="Seu email">
-    <label>Mensagem:</label>
-    <textarea name="mensagem" rows="5" placeholder="Digite seu feedback sobre a Sophia..."></textarea>
-    <button type="submit">Enviar</button>
-  </form>
+  <div id="feedbackForm">
+    <iframe src="https://docs.google.com/forms/d/e/SEU_FORM_ID/viewform?embedded=true">Carregando...</iframe>
+  </div>
 </section>
 
 <!-- ---------------- Aura ---------------- -->
@@ -177,10 +170,17 @@ tabs.forEach(tab=>{
 const sMessages=document.getElementById('sophiaMessages');
 const sInput=document.getElementById('sophiaInput');
 const sSend=document.getElementById('sophiaSend');
+const sClear=document.getElementById('sophiaClear');
+
 function sAppend(msg,who){
-  const div=document.createElement('div');div.className='sMessage '+who;div.textContent=msg;sMessages.appendChild(div);sMessages.scrollTop=sMessages.scrollHeight;
-  if(who==='sophia' && 'speechSynthesis' in window){const u=new SpeechSynthesisUtterance(msg);u.lang='pt-BR';window.speechSynthesis.speak(u);}
+  const div=document.createElement('div');div.className='sMessage '+who;div.textContent=msg;
+  sMessages.appendChild(div);
+  sMessages.scrollTop=sMessages.scrollHeight;
+  if(who==='sophia' && 'speechSynthesis' in window){
+    const u=new SpeechSynthesisUtterance(msg);u.lang='pt-BR';window.speechSynthesis.speak(u);
+  }
 }
+
 function sReply(msg){
   let t=msg.toLowerCase();
   const res=["Oi! Eu sou Sophia, sua assistente pessoal.","Posso te ajudar com alarmes e lembretes.","Quer dicas de leitura?","Podemos explorar novas funções juntos!"];
@@ -189,33 +189,59 @@ function sReply(msg){
   if(t.includes("hora")||t.includes("data")) return "📅 Agora mesmo: "+new Date().toLocaleString();
   return res[Math.floor(Math.random()*res.length)];
 }
+
 sSend.onclick=()=>{let txt=sInput.value.trim();if(!txt)return;sAppend(txt,'user');sInput.value='';let reply=sReply(txt);setTimeout(()=>sAppend(reply,'sophia'),500);}
 sInput.addEventListener("keypress",(e)=>{if(e.key==='Enter'){sSend.click();}});
+sClear.onclick=()=>{sMessages.innerHTML='';}
 
 /* ---------------- Aura JS ---------------- */
 const aCard=document.getElementById('auraCard');
 const aBalloon=document.getElementById('auraBalloon');
 const aChat=document.getElementById('auraChat');
-const aMessages=document.getElementById('auraMessages');
 const aInput=document.getElementById('auraInput');
 const aSend=document.getElementById('auraSend');
 
-setTimeout(()=>{aCard.style.opacity=1;setTimeout(()=>{aCard.style.opacity=0;},4000);},500);
-aBalloon.onclick=()=>{aChat.style.display=aChat.style.display==='flex'?'none':'flex';};
+// Mostra card "Posso ajudar?" por 5 segundos
+window.addEventListener('load',()=>{
+  aCard.style.opacity=1;
+  setTimeout(()=>{aCard.style.opacity=0;},5000);
+});
 
+// Clique no balão para abrir o chat
+aBalloon.addEventListener('click',()=>{
+  aChat.style.display=(aChat.style.display==='flex')?'none':'flex';
+});
+
+// Função para adicionar mensagem
 function aAppend(msg,who){
-  const div=document.createElement('div');div.className='aMessage '+who;div.textContent=msg;aMessages.appendChild(div);aMessages.scrollTop=aMessages.scrollHeight;
-  if(who==='aura' && 'speechSynthesis' in window){const u=new SpeechSynthesisUtterance(msg);u.lang='pt-BR';window.speechSynthesis.speak(u);}
+  const div=document.createElement('div');
+  div.className='aMessage '+who;
+  div.textContent=msg;
+  aMessages.appendChild(div);
+  aMessages.scrollTop=aMessages.scrollHeight;
 }
+
+// Respostas básicas da Aura
 function aReply(msg){
   let t=msg.toLowerCase();
-  const res=["Oi! Eu sou Aura, assistente Studio Tsukiyo.","Pergunte sobre livros, cursos ou redes sociais.","Confira a aba Produtos para links e obras.","Quer que eu te indique alguma obra ou curso?"];
-  if(t.includes("livro")||t.includes("obra")) return "📚 Veja nossos livros na aba Produtos!";
-  if(t.includes("curso")||t.includes("escola")) return "🎓 Tsukiyo Writer Class na aba Produtos!";
-  if(t.includes("instagram")||t.includes("facebook")||t.includes("tiktok")) return "🌐 Links de redes sociais estão na aba Produtos!";
-  return res[Math.floor(Math.random()*res.length)];
+  if(t.includes("produto")||t.includes("livro")) return "📚 Temos várias obras originais e cursos de autores. Confira a aba Produtos!";
+  if(t.includes("contato")||t.includes("email")) return "✉️ Você pode nos contatar pelo e-mail sac.studiotsukiyo@outlook.com";
+  if(t.includes("termo")||t.includes("política")) return "🔗 Leia nossos termos e políticas em: https://naotodev1.github.io/terms-e-policy";
+  if(t.includes("instagram")||t.includes("rede")) return "🌐 Visite nossas redes: Instagram, Facebook e TikTok.";
+  return "Olá! Eu sou a Aura, assistente do Studio Tsukiyo. Pergunte sobre nossos produtos, cursos ou termos!";
 }
-aSend.onclick=()=>{let txt=aInput.value.trim();if(!txt)return;aAppend(txt,'user');aInput.value='';let reply=aReply(txt);setTimeout(()=>aAppend(reply,'aura'),500);}
+
+// Enviar mensagem da Aura
+aSend.onclick=()=>{
+  let txt=aInput.value.trim();
+  if(!txt)return;
+  aAppend(txt,'user');
+  aInput.value='';
+  let reply=aReply(txt);
+  setTimeout(()=>aAppend(reply,'aura'),500);
+}
+
+// Enviar com Enter
 aInput.addEventListener("keypress",(e)=>{if(e.key==='Enter'){aSend.click();}});
 </script>
 </body>
