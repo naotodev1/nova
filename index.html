@@ -1,337 +1,469 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Studio Tsukiyo Platforms</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Studio Tsukiyo Platforms — Refined</title>
 <link rel="icon" href="https://i.imgur.com/bTNNoeN.jpeg">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-/* ---------------- Reset e fonte ---------------- */
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#111;scroll-behavior:smooth;}
-a{text-decoration:none;color:#ff6b81;transition:0.3s;}
-a:hover{text-decoration:underline;}
-button{cursor:pointer;transition:0.3s;}
-button:hover{opacity:0.9;}
+/* ===== Reset & Base ===== */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#ff6b81; --bg:#f6f7fb; --ink:#111; --panel:#fff;
+  --deep:#071425; --deep-2:#0f2145; --brand:#8e2de2;
+}
+html,body{height:100%}
+body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--ink)}
+a{text-decoration:none;color:var(--accent);transition:.25s}
+a:hover{opacity:.85}
+button{cursor:pointer;transition:.25s}
 
-/* ---------------- Navbar ---------------- */
-nav{background:#1e1e2f;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;position:fixed;top:0;width:100%;z-index:100;}
-nav .logo img{height:50px;}
-nav .menu a{margin-left:15px;color:white;font-weight:600;padding:6px 12px;border-radius:5px;}
-nav .menu a:hover, nav .menu a.active{background:rgba(255,107,129,0.2);}
+/* ===== Navbar ===== */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;background:#1e1e2f;
+  display:flex;align-items:center;justify-content:space-between;padding:12px 20px}
+nav .logo img{height:50px;display:block}
+nav .menu{display:flex;gap:8px;align-items:center}
+nav .menu a{color:#fff;font-weight:600;padding:8px 12px;border-radius:7px}
+nav .menu a.active,nav .menu a:hover{background:rgba(255,107,129,.2)}
+nav .auth{margin-left:8px;background:var(--accent);border:0;color:#fff;padding:8px 12px;border-radius:8px}
 
-/* ---------------- Hero ---------------- */
-.hero{height:400px;background:linear-gradient(135deg,#ff6b81,#8e2de2);display:flex;flex-direction:column;justify-content:center;align-items:center;color:white;text-align:center;padding:20px;}
-.hero h1{font-size:36px;margin-bottom:10px;animation:fadeIn 1.5s ease;}
-.hero p{font-size:18px;margin-bottom:15px;animation:fadeIn 2s ease;}
-.hero button{background:white;color:#ff6b81;padding:12px 24px;border:none;border-radius:8px;font-weight:600;}
+/* ===== Hero ===== */
+.hero{margin-top:74px;height:420px;background:
+  radial-gradient(1000px 400px at 10% 10%, rgba(255,107,129,.25), transparent),
+  radial-gradient(1000px 400px at 90% 90%, rgba(142,45,226,.25), transparent),
+  linear-gradient(135deg,var(--accent),var(--brand));
+  color:#fff;display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;text-align:center;padding:20px}
+.hero h1{font-size:36px;animation:rise .9s ease}
+.hero p{opacity:.95;animation:rise 1.2s ease}
+.hero .cta{background:#fff;color:var(--accent);border:0;border-radius:10px;padding:12px 20px;font-weight:700}
 
-/* ---------------- Sections ---------------- */
-section{padding:100px 20px 40px 20px;display:none;}
-section.active{display:block;}
-h2{margin-bottom:20px;color:#ff6b81;font-size:28px;}
-.card{background:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);margin:10px 0;transition:0.3s;}
-.card:hover{transform:translateY(-5px);box-shadow:0 8px 18px rgba(0,0,0,0.2);}
+/* ===== Sections (tabs) ===== */
+section{display:none;padding:96px 20px 48px;max-width:1100px;margin:0 auto}
+section.active{display:block}
+h2{color:var(--accent);font-size:28px;margin-bottom:16px}
+.panel{background:var(--panel);border-radius:14px;box-shadow:0 10px 24px rgba(0,0,0,.08);padding:20px}
 
-/* ---------------- Sophia ---------------- */
-#sophiaContainer{background:#071425;color:white;padding:15px;border-radius:12px;max-width:700px;margin:auto;display:flex;flex-direction:column;max-height:500px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,0.3);}
-#sophiaMessages{flex:1;overflow-y:auto;margin-bottom:8px;padding-right:5px;font-size:14px;}
-.sMessage.user{text-align:right;color:#FFD700;margin:4px 0;}
-.sMessage.sophia{text-align:left;color:#00FFFF;margin:4px 0;}
-#sophiaInputArea{display:flex;}
-#sophiaInput{flex:1;padding:10px;border:none;border-radius:6px;background:#0f2145;color:white;}
-#sophiaSend{background:#ff6b81;border:none;color:white;padding:10px 16px;margin-left:5px;border-radius:6px;}
-#sophiaClear{background:#8e2de2;border:none;color:white;padding:10px 16px;margin-left:5px;border-radius:6px;}
+/* ===== Sophia (chat estilo Omegle, + micro animações) ===== */
+#sophiaContainer{background:var(--deep);color:#e9f6ff;border-radius:14px;
+  display:flex;flex-direction:column;max-height:560px;overflow:hidden}
+#sophiaTop{padding:12px 16px;background:linear-gradient(135deg,#0a1a36,#0e2860);
+  display:flex;justify-content:space-between;align-items:center}
+#sophiaTop .status{display:flex;align-items:center;gap:8px;font-size:13px}
+#sophiaTop .dot{width:8px;height:8px;border-radius:50%;background:#34d399;box-shadow:0 0 0 6px rgba(52,211,153,.15)}
+#sophiaMessages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px;scroll-behavior:smooth}
+.msg{max-width:80%;padding:10px 12px;border-radius:12px;font-size:14px;line-height:1.4;animation:pop .18s ease}
+.msg.user{align-self:flex-end;background:#1a3a7a;color:#fff;border-top-right-radius:4px}
+.msg.bot{align-self:flex-start;background:#0f2145;color:#c9f2ff;border-top-left-radius:4px}
+.typing{display:none;align-self:flex-start;gap:6px}
+.typing span{width:6px;height:6px;background:#b8e9ff;border-radius:50%;animation:bounce 1.2s infinite ease-in-out}
+.typing span:nth-child(2){animation-delay:.15s}
+.typing span:nth-child(3){animation-delay:.3s}
+#sophiaInputArea{display:flex;gap:8px;padding:12px;background:#0b1e41}
+#sophiaInput{flex:1;background:#0f2145;border:1px solid #193363;color:#e5f7ff;border-radius:10px;padding:12px}
+#sophiaSend,#sophiaClear{border:0;border-radius:10px;padding:10px 14px;color:#fff}
+#sophiaSend{background:var(--accent)} #sophiaClear{background:var(--brand)}
 
-/* ---------------- Produtos ---------------- */
-.productGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px;}
-.productCard{padding:20px;border-radius:12px;background:white;box-shadow:0 4px 12px rgba(0,0,0,0.15);transition:transform 0.3s,box-shadow 0.3s;cursor:pointer;}
-.productCard:hover{transform:rotateY(10deg) scale(1.03);box-shadow:0 8px 20px rgba(0,0,0,0.25);}
-.productCard h3{margin-bottom:10px;color:#ff6b81;}
-.productCard p{font-size:14px;color:#333;}
+/* ===== Produtos (cards 3D flip) ===== */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.flip{perspective:1000px;cursor:pointer}
+.flipInner{position:relative;width:100%;height:200px;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.flip:hover .flipInner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:14px;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  padding:18px;text-align:center;box-shadow:0 10px 24px rgba(0,0,0,.08);backface-visibility:hidden;background:#fff}
+.face h3{color:var(--accent);margin-bottom:8px}
+.face p{font-size:13px;color:#333}
+.back{transform:rotateY(180deg);background:linear-gradient(135deg,#ff6b8122,#8e2de222),#fff}
+.back a{display:inline-block;margin-top:8px;background:var(--accent);color:#fff;padding:8px 12px;border-radius:9px}
+.badge{position:absolute;top:10px;left:10px;background:#111;color:#fff;font-size:10px;padding:4px 6px;border-radius:999px;opacity:.9}
 
-/* ---------------- Perfil ---------------- */
-#profileCard{max-width:600px;margin:auto;background:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);}
-#profileCard img{width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:10px;}
-#profileCard input, #profileCard textarea{width:100%;margin-bottom:10px;padding:8px;border-radius:6px;border:1px solid #ccc;}
+/* ===== Perfil & Config ===== */
+.form input,.form textarea{width:100%;padding:10px;border:1px solid #e4e7ef;border-radius:10px;margin-bottom:10px}
+.form img{width:92px;height:92px;border-radius:50%;object-fit:cover;margin-bottom:10px}
+.actions button{background:var(--accent);color:#fff;border:0;border-radius:10px;padding:10px 14px;margin-right:8px}
 
-/* ---------------- Configurações ---------------- */
-.configGrid{max-width:600px;margin:auto;display:flex;flex-direction:column;}
-.configGrid button{margin:5px 0;padding:10px;border:none;border-radius:8px;background:#ff6b81;color:white;font-weight:600;}
+/* ===== Feedback ===== */
+.iframeWrap{border-radius:14px;overflow:hidden;box-shadow:0 10px 24px rgba(0,0,0,.08)}
+.iframeWrap iframe{width:100%;height:620px;border:0;display:block}
 
-/* ---------------- Feedback ---------------- */
-#feedbackForm{max-width:600px;margin:auto;background:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);}
-#feedbackForm iframe{width:100%;height:600px;border:none;border-radius:12px;}
+/* ===== Aura (balão + chat refinado) ===== */
+#auraCard{position:fixed;bottom:104px;right:24px;background:#0f2145;color:#a7f9ff;
+  padding:12px 16px;border-radius:12px;box-shadow:0 8px 22px rgba(0,0,0,.35);
+  z-index:9998;opacity:0;transform:translateY(10px);transition:.5s}
+#auraBalloon{position:fixed;bottom:24px;right:24px;width:64px;height:64px;border-radius:50%;
+  display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),#ff8ba1);
+  color:#fff;font-size:24px;box-shadow:0 10px 22px rgba(0,0,0,.3);z-index:9999;animation:float 3s ease-in-out infinite}
+#auraChat{position:fixed;bottom:104px;right:24px;width:340px;max-height:520px;background:#071425;border:2px solid var(--accent);
+  border-radius:14px;display:none;flex-direction:column;overflow:hidden;z-index:10000;box-shadow:0 16px 36px rgba(0,0,0,.35)}
+#auraHead{background:var(--accent);color:#fff;font-weight:700;padding:10px 14px;display:flex;justify-content:space-between;align-items:center}
+#auraMsgs{flex:1;padding:10px 10px 12px;overflow-y:auto;font-size:14px;color:#d6f6ff}
+.am{padding:10px 12px;border-radius:12px;margin:6px 0;max-width:82%}
+.am.u{background:#1a3a7a;align-self:flex-end;color:#fff;border-top-right-radius:4px}
+.am.a{background:#0f2145;align-self:flex-start;color:#ccf4ff;border-top-left-radius:4px}
+#auraInputBar{display:flex;border-top:1px solid #18345f}
+#auraInput{flex:1;background:#0f2145;border:0;color:#eaffff;padding:10px 12px}
+#auraSend{background:var(--accent);border:0;color:#fff;padding:10px 14px}
 
-/* ---------------- Aura ---------------- */
-#auraCard{position:fixed;bottom:90px;right:20px;background:#0f2145;color:#00ffff;padding:12px 18px;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.3);font-weight:bold;z-index:9998;opacity:0;transition:opacity 1s;}
-#auraBalloon{position:fixed;bottom:20px;right:20px;width:60px;height:60px;border-radius:50%;background:#ff6b81;cursor:pointer;display:flex;justify-content:center;align-items:center;font-size:30px;color:white;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.3);}
-#auraBalloon:hover{transform:scale(1.1);}
-#auraChat{position:fixed;bottom:90px;right:20px;width:320px;max-height:450px;background:#071425;border:2px solid #ff6b81;border-radius:12px;display:none;flex-direction:column;overflow:hidden;z-index:10000;box-shadow:0 6px 20px rgba(0,0,0,0.3);}
-#auraChatHeader{background:#ff6b81;color:white;padding:10px;text-align:center;font-weight:bold;}
-#auraMessages{flex:1;padding:8px;overflow-y:auto;font-size:14px;}
-.aMessage.user{text-align:right;color:#FFD700;margin:3px 0;}
-.aMessage.aura{text-align:left;color:#00ffff;margin:3px 0;}
-#auraInputArea{display:flex;border-top:1px solid #ff6b81;}
-#auraInput{flex:1;padding:6px;border:none;outline:none;background:#0f2145;color:white;}
-#auraSend{background:#ff6b81;border:none;color:white;padding:6px 12px;}
+/* ===== Animations ===== */
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:scale(1)}}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
-/* ---------------- Login Modal ---------------- */
-#loginModal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;justify-content:center;align-items:center;z-index:10001;display:none;}
-#loginContent{background:white;padding:20px;border-radius:12px;width:300px;text-align:center;}
-#loginContent input{width:100%;padding:8px;margin:5px 0;border-radius:6px;border:1px solid #ccc;}
-#loginContent button{margin-top:10px;padding:8px 12px;border:none;border-radius:6px;background:#ff6b81;color:white;font-weight:600;}
+/* ===== Responsive tweaks ===== */
+@media (max-width:680px){
+  nav .menu{flex-wrap:wrap;gap:6px}
+  #auraChat{width:92vw;right:4vw}
+}
 </style>
 </head>
 <body>
 
-<!-- Navbar -->
+<!-- ===== NAVBAR ===== -->
 <nav>
-  <div class="logo"><img src="https://i.imgur.com/EDTbAuv.jpeg" alt="Studio Tsukiyo"></div>
+  <div class="logo"><img src="https://i.imgur.com/EDTbAuv.jpeg" alt="Studio Tsukiyo"/></div>
   <div class="menu">
     <a href="#hero" class="tab active">Home</a>
     <a href="#sophia" class="tab">Sophia</a>
     <a href="#produtos" class="tab">Produtos</a>
-    <a href="#profile" class="tab">Perfil</a>
+    <a href="#perfil" class="tab">Perfil</a>
     <a href="#config" class="tab">Configurações</a>
     <a href="#feedback" class="tab">Feedback</a>
   </div>
-  <button onclick="showLogin()">Login / Criar Conta</button>
+  <button class="auth" onclick="showLogin()">Login / Criar Conta</button>
 </nav>
 
-<!-- Hero -->
-<div class="hero" id="hero">
-  <h1>Bem-vindo ao Studio Tsukiyo Platforms</h1>
-  <p>Explore nossa assistente Sophia, produtos originais e muito mais.</p>
-  <button onclick="document.querySelector('#sophia').scrollIntoView({behavior:'smooth'});">Conversar com Sophia</button>
-</div>
+<!-- ===== HERO ===== -->
+<header id="hero" class="hero">
+  <h1>Studio Tsukiyo Platforms</h1>
+  <p>Assistentes inteligentes, obras originais e recursos para novos autores.</p>
+  <button class="cta" onclick="document.querySelector('#sophia').scrollIntoView({behavior:'smooth'})">Conversar com a Sophia</button>
+</header>
 
-<!-- Sophia -->
-<section id="sophia">
-  <h2>Sophia - Assistente Pessoal</h2>
-  <div id="sophiaContainer">
+<!-- ===== SOPHIA ===== -->
+<section id="sophia" class="active">
+  <h2>Sophia — Assistente Pessoal</h2>
+  <div class="panel" id="sophiaContainer">
+    <div id="sophiaTop">
+      <div class="status"><span class="dot"></span> Conectado com um desconhecido • estilo Omegle</div>
+      <div><button id="sophiaClear" style="background:transparent;border:1px solid #2a4b8f;color:#cfe7ff;border-radius:8px;padding:6px 10px">Limpar</button></div>
+    </div>
     <div id="sophiaMessages"></div>
+    <div class="typing" id="sophiaTyping"><span></span><span></span><span></span></div>
     <div id="sophiaInputArea">
-      <input type="text" id="sophiaInput" placeholder="Digite sua mensagem..."/>
+      <input id="sophiaInput" placeholder="Diga algo gentil..."/>
       <button id="sophiaSend">Enviar</button>
-      <button id="sophiaClear">Limpar</button>
     </div>
   </div>
 </section>
 
-<!-- Produtos -->
+<!-- ===== PRODUTOS (flip 3D) ===== -->
 <section id="produtos">
   <h2>Produtos</h2>
-  <div class="productGrid">
-    <div class="productCard" onclick="window.open('https://a.co/d/bnRqGsl','_blank')">
-      <h3>Abunai Aisuru</h3>
-      <p>História do primeiro amor e conflitos familiares.</p>
+  <div class="grid">
+
+    <!-- Obras Originais -->
+    <div class="flip" onclick="window.open('https://example.com/abunai-aisuru','_blank')">
+      <div class="flipInner">
+        <div class="face front"><span class="badge">Obra</span><h3>Abunai Aisuru</h3><p>Primeiro amor & conflitos.</p></div>
+        <div class="face back"><h3>Abunai Aisuru</h3><p>Leia online / compre.</p><a>Visitar</a></div>
+      </div>
     </div>
-    <div class="productCard" onclick="window.open('https://www.wattpad.com/story/353888895-married-at-16','_blank')">
-      <h3>Married at 16</h3>
-      <p>Romance adolescente intenso com escolhas difíceis.</p>
+
+    <div class="flip" onclick="window.open('https://example.com/married-at-16','_blank')">
+      <div class="flipInner">
+        <div class="face front"><span class="badge">Obra</span><h3>Married at 16</h3><p>Romance e escolhas difíceis.</p></div>
+        <div class="face back"><h3>Married at 16</h3><p>Capítulos e extras.</p><a>Visitar</a></div>
+      </div>
     </div>
-    <div class="productCard" onclick="window.open('https://a.co/d/9sRJ4Q1','_blank')">
-      <h3>Emilly: Além do Horizonte</h3>
-      <p>Aventura que ultrapassa limites do cotidiano.</p>
+
+    <div class="flip" onclick="window.open('https://example.com/emilly-alem-do-horizonte','_blank')">
+      <div class="flipInner">
+        <div class="face front"><span class="badge">Obra</span><h3>Emilly: Além do Horizonte</h3><p>Aventura emocionante.</p></div>
+        <div class="face back"><h3>Emilly</h3><p>Sinopse e leitura.</p><a>Visitar</a></div>
+      </div>
     </div>
-    <div class="productCard" onclick="window.open('https://a.co/d/6LeRtoi','_blank')">
-      <h3>Kizuite Kudassai</h3>
-      <p>Romance sobre sentimentos não correspondidos.</p>
+
+    <div class="flip" onclick="window.open('https://example.com/kizuite-kudassai','_blank')">
+      <div class="flipInner">
+        <div class="face front"><span class="badge">Obra</span><h3>Kizuite Kudassai</h3><p>Noticing feelings.</p></div>
+        <div class="face back"><h3>Kizuite Kudassai</h3><p>Leia e compartilhe.</p><a>Visitar</a></div>
+      </div>
     </div>
-    <div class="productCard" onclick="window.open('https://www.instagram.com/clubetsukiyo/','_blank')">
-      <h3>Tsukiyo Writer Class</h3>
-      <p>Curso exclusivo para novos autores aprimorarem suas habilidades.</p>
+
+    <!-- Escola de Autores -->
+    <div class="flip" onclick="window.open('https://example.com/tsukiyo-writer-class','_blank')">
+      <div class="flipInner">
+        <div class="face front"><span class="badge">Curso</span><h3>Tsukiyo Writer Class</h3><p>Formação de autores.</p></div>
+        <div class="face back"><h3>Writer Class</h3><p>Inscrição e módulos.</p><a>Visitar</a></div>
+      </div>
+    </div>
+
+    <!-- Redes sociais / Kenji Animes -->
+    <div class="flip" onclick="window.open('https://instagram.com/studiotsukiyo','_blank')">
+      <div class="flipInner">
+        <div class="face front"><span class="badge">Social</span><h3>Instagram</h3><p>Novidades & bastidores.</p></div>
+        <div class="face back"><h3>Instagram</h3><p>@studiotsukiyo</p><a>Abrir</a></div>
+      </div>
+    </div>
+
+    <div class="flip" onclick="window.open('https://facebook.com/studiotsukiyo','_blank')">
+      <div class="flipInner">
+        <div class="face front"><span class="badge">Social</span><h3>Facebook</h3><p>Comunidade e posts.</p></div>
+        <div class="face back"><h3>Facebook</h3><p>/studiotsukiyo</p><a>Abrir</a></div>
+      </div>
+    </div>
+
+    <div class="flip" onclick="window.open('https://tiktok.com/@studiotsukiyo','_blank')">
+      <div class="flipInner">
+        <div class="face front"><span class="badge">Social</span><h3>TikTok</h3><p>Clipes & dicas.</p></div>
+        <div class="face back"><h3>TikTok</h3><p>@studiotsukiyo</p><a>Abrir</a></div>
+      </div>
+    </div>
+
+    <div class="flip" onclick="window.open('https://instagram.com/kenjianimes','_blank')">
+      <div class="flipInner">
+        <div class="face front"><span class="badge">Parceiro</span><h3>Kenji Animes</h3><p>Conteúdo e notícias.</p></div>
+        <div class="face back"><h3>Kenji Animes</h3><p>Instagram oficial.</p><a>Abrir</a></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== PERFIL ===== -->
+<section id="perfil">
+  <h2>Perfil</h2>
+  <div class="panel form">
+    <img id="pImg" src="https://i.imgur.com/bTNNoeN.jpeg" alt="Foto de perfil"/>
+    <input id="pName" placeholder="Seu nome"/>
+    <textarea id="pStatus" rows="2" placeholder="Seu status"></textarea>
+    <input type="file" id="pUpload" accept="image/*"/>
+    <div class="actions">
+      <button onclick="saveProfile()">Salvar</button>
+      <button style="background:#6b7cff" onclick="fillFromLogin()">Usar dados do login</button>
     </div>
   </div>
 </section>
 
-<!-- Perfil -->
-<section id="profile">
-  <h2>Perfil do Usuário</h2>
-  <div id="profileCard">
-    <img id="profileImg" src="https://i.imgur.com/bTNNoeN.jpeg" alt="Foto de Perfil"/>
-    <input type="text" id="profileName" placeholder="Nome"/>
-    <textarea id="profileStatus" rows="2" placeholder="Status"></textarea>
-    <button onclick="saveProfile()">Salvar Perfil</button>
-  </div>
-</section>
-
-<!-- Configurações -->
+<!-- ===== CONFIGURAÇÕES ===== -->
 <section id="config">
   <h2>Configurações</h2>
-  <div class="configGrid">
-    <button onclick="exportChat()">Exportar conversa Sophia</button>
-    <button onclick="clearAccount()">Excluir conta/dados</button>
-    <button onclick="alert('Relate seu bug via formulário!')">Relatar bug</button>
-    <button onclick="location.reload()">Reiniciar</button>
+  <div class="panel">
+    <div class="actions" style="display:flex;flex-wrap:wrap;gap:8px">
+      <button onclick="exportChat()">Exportar conversa da Sophia</button>
+      <button style="background:#111" onclick="openWiki()">Wiki</button>
+      <button style="background:#ef4444" onclick="clearAccount()">Excluir conta/dados</button>
+      <button style="background:#f59e0b" onclick="reportBug()">Relatar bug</button>
+      <button style="background:#6b7280" onclick="location.reload()">Reiniciar</button>
+    </div>
+    <p style="margin-top:10px">Termos & Políticas: <a href="https://naotodev1.github.io/terms-e-policy" target="_blank">https://naotodev1.github.io/terms-e-policy</a></p>
   </div>
 </section>
 
-<!-- Feedback -->
+<!-- ===== FEEDBACK ===== -->
 <section id="feedback">
   <h2>Feedback de Uso da Sophia</h2>
-  <div id="feedbackForm">
-    <iframe src="https://docs.google.com/forms/d/1tNGkKwzpn9l8CGo1ibnErRfpv3W_lD8kt_7am72-C3c/preview"></iframe>
+  <div class="panel iframeWrap">
+    <!-- Substitua pelo link real do seu Google Forms -->
+    <iframe src="https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?embedded=true">Carregando…</iframe>
   </div>
 </section>
 
-<!-- Aura -->
-<div id="auraCard">Posso ajudar?</div>
-<div id="auraBalloon">💬</div>
+<!-- ===== AURA ===== -->
+<div id="auraCard">Olá! Eu sou a <b>Aura</b>. Posso ajudar?</div>
+<div id="auraBalloon" title="Falar com a Aura">💬</div>
 <div id="auraChat">
-  <div id="auraChatHeader">Aura - Assistente Studio Tsukiyo</div>
-  <div id="auraMessages"></div>
-  <div id="auraInputArea">
-    <input type="text" id="auraInput" placeholder="Digite sua pergunta..."/>
+  <div id="auraHead">
+    <span>Aura — Studio Tsukiyo</span>
+    <button style="background:transparent;border:0;color:#fff;font-weight:700" onclick="toggleAura()">×</button>
+  </div>
+  <div id="auraMsgs" style="display:flex;flex-direction:column"></div>
+  <div id="auraInputBar">
+    <input id="auraInput" placeholder="Pergunte sobre produtos, cursos, termos…" />
     <button id="auraSend">Enviar</button>
   </div>
 </div>
 
-<!-- Login Modal -->
-<div id="loginModal">
-  <div id="loginContent">
-    <h3>Login / Criar Conta</h3>
-    <input type="text" id="loginName" placeholder="Nome">
-    <input type="file" id="loginImg">
-    <button onclick="loginUser()">Entrar</button>
-    <button onclick="closeLogin()">Cancelar</button>
+<!-- ===== LOGIN MODAL ===== -->
+<div id="loginModal" style="position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;z-index:60;align-items:center;justify-content:center">
+  <div id="loginCard" class="panel" style="width:320px">
+    <h3 style="margin-bottom:8px">Login / Criar Conta</h3>
+    <input id="lName" placeholder="Seu nome"/>
+    <input type="file" id="lUpload" accept="image/*"/>
+    <div class="actions" style="margin-top:8px">
+      <button onclick="doLogin()">Entrar</button>
+      <button style="background:#6b7280" onclick="closeLogin()">Cancelar</button>
+    </div>
   </div>
 </div>
 
 <script>
-// ---------------- Navbar ----------------
-const tabs=document.querySelectorAll('.tab');
-tabs.forEach(tab=>{
-  tab.addEventListener('click',()=>{
-    tabs.forEach(t=>t.classList.remove('active'));
-    tab.classList.add('active');
-    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
-    const id=tab.getAttribute('href').substring(1);
-    document.getElementById(id).classList.add('active');
-  });
-});
+/* ===== Tabs ===== */
+const tabs=[...document.querySelectorAll('nav .menu a')];
+const secs=[...document.querySelectorAll('section')];
+tabs.forEach(a=>a.addEventListener('click',e=>{
+  e.preventDefault();
+  tabs.forEach(t=>t.classList.remove('active'));
+  a.classList.add('active');
+  const id=a.getAttribute('href').slice(1);
+  secs.forEach(s=>s.classList.toggle('active',s.id===id));
+  if(id==='sophia') setTimeout(()=>document.getElementById('sophiaInput').focus(),100);
+}));
 
-// ---------------- Sophia ----------------
-const sMessages=document.getElementById('sophiaMessages');
-const sInput=document.getElementById('sophiaInput');
-const sSend=document.getElementById('sophiaSend');
-const sClear=document.getElementById('sophiaClear');
+/* ===== Sophia Chat ===== */
+const sMsgs = document.getElementById('sophiaMessages');
+const sIn   = document.getElementById('sophiaInput');
+const sSend = document.getElementById('sophiaSend');
+const sClr  = document.getElementById('sophiaClear');
+const sTyping = document.getElementById('sophiaTyping');
 
-function loadSophiaHistory(){
-  const hist=JSON.parse(localStorage.getItem('sophiaHistory')||'[]');
-  hist.forEach(m=>sAppend(m.text,m.who));
+function appendS(text,who='bot'){
+  const el=document.createElement('div');
+  el.className='msg '+(who==='user'?'user':'bot');
+  el.textContent=text;
+  sMsgs.appendChild(el);
+  sMsgs.scrollTop=sMsgs.scrollHeight;
+  const log=JSON.parse(localStorage.getItem('sophiaHistory')||'[]');
+  log.push({t:text,w:who,ts:Date.now()});
+  localStorage.setItem('sophiaHistory',JSON.stringify(log));
 }
-function saveSophiaHistory(msg,who){
-  const hist=JSON.parse(localStorage.getItem('sophiaHistory')||'[]');
-  hist.push({text:msg,who:who});
-  localStorage.setItem('sophiaHistory',JSON.stringify(hist));
+function loadS(){
+  const log=JSON.parse(localStorage.getItem('sophiaHistory')||'[]');
+  sMsgs.innerHTML='';
+  log.forEach(m=>appendS(m.t,m.w));
 }
-
-function sAppend(msg,who){
-  const div=document.createElement('div');
-  div.className='sMessage '+who;
-  div.textContent=msg;
-  sMessages.appendChild(div);
-  sMessages.scrollTop=sMessages.scrollHeight;
-  saveSophiaHistory(msg,who);
+function sophiaBrain(q){
+  const t=q.toLowerCase();
+  if(/hora|data/.test(t)) return "Agora: "+new Date().toLocaleString();
+  if(/alarme/.test(t)) return "⏰ (demo) Posso lembrar você! Diga: 'alarme 10:30 café'";
+  if(/lembrete|card/.test(t)) return "🗒️ (demo) Crio cartões visuais! Ex: 'lembrete pagar boleto amanhã'";
+  return [
+    "Curti! Quer uma dica de escrita hoje?",
+    "Anote suas ideias, mesmo as caóticas. Viram ouro mais tarde.",
+    "Posso guardar um lembrete pra você 😉"
+  ][Math.floor(Math.random()*3)];
 }
-
-sSend.onclick=()=>{
-  let txt=sInput.value.trim();
-  if(!txt)return;
-  sAppend(txt,'user');
-  sInput.value='';
-  setTimeout(()=>sAppend('Olá! Eu sou Sophia, sua assistente pessoal. Ainda estou aprendendo mas posso ajudar!','sophia'),500);
+function botReplySoon(text){
+  sTyping.style.display='flex';
+  setTimeout(()=>{
+    sTyping.style.display='none';
+    appendS(sophiaBrain(text),'bot');
+  }, 650 + Math.random()*600);
 }
-sInput.addEventListener('keypress',(e)=>{if(e.key==='Enter'){sSend.click();}});
-sClear.onclick=()=>{sMessages.innerHTML='';localStorage.removeItem('sophiaHistory');}
-loadSophiaHistory();
+sSend.onclick = ()=>{
+  const t=sIn.value.trim(); if(!t) return;
+  appendS(t,'user'); sIn.value='';
+  botReplySoon(t);
+};
+sIn.addEventListener('keydown',e=>{if(e.key==='Enter') sSend.click();});
+sClr.onclick=()=>{localStorage.removeItem('sophiaHistory');sMsgs.innerHTML='';};
+loadS();
 
-// ---------------- Perfil ----------------
+/* ===== Produtos: clique já abre (feito via HTML) ===== */
+
+/* ===== Perfil ===== */
+const pImg=document.getElementById('pImg');
+const pName=document.getElementById('pName');
+const pStatus=document.getElementById('pStatus');
+const pUpload=document.getElementById('pUpload');
+
 function saveProfile(){
-  localStorage.setItem('profileName',document.getElementById('profileName').value);
-  localStorage.setItem('profileStatus',document.getElementById('profileStatus').value);
-  alert('Perfil salvo!');
+  localStorage.setItem('profileName',pName.value.trim());
+  localStorage.setItem('profileStatus',pStatus.value.trim());
+  if(pUpload.files[0]){
+    const r=new FileReader();
+    r.onload=()=>{localStorage.setItem('profileImg',r.result);pImg.src=r.result; alert('Perfil salvo!');}
+    r.readAsDataURL(pUpload.files[0]);
+  } else { alert('Perfil salvo!'); }
 }
+function fillFromLogin(){
+  const n=localStorage.getItem('loginName')||'';
+  const img=localStorage.getItem('loginImg');
+  if(n) pName.value=n;
+  if(img) pImg.src=img;
+}
+(function hydrateProfile(){
+  const n=localStorage.getItem('profileName'); if(n) pName.value=n;
+  const s=localStorage.getItem('profileStatus'); if(s) pStatus.value=s;
+  const img=localStorage.getItem('profileImg'); if(img) pImg.src=img;
+})();
 
-// ---------------- Config ----------------
+/* ===== Config ===== */
 function exportChat(){
-  const chatContent=sMessages.innerText;
-  const blob=new Blob([chatContent],{type:'text/plain'});
+  const log=localStorage.getItem('sophiaHistory')||'';
+  const blob=new Blob([log],{type:'application/json'});
   const a=document.createElement('a');
   a.href=URL.createObjectURL(blob);
-  a.download='sophia_chat.txt';
+  a.download='sophia_history.json';
   a.click();
 }
 function clearAccount(){
-  if(confirm('Tem certeza que deseja excluir todos os dados?')){
-    localStorage.clear();
-    location.reload();
+  if(confirm('Excluir conta e todos os dados locais?')){ localStorage.clear(); location.reload(); }
+}
+function openWiki(){ alert('Wiki (demo): adicione seu link de documentação aqui.'); }
+function reportBug(){ alert('Relate bugs no seu Google Forms ou email: sac.studiotsukiyo@outlook.com'); }
+
+/* ===== Aura ===== */
+const auraCard=document.getElementById('auraCard');
+const auraBalloon=document.getElementById('auraBalloon');
+const auraChat=document.getElementById('auraChat');
+const auraMsgs=document.getElementById('auraMsgs');
+const auraIn=document.getElementById('auraInput');
+const auraSend=document.getElementById('auraSend');
+
+function showAuraIntro(){
+  setTimeout(()=>{ auraCard.style.opacity=1; auraCard.style.transform='translateY(0)'; }, 400);
+  setTimeout(()=>{ auraCard.style.opacity=0; }, 5600);
+}
+function toggleAura(){
+  const isOpen=getComputedStyle(auraChat).display!=='none';
+  auraChat.style.display = isOpen ? 'none' : 'flex';
+  if(!isOpen && !localStorage.getItem('auraWelcomed')){
+    aAppend("Olá! Eu sou a Aura, assistente do Studio Tsukiyo. Posso indicar obras, cursos, termos e contatos.","a");
+    localStorage.setItem('auraWelcomed','1');
   }
 }
-
-// ---------------- Aura ----------------
-const aCard=document.getElementById('auraCard');
-const aBalloon=document.getElementById('auraBalloon');
-const aChat=document.getElementById('auraChat');
-const aMessages=document.getElementById('auraMessages');
-const aInput=document.getElementById('auraInput');
-const aSend=document.getElementById('auraSend');
-
-window.addEventListener('load',()=>{
-  aCard.style.opacity=1;
-  setTimeout(()=>{aCard.style.opacity=0;},5000);
+function aAppend(t,who='a'){
+  const el=document.createElement('div');
+  el.className='am '+(who==='u'?'u':'a');
+  el.textContent=t;
+  auraMsgs.appendChild(el);
+  auraMsgs.scrollTop=auraMsgs.scrollHeight;
+}
+function auraBrain(q){
+  const t=q.toLowerCase();
+  if(/produto|obra|livro|curso/.test(t)) return "📚 Dica: veja a aba Produtos — clique em cada card (efeito flip!) para abrir o link oficial.";
+  if(/termo|pol(í|i)tica|privacidade/.test(t)) return "🔗 Termos & Políticas: https://naotodev1.github.io/terms-e-policy";
+  if(/contato|email|suporte|sac/.test(t)) return "✉️ Contato: sac.studiotsukiyo@outlook.com";
+  if(/instagram|facebook|tiktok|rede/.test(t)) return "🌐 Redes: Instagram, Facebook e TikTok (@studiotsukiyo).";
+  return "Posso ajudar com: produtos, cursos, termos, contato e redes. O que você procura?";
+}
+auraBalloon.addEventListener('click',toggleAura);
+auraSend.addEventListener('click',()=>{
+  const t=auraIn.value.trim(); if(!t) return;
+  aAppend(t,'u'); auraIn.value='';
+  setTimeout(()=>aAppend(auraBrain(t),'a'),450);
 });
+auraIn.addEventListener('keydown',e=>{ if(e.key==='Enter') auraSend.click(); });
+showAuraIntro();
 
-aBalloon.addEventListener('click',()=>{aChat.style.display=(aChat.style.display==='flex')?'none':'flex';});
-
-function aAppend(msg,who){
-  const div=document.createElement('div');
-  div.className='aMessage '+who;
-  div.textContent=msg;
-  aMessages.appendChild(div);
-  aMessages.scrollTop=aMessages.scrollHeight;
-}
-
-function aReply(msg){
-  let t=msg.toLowerCase();
-  if(t.includes("produto")||t.includes("livro")) return "📚 Confira a aba Produtos para nossas obras e cursos!";
-  if(t.includes("contato")||t.includes("email")) return "✉️ Contato: sac.studiotsukiyo@outlook.com";
-  if(t.includes("termo")||t.includes("política")) return "🔗 Termos e Políticas: https://naotodev1.github.io/terms-e-policy";
-  if(t.includes("instagram")||t.includes("rede")) return "🌐 Nossas redes: Instagram, Facebook e TikTok.";
-  return "Olá! Eu sou Aura, assistente do Studio Tsukiyo. Pergunte sobre produtos ou informações da plataforma!";
-}
-
-aSend.onclick=()=>{
-  let txt=aInput.value.trim();
-  if(!txt)return;
-  aAppend(txt,'user');
-  aInput.value='';
-  let reply=aReply(txt);
-  setTimeout(()=>aAppend(reply,'aura'),500);
-}
-aInput.addEventListener("keypress",(e)=>{if(e.key==='Enter'){aSend.click();}});
-
-// ---------------- Login ----------------
+/* ===== Login (opcional) ===== */
 const loginModal=document.getElementById('loginModal');
-function showLogin(){loginModal.style.display='flex';}
-function closeLogin(){loginModal.style.display='none';}
-function loginUser(){
-  const name=document.getElementById('loginName').value.trim();
-  const file=document.getElementById('loginImg').files[0];
-  if(!name){alert('Digite seu nome');return;}
-  localStorage.setItem('profileName',name);
+function showLogin(){ loginModal.style.display='flex'; }
+function closeLogin(){ loginModal.style.display='none'; }
+function doLogin(){
+  const name=document.getElementById('lName').value.trim();
+  const file=document.getElementById('lUpload').files[0];
+  if(!name){ alert('Digite seu nome'); return; }
+  localStorage.setItem('loginName',name);
   if(file){
-    const reader=new FileReader();
-    reader.onload=function(e){localStorage.setItem('profileImg',e.target.result);document.getElementById('profileImg').src=e.target.result;}
-    reader.readAsDataURL(file);
+    const r=new FileReader();
+    r.onload=()=>{ localStorage.setItem('loginImg',r.result); };
+    r.readAsDataURL(file);
   }
-  document.getElementById('profileName').value=name;
-  document.getElementById('profileStatus').value='';
-  alert('Login realizado!');
   closeLogin();
+  alert('Login salvo localmente! Vá em Perfil para ajustar seus dados.');
 }
 </script>
 </body>
