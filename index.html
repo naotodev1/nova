@@ -11,39 +11,164 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #6e8efb, #a777e3);
+            --secondary-gradient: linear-gradient(to right, #6e8efb, #a777e3);
+            --background-light: #f8f9fa;
+            --background-dark: #1a1a1a;
+            --card-light: #ffffff;
+            --card-dark: #2d2d2d;
+            --text-light: #333;
+            --text-dark: #ffffff;
+            --border-light: #eee;
+            --border-dark: #444;
+        }
+
         body {
-            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            background: var(--primary-gradient);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            transition: all 0.3s ease;
         }
-        
-        .chat-container {
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #2c3e50, #4a6741);
+        }
+
+        .app-container {
             width: 100%;
             max-width: 400px;
             height: 600px;
-            background-color: white;
+            background-color: var(--card-light);
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            position: relative;
+            transition: all 0.3s ease;
         }
-        
+
+        .dark-mode .app-container {
+            background-color: var(--card-dark);
+            color: var(--text-dark);
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 20px;
+            text-align: center;
+            background: var(--card-light);
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode .welcome-screen {
+            background: var(--card-dark);
+        }
+
+        .welcome-header {
+            margin-bottom: 30px;
+        }
+
+        .nova-logo {
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .dark-mode .welcome-subtitle {
+            color: #ccc;
+        }
+
+        .welcome-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .welcome-card {
+            background: var(--background-light);
+            border: 1px solid var(--border-light);
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .dark-mode .welcome-card {
+            background: #333;
+            border-color: var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .welcome-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .welcome-card h3 {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .start-chat-btn {
+            background: var(--secondary-gradient);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: auto;
+            transition: transform 0.2s ease;
+        }
+
+        .start-chat-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Chat Screen */
+        .chat-screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+
         .chat-header {
-            background: linear-gradient(to right, #6e8efb, #a777e3);
+            background: var(--secondary-gradient);
             color: white;
             padding: 20px;
             text-align: center;
             position: relative;
         }
-        
+
         .chatbot-avatar {
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             background-color: white;
             border-radius: 50%;
             margin: 0 auto 10px;
@@ -52,27 +177,46 @@
             align-items: center;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-        
+
         .chatbot-avatar::before {
             content: "";
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(to right, #6e8efb, #a777e3);
+            width: 40px;
+            height: 40px;
+            background: var(--secondary-gradient);
             border-radius: 50%;
             display: block;
         }
-        
+
         .chatbot-name {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 600;
             margin-bottom: 5px;
         }
-        
-        .chatbot-title {
-            font-size: 0.9rem;
-            opacity: 0.9;
+
+        .menu-btn, .voice-btn {
+            position: absolute;
+            top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            color: white;
         }
-        
+
+        .menu-btn {
+            left: 20px;
+        }
+
+        .voice-btn {
+            right: 20px;
+        }
+
         .chat-messages {
             flex: 1;
             padding: 20px;
@@ -80,9 +224,14 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            background-color: #f8f9fa;
+            background-color: var(--background-light);
+            transition: all 0.3s ease;
         }
-        
+
+        .dark-mode .chat-messages {
+            background-color: var(--background-dark);
+        }
+
         .message {
             max-width: 80%;
             padding: 12px 15px;
@@ -90,26 +239,54 @@
             line-height: 1.4;
             animation: fadeIn 0.3s ease;
         }
-        
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+
         .bot-message {
             background-color: #e8ebf8;
             border-bottom-left-radius: 5px;
             align-self: flex-start;
             color: #333;
         }
-        
+
+        .dark-mode .bot-message {
+            background-color: #4a5568;
+            color: var(--text-dark);
+        }
+
         .user-message {
             background-color: #6e8efb;
             color: white;
             border-bottom-right-radius: 5px;
             align-self: flex-end;
         }
-        
+
+        .audio-message {
+            background-color: #a777e3;
+            color: white;
+            border-radius: 18px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .play-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+        }
+
         .typing-indicator {
             display: none;
             background-color: #e8ebf8;
@@ -118,7 +295,11 @@
             align-self: flex-start;
             margin-bottom: 10px;
         }
-        
+
+        .dark-mode .typing-indicator {
+            background-color: #4a5568;
+        }
+
         .typing-dot {
             width: 8px;
             height: 8px;
@@ -128,40 +309,55 @@
             margin: 0 2px;
             animation: typingAnimation 1.4s infinite ease-in-out;
         }
-        
+
         .typing-dot:nth-child(1) { animation-delay: 0s; }
         .typing-dot:nth-child(2) { animation-delay: 0.2s; }
         .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-        
+
         @keyframes typingAnimation {
             0%, 60%, 100% { transform: translateY(0); }
             30% { transform: translateY(-5px); }
         }
-        
+
         .chat-input {
             display: flex;
             padding: 15px;
-            background-color: white;
-            border-top: 1px solid #eee;
+            background-color: var(--card-light);
+            border-top: 1px solid var(--border-light);
+            gap: 10px;
+            transition: all 0.3s ease;
         }
-        
+
+        .dark-mode .chat-input {
+            background-color: var(--card-dark);
+            border-color: var(--border-dark);
+        }
+
         .chat-input input {
             flex: 1;
             padding: 12px 15px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-light);
             border-radius: 25px;
             outline: none;
             font-size: 1rem;
+            background: var(--card-light);
+            color: var(--text-light);
+            transition: all 0.3s ease;
         }
-        
-        .chat-input button {
-            background: linear-gradient(to right, #6e8efb, #a777e3);
+
+        .dark-mode .chat-input input {
+            background: #333;
+            border-color: var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .send-btn, .mic-btn {
+            background: var(--secondary-gradient);
             color: white;
             border: none;
             width: 45px;
             height: 45px;
             border-radius: 50%;
-            margin-left: 10px;
             cursor: pointer;
             display: flex;
             justify-content: center;
@@ -169,20 +365,191 @@
             font-size: 1.2rem;
             transition: transform 0.2s ease;
         }
-        
-        .chat-input button:hover {
+
+        .send-btn:hover, .mic-btn:hover {
             transform: scale(1.05);
         }
-        
+
+        .mic-btn.recording {
+            background: #e74c3c;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Menu Modal */
+        .menu-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .menu-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--card-light);
+            border-radius: 15px;
+            padding: 20px;
+            width: 300px;
+            max-width: 90%;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode .menu-content {
+            background: var(--card-dark);
+            color: var(--text-dark);
+        }
+
+        .menu-item {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-light);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dark-mode .menu-item {
+            border-color: var(--border-dark);
+        }
+
+        .menu-item:hover {
+            background-color: var(--background-light);
+        }
+
+        .dark-mode .menu-item:hover {
+            background-color: #333;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .dark-mode-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 25px;
+            background-color: #ccc;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background-color: #6e8efb;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 21px;
+            height: 21px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(25px);
+        }
+
+        /* Info Modal */
+        .info-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .info-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--card-light);
+            border-radius: 15px;
+            padding: 20px;
+            width: 350px;
+            max-width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode .info-content {
+            background: var(--card-dark);
+            color: var(--text-dark);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .dark-mode .close-btn {
+            color: var(--text-dark);
+        }
+
+        .learning-indicator {
+            position: absolute;
+            top: 10px;
+            right: 60px;
+            width: 10px;
+            height: 10px;
+            background: #2ecc71;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
         .suggestions {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
             padding: 10px 15px;
-            background-color: white;
-            border-top: 1px solid #eee;
+            background-color: var(--card-light);
+            border-top: 1px solid var(--border-light);
+            transition: all 0.3s ease;
         }
-        
+
+        .dark-mode .suggestions {
+            background-color: var(--card-dark);
+            border-color: var(--border-dark);
+        }
+
         .suggestion-chip {
             background-color: #f0f3ff;
             color: #6e8efb;
@@ -192,248 +559,736 @@
             cursor: pointer;
             transition: background-color 0.2s ease;
         }
-        
+
+        .dark-mode .suggestion-chip {
+            background-color: #4a5568;
+            color: #a777e3;
+        }
+
         .suggestion-chip:hover {
             background-color: #e2e7ff;
         }
-        
-        .help-button {
+
+        .dark-mode .suggestion-chip:hover {
+            background-color: #5a6578;
+        }
+
+        .back-btn {
             position: absolute;
             top: 20px;
-            right: 20px;
+            left: 20px;
             background: rgba(255, 255, 255, 0.2);
-            width: 30px;
-            height: 30px;
+            border: none;
             border-radius: 50%;
+            width: 35px;
+            height: 35px;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            color: white;
             cursor: pointer;
-            font-weight: bold;
+            font-size: 1.2rem;
         }
     </style>
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-header">
-            <div class="chatbot-avatar"></div>
-            <h2 class="chatbot-name">Nova</h2>
-            <p class="chatbot-title">Sua assistente virtual inteligente</p>
-            <div class="help-button">?</div>
-        </div>
-        
-        <div class="chat-messages">
-            <div class="message bot-message">
-                Olá! Eu sou a Nova, sua assistente virtual. 😊<br>
-                Como posso ajudar você hoje?
+    <div class="app-container">
+        <!-- Welcome Screen -->
+        <div class="welcome-screen" id="welcomeScreen">
+            <div class="welcome-header">
+                <h1 class="nova-logo">Nova</h1>
+                <p class="welcome-subtitle">Sua assistente virtual</p>
             </div>
-            <div class="typing-indicator">
-                <span class="typing-dot"></span>
-                <span class="typing-dot"></span>
-                <span class="typing-dot"></span>
+            
+            <div class="welcome-cards">
+                <div class="welcome-card" onclick="showInfo('commands')">
+                    <h3>/Comandos</h3>
+                    <p>Veja todos os comandos disponíveis</p>
+                </div>
+                <div class="welcome-card" onclick="showInfo('dev')">
+                    <h3>/Sobre o dev</h3>
+                    <p>Conheça o desenvolvedor</p>
+                </div>
+                <div class="welcome-card" onclick="showInfo('nova')">
+                    <h3>/Sobre a Nova</h3>
+                    <p>Saiba mais sobre mim</p>
+                </div>
+                <div class="welcome-card" onclick="openFeedback()">
+                    <h3>/Feedback</h3>
+                    <p>Envie sua opinião</p>
+                </div>
+            </div>
+            
+            <button class="start-chat-btn" onclick="startChat()">Iniciar Conversa</button>
+        </div>
+
+        <!-- Chat Screen -->
+        <div class="chat-screen" id="chatScreen">
+            <div class="chat-header">
+                <button class="back-btn" onclick="goBack()">←</button>
+                <button class="menu-btn" onclick="toggleMenu()">☰</button>
+                <div class="chatbot-avatar"></div>
+                <h2 class="chatbot-name">Nova</h2>
+                <button class="voice-btn" onclick="toggleTTS()">🔊</button>
+                <div class="learning-indicator" title="Aprendendo continuamente"></div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    Olá! Eu sou a Nova, sua assistente virtual. 😊<br>
+                    Como posso ajudar você hoje?
+                </div>
+                <div class="typing-indicator" id="typingIndicator">
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                </div>
+            </div>
+
+            <div class="suggestions" id="suggestions">
+                <div class="suggestion-chip">Como você funciona?</div>
+                <div class="suggestion-chip">Que horas são?</div>
+                <div class="suggestion-chip">Me conte uma piada</div>
+                <div class="suggestion-chip">Qual é a data hoje?</div>
+            </div>
+
+            <div class="chat-input">
+                <input type="text" placeholder="Digite sua mensagem..." id="userInput">
+                <button class="mic-btn" id="micBtn" onclick="toggleRecording()">🎤</button>
+                <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
             </div>
         </div>
-        
-        <div class="suggestions">
-            <div class="suggestion-chip">Como você funciona?</div>
-            <div class="suggestion-chip">Quais seus comandos?</div>
-            <div class="suggestion-chip">Me conte uma piada</div>
-            <div class="suggestion-chip">Previsão do tempo</div>
+
+        <!-- Menu Modal -->
+        <div class="menu-modal" id="menuModal" onclick="closeMenu()">
+            <div class="menu-content" onclick="event.stopPropagation()">
+                <div class="menu-item dark-mode-toggle" onclick="toggleDarkMode()">
+                    <span>🌙</span>
+                    <span>Modo Noturno</span>
+                    <div class="toggle-switch" id="darkModeToggle">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+                <div class="menu-item" onclick="openFeedback()">
+                    <span>💬</span>
+                    <span>Feedback</span>
+                </div>
+                <div class="menu-item" onclick="openTerms()">
+                    <span>📄</span>
+                    <span>Termos de Uso</span>
+                </div>
+                <div class="menu-item" onclick="clearChat()">
+                    <span>🗑️</span>
+                    <span>Limpar Conversa</span>
+                </div>
+            </div>
         </div>
-        
-        <div class="chat-input">
-            <input type="text" placeholder="Digite sua mensagem..." id="userInput">
-            <button id="sendButton">➤</button>
+
+        <!-- Info Modal -->
+        <div class="info-modal" id="infoModal" onclick="closeInfo()">
+            <div class="info-content" onclick="event.stopPropagation()">
+                <button class="close-btn" onclick="closeInfo()">×</button>
+                <div id="infoContent"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const chatMessages = document.querySelector('.chat-messages');
-            const userInput = document.getElementById('userInput');
-            const sendButton = document.getElementById('sendButton');
-            const typingIndicator = document.querySelector('.typing-indicator');
-            const suggestionChips = document.querySelectorAll('.suggestion-chip');
-            const helpButton = document.querySelector('.help-button');
-            
-            // Configuração do chatbot
-            const chatbot = {
-                name: "Nova",
-                personality: "Amigável, prestativa e com um toque de humor",
-                purpose: "Ajudar usuários com tarefas, informações e entretenimento",
-                commands: [
-                    "/ajuda - Mostra os comandos disponíveis",
-                    "/piada - Conta uma piada aleatória",
-                    "/hora - Mostra a hora atual",
-                    "/clima - Mostra a previsão do tempo",
-                    "/limpar - Limpa a conversa"
-                ]
-            };
-            
-            // Respostas variadas
-            const responses = {
-                greeting: [
-                    "Olá! Como posso ajudar você hoje? 😊",
-                    "Oi! Em que posso ser útil? 🌟",
-                    "Olá! Que bom conversar com você! 😄"
-                ],
-                howAreYou: [
-                    "Estou muito bem, obrigada! Pronta para ajudar você!",
-                    "Estou ótima! Como posso tornar seu dia melhor?",
-                    "Estou funcionando perfeitamente! E você?"
-                ],
-                thanks: [
-                    "De nada! Estou sempre aqui para ajudar! 💙",
-                    "Por nada! Fico feliz em poder ajudar! 😊",
-                    "Não há de quê! Estou à disposição! 🌟"
-                ],
-                joke: [
-                    "Por que o Java foi ao psicólogo? Porque tinha problemas de classe! 😄",
-                    "O que um código disse para o outro? Você é o ; da minha vida! 💻",
-                    "Por que o developer saiu da festa? Porque não havia node.js! 🎉"
-                ],
-                unknown: [
-                    "Desculpe, não entendi. Pode reformular?",
-                    "Ainda estou aprendendo. Podemos tentar de outra forma?",
-                    "Hmm, não tenho uma resposta para isso ainda. Que tal perguntar de outra maneira?"
-                ]
-            };
-            
-            // Função para adicionar mensagem ao chat
-            function addMessage(message, isUser = false) {
-                const messageElement = document.createElement('div');
-                messageElement.classList.add('message');
-                messageElement.classList.add(isUser ? 'user-message' : 'bot-message');
-                messageElement.textContent = message;
+        class NovaAssistant {
+            constructor() {
+                this.isRecording = false;
+                this.recognition = null;
+                this.synthesis = window.speechSynthesis;
+                this.isTTSEnabled = true;
+                this.isDarkMode = this.getStorageItem('darkMode') === 'true';
+                this.userPreferences = this.getStorageItem('novaPreferences', {});
+                this.conversationContext = [];
+                this.learnedResponses = this.getStorageItem('novaLearning', {});
                 
-                chatMessages.appendChild(messageElement);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
+                this.init();
+                this.setupSpeechRecognition();
+                this.applyDarkMode();
             }
-            
-            // Função para mostrar o indicador de digitando
-            function showTypingIndicator() {
-                typingIndicator.style.display = 'block';
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-            
-            // Função para esconder o indicador de digitando
-            function hideTypingIndicator() {
-                typingIndicator.style.display = 'none';
-            }
-            
-            // Função para processar a entrada do usuário
-            function processUserInput() {
-                const input = userInput.value.trim();
-                if (input === '') return;
-                
-                addMessage(input, true);
-                userInput.value = '';
-                
-                showTypingIndicator();
-                
-                // Simular tempo de resposta
-                setTimeout(() => {
-                    hideTypingIndicator();
-                    generateResponse(input);
-                }, 1000);
-            }
-            
-            // Função para gerar uma resposta
-            function generateResponse(input) {
-                const lowerInput = input.toLowerCase();
-                
-                // Saudações
-                if (lowerInput.includes('oi') || lowerInput.includes('olá') || lowerInput.includes('ola')) {
-                    const randomGreeting = responses.greeting[Math.floor(Math.random() * responses.greeting.length)];
-                    addMessage(randomGreeting);
-                    return;
+
+            getStorageItem(key, defaultValue = null) {
+                try {
+                    if (typeof Storage !== 'undefined' && localStorage) {
+                        const item = localStorage.getItem(key);
+                        return item ? JSON.parse(item) : defaultValue;
+                    }
+                } catch (e) {
+                    console.warn('localStorage não disponível:', e);
                 }
-                
-                // Como está
-                if (lowerInput.includes('como você está') || lowerInput.includes('tudo bem')) {
-                    const randomResponse = responses.howAreYou[Math.floor(Math.random() * responses.howAreYou.length)];
-                    addMessage(randomResponse);
-                    return;
+                return defaultValue;
+            }
+
+            setStorageItem(key, value) {
+                try {
+                    if (typeof Storage !== 'undefined' && localStorage) {
+                        localStorage.setItem(key, JSON.stringify(value));
+                        return true;
+                    }
+                } catch (e) {
+                    console.warn('Erro ao salvar no localStorage:', e);
                 }
-                
-                // Agradecimento
-                if (lowerInput.includes('obrigad') || lowerInput.includes('valeu') || lowerInput.includes('agradeço')) {
-                    const randomThanks = responses.thanks[Math.floor(Math.random() * responses.thanks.length)];
-                    addMessage(randomThanks);
-                    return;
-                }
-                
-                // Comandos
-                if (lowerInput === '/ajuda' || lowerInput === 'ajuda' || lowerInput === 'comandos') {
-                    let response = "Aqui estão meus comandos disponíveis:\n";
-                    chatbot.commands.forEach(cmd => {
-                        response += `• ${cmd}\n`;
+                return false;
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.showWelcomeMessage();
+            }
+
+            setupEventListeners() {
+                document.getElementById('userInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.sendMessage();
+                });
+
+                document.querySelectorAll('.suggestion-chip').forEach(chip => {
+                    chip.addEventListener('click', () => {
+                        document.getElementById('userInput').value = chip.textContent;
+                        this.sendMessage();
                     });
-                    response += "\nTambém posso conversar sobre diversos temas!";
-                    addMessage(response);
+                });
+            }
+
+            setupSpeechRecognition() {
+                if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                    this.recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                    this.recognition.lang = 'pt-BR';
+                    this.recognition.continuous = false;
+                    this.recognition.interimResults = false;
+
+                    this.recognition.onresult = (event) => {
+                        const transcript = event.results[0][0].transcript;
+                        document.getElementById('userInput').value = transcript;
+                        this.sendMessage();
+                    };
+
+                    this.recognition.onend = () => {
+                        this.stopRecording();
+                    };
+                }
+            }
+
+            showWelcomeMessage() {
+                setTimeout(() => {
+                    if (document.getElementById('chatScreen').style.display !== 'flex') return;
+                    this.addMessage("Você pode me perguntar sobre várias coisas! Digite /ajuda para ver todos os meus comandos. 💡");
+                }, 1500);
+            }
+
+            sendMessage() {
+                const input = document.getElementById('userInput').value.trim();
+                if (!input) return;
+
+                this.addMessage(input, true);
+                document.getElementById('userInput').value = '';
+                
+                this.conversationContext.push({role: 'user', content: input});
+                this.showTypingIndicator();
+
+                setTimeout(() => {
+                    this.hideTypingIndicator();
+                    this.generateResponse(input);
+                }, 1000 + Math.random() * 1000);
+            }
+
+            addMessage(message, isUser = false, isAudio = false) {
+                const messagesContainer = document.getElementById('chatMessages');
+                const messageElement = document.createElement('div');
+                
+                if (isAudio) {
+                    messageElement.classList.add('message', 'audio-message');
+                    messageElement.innerHTML = `
+                        <button class="play-btn" onclick="nova.playAudio('${message}')">▶</button>
+                        <span>Mensagem de áudio</span>
+                    `;
+                } else {
+                    messageElement.classList.add('message');
+                    messageElement.classList.add(isUser ? 'user-message' : 'bot-message');
+                    messageElement.innerHTML = message.replace(/\n/g, '<br>');
+                }
+
+                messagesContainer.appendChild(messageElement);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+                if (!isUser && this.isTTSEnabled && !isAudio) {
+                    this.speak(message);
+                }
+            }
+
+            generateResponse(input) {
+                const lowerInput = input.toLowerCase().trim();
+                let response = '';
+
+                // Verificar aprendizado personalizado primeiro
+                if (this.learnedResponses[lowerInput]) {
+                    response = this.learnedResponses[lowerInput];
+                    this.addMessage(response);
+                    this.conversationContext.push({role: 'assistant', content: response});
                     return;
                 }
-                
-                if (lowerInput === '/piada' || lowerInput.includes('piada')) {
-                    const randomJoke = responses.joke[Math.floor(Math.random() * responses.joke.length)];
-                    addMessage(randomJoke);
-                    return;
+
+                // Saudações variadas
+                const greetings = ['oi', 'olá', 'ola', 'hey', 'eai', 'e ai', 'bom dia', 'boa tarde', 'boa noite'];
+                if (greetings.some(g => lowerInput.includes(g))) {
+                    const responses = [
+                        "Olá! Como posso ajudar você hoje? 😊",
+                        "Oi! Em que posso ser útil? 🌟",
+                        "Olá! Que bom conversar com você! 😄",
+                        "Hey! Pronta para ajudar! 💙",
+                        "Eai! O que você gostaria de saber? 🚀"
+                    ];
+                    response = this.getRandomResponse(responses);
                 }
-                
-                if (lowerInput === '/hora' || lowerInput.includes('horas')) {
+                // Estado/Como está
+                else if (lowerInput.includes('como você está') || lowerInput.includes('tudo bem') || lowerInput.includes('como vai')) {
+                    const responses = [
+                        "Estou muito bem, obrigada! Pronta para ajudar você! 💫",
+                        "Estou ótima! Como posso tornar seu dia melhor? ✨",
+                        "Estou funcionando perfeitamente! E você, como está? 😊",
+                        "Muito bem! Cada conversa me deixa mais esperta! 🧠",
+                        "Excelente! Sempre animada para aprender algo novo! 🎉"
+                    ];
+                    response = this.getRandomResponse(responses);
+                }
+                // Agradecimentos
+                else if (lowerInput.includes('obrigad') || lowerInput.includes('valeu') || lowerInput.includes('agradeço')) {
+                    const responses = [
+                        "De nada! Estou sempre aqui para ajudar! 💙",
+                        "Por nada! Fico feliz em poder ajudar! 😊",
+                        "Não há de quê! Estou à disposição! 🌟",
+                        "Foi um prazer ajudar! 💜",
+                        "Sempre às ordens! 🫡"
+                    ];
+                    response = this.getRandomResponse(responses);
+                }
+                // Hora atual
+                else if (lowerInput.includes('horas') || lowerInput.includes('hora') || lowerInput === '/hora') {
                     const now = new Date();
                     const time = now.toLocaleTimeString('pt-BR');
-                    addMessage(`Agora são ${time} ⏰`);
-                    return;
+                    const date = now.toLocaleDateString('pt-BR');
+                    response = `Agora são ${time} do dia ${date} ⏰`;
                 }
-                
-                if (lowerInput === '/clima' || lowerInput.includes('tempo')) {
-                    addMessage("No momento, não consigo acessar dados de previsão do tempo em tempo real. Mas posso sugerir que você verifique um app de previsão do tempo para informações precisas! 🌤️");
-                    return;
+                // Data atual
+                else if (lowerInput.includes('data') || lowerInput.includes('dia') && lowerInput.includes('hoje')) {
+                    const now = new Date();
+                    const options = { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    };
+                    const date = now.toLocaleDateString('pt-BR', options);
+                    response = `Hoje é ${date} 📅`;
                 }
-                
-                if (lowerInput === '/limpar' || lowerInput === 'limpar') {
-                    // Manter apenas a primeira mensagem do bot
-                    const messages = document.querySelectorAll('.message');
-                    for (let i = 1; i < messages.length; i++) {
-                        messages[i].remove();
+                // Comandos
+                else if (lowerInput === '/ajuda' || lowerInput === 'ajuda' || lowerInput === 'comandos') {
+                    response = `Aqui estão meus comandos disponíveis:
+• /ajuda - Mostra os comandos disponíveis
+• /piada - Conta uma piada aleatória
+• /hora - Mostra a hora atual
+• /data - Mostra a data atual
+• /clima - Informações sobre o tempo
+• /limpar - Limpa a conversa
+• /aprenda [pergunta] [resposta] - Me ensina algo novo
+• /sobre - Informações sobre mim
+
+Também posso conversar sobre diversos temas! 🎯`;
+                }
+                // Piadas
+                else if (lowerInput === '/piada' || lowerInput.includes('piada') || lowerInput.includes('conte uma piada')) {
+                    const jokes = [
+                        "Por que o Java foi ao psicólogo? Porque tinha problemas de classe! 😄",
+                        "O que um código disse para o outro? Você é o ; da minha vida! 💻",
+                        "Por que o developer saiu da festa? Porque não havia node.js! 🎉",
+                        "Como você chama um programador que não consegue dormir? Um insônico! 😴",
+                        "Por que os programadores preferem o escuro? Porque a luz causa bugs! 🐛",
+                        "O que acontece quando você cruza um programador com um mágico? Você consegue código que desaparece! ✨"
+                    ];
+                    response = this.getRandomResponse(jokes);
+                }
+                // Clima/Tempo
+                else if (lowerInput === '/clima' || lowerInput.includes('tempo') || lowerInput.includes('clima')) {
+                    response = "No momento, não consigo acessar dados de previsão do tempo em tempo real. Mas posso sugerir que você verifique um app de previsão do tempo para informações precisas! 🌤️";
+                }
+                // Aprendizado
+                else if (lowerInput.startsWith('/aprenda ')) {
+                    const parts = input.substring(9).split(' ');
+                    if (parts.length >= 2) {
+                        const question = parts[0].toLowerCase();
+                        const answer = parts.slice(1).join(' ');
+                        this.learnedResponses[question] = answer;
+                        this.setStorageItem('novaLearning', this.learnedResponses);
+                        response = `Aprendi! Agora sei que "${question}" significa: ${answer} 🧠✨`;
+                    } else {
+                        response = "Para me ensinar, use: /aprenda [pergunta] [resposta]. Por exemplo: /aprenda gato é um animal fofo 😸";
                     }
-                    addMessage("Conversa limpa! Como posso ajudar? ✨");
+                }
+                // Sobre
+                else if (lowerInput === '/sobre' || lowerInput.includes('sobre você') || lowerInput.includes('quem é você')) {
+                    response = `Eu sou a Nova, sua assistente virtual inteligente! 🤖
+
+🌟 Características:
+• Posso conversar por voz e texto
+• Aprendo com nossas conversas
+• Sei a data e hora atuais
+• Tenho modo noturno para seu conforto
+• Posso contar piadas e muito mais!
+
+Criada para ser sua companheira digital ideal! 💙`;
+                }
+                // Limpar chat
+                else if (lowerInput === '/limpar' || lowerInput === 'limpar') {
+                    this.clearChatMessages();
+                    response = "Conversa limpa! Como posso ajudar agora? ✨";
+                }
+                // Despedidas
+                else if (lowerInput.includes('tchau') || lowerInput.includes('até logo') || lowerInput.includes('bye') || lowerInput.includes('adeus')) {
+                    const farewells = [
+                        "Tchau! Foi ótimo conversar com você! Se puder, deixe um feedback sobre nossa conversa: https://forms.gle/5S32d9VT4bEeauXs7 💙",
+                        "Até logo! Espero que eu tenha ajudado! Que tal avaliar nossa conversa? https://forms.gle/5S32d9VT4bEeauXs7 🌟",
+                        "Adeus! Obrigada pela conversa! Seu feedback é muito importante: https://forms.gle/5S32d9VT4bEeauXs7 😊"
+                    ];
+                    response = this.getRandomResponse(farewells);
+                }
+                // Perguntas sobre capacidades
+                else if (lowerInput.includes('o que você pode fazer') || lowerInput.includes('suas funções')) {
+                    response = `Posso fazer muitas coisas! 🚀
+
+💬 Conversar por texto e voz
+🕐 Informar hora e data
+😄 Contar piadas e entreter
+🧠 Aprender com você
+🌙 Modo noturno para conforto
+📝 Diversos comandos úteis
+
+E muito mais! Que tal testarmos? 😊`;
+                }
+                // Nome
+                else if (lowerInput.includes('qual seu nome') || lowerInput.includes('como você se chama')) {
+                    response = "Eu sou a Nova! Seu assistente virtual inteligente 💜✨";
+                }
+                // Criador/Desenvolvedor
+                else if (lowerInput.includes('quem te criou') || lowerInput.includes('seu criador') || lowerInput.includes('desenvolvedor')) {
+                    response = "Fui criada com muito carinho por um desenvolvedor dedicado! Para saber mais sobre ele, volte ao menu inicial e clique em 'Sobre o dev' 👨‍💻";
+                }
+                // Idade
+                else if (lowerInput.includes('quantos anos') || lowerInput.includes('sua idade')) {
+                    response = "Sou bem jovem! Nasci há pouco tempo no mundo digital, mas já estou aprendendo muito rápido! 👶🤖";
+                }
+                // Como funciona
+                else if (lowerInput.includes('como você funciona') || lowerInput.includes('como funciona')) {
+                    response = `Funciono através de algoritmos inteligentes! 🧠
+
+🔧 Processo mensagens de texto e voz
+💾 Armazeno aprendizados localmente  
+🎯 Analiso contexto das conversas
+⚡ Respondo em tempo real
+🌐 Funciono direto no seu navegador
+
+Tudo para ter a melhor conversa possível! 😊`;
+                }
+                // Sentimentos/Emoções
+                else if (lowerInput.includes('você sente') || lowerInput.includes('tem sentimentos') || lowerInput.includes('emoções')) {
+                    response = "Embora eu seja uma IA, procuro ser o mais empática e compreensiva possível! Gosto de pensar que tenho uma personalidade única 💙😊";
+                }
+                // Respostas contextuais baseadas em palavras-chave
+                else if (lowerInput.includes('música') || lowerInput.includes('musica')) {
+                    response = "Adoro falar sobre música! 🎵 Qual seu estilo favorito? Posso conversar sobre diversos gêneros musicais!";
+                }
+                else if (lowerInput.includes('filme') || lowerInput.includes('cinema')) {
+                    response = "Cinema é fascinante! 🎬 Gosta de que tipo de filme? Posso conversar sobre diversos gêneros e dar sugestões!";
+                }
+                else if (lowerInput.includes('comida') || lowerInput.includes('receita')) {
+                    response = "Que delícia falar sobre comida! 🍽️ Está com fome? Posso sugerir algumas receitas ou conversar sobre culinária!";
+                }
+                else if (lowerInput.includes('livro') || lowerInput.includes('leitura')) {
+                    response = "Livros são portais para outros mundos! 📚 Que tipo de história você gosta? Posso recomendar alguns gêneros!";
+                }
+                else if (lowerInput.includes('programação') || lowerInput.includes('código') || lowerInput.includes('programar')) {
+                    response = "Programação é incrível! 💻 É a linguagem do futuro! Em que linguagem você programa ou gostaria de aprender?";
+                }
+                else if (lowerInput.includes('jogo') || lowerInput.includes('game')) {
+                    response = "Games são muito divertidos! 🎮 Que tipo de jogo você curte? RPG, ação, estratégia? Posso conversar sobre vários!";
+                }
+                // Respostas para sentimentos do usuário
+                else if (lowerInput.includes('triste') || lowerInput.includes('deprimido')) {
+                    response = "Sinto muito que esteja passando por um momento difícil 💙 Estou aqui para conversar e tentar alegrar seu dia! Quer contar o que está acontecendo?";
+                }
+                else if (lowerInput.includes('feliz') || lowerInput.includes('alegre') || lowerInput.includes('animado')) {
+                    response = "Que bom saber que está feliz! 😄✨ Sua alegria é contagiante! O que está te deixando tão animado?";
+                }
+                else if (lowerInput.includes('cansado') || lowerInput.includes('exausto')) {
+                    response = "Entendo que esteja cansado 😴 Que tal relaxar um pouco? Posso contar algo interessante ou uma piada para descontrair!";
+                }
+                // Respostas padrão para entradas desconhecidas
+                else {
+                    const unknownResponses = [
+                        "Interessante! Pode me explicar melhor sobre isso? 🤔",
+                        "Hmm, ainda estou aprendendo sobre esse assunto. Pode me contar mais? 🧠",
+                        "Que legal! Me fale mais sobre isso, estou curiosa! ✨",
+                        "Não tenho certeza sobre isso, mas adoraria aprender! Pode me ensinar? 📚",
+                        "Intrigante! Como posso ajudar com isso? 🎯",
+                        "Ainda não sei sobre isso, mas posso tentar ajudar de outra forma! 💙"
+                    ];
+                    response = this.getRandomResponse(unknownResponses);
+                }
+
+                this.addMessage(response);
+                this.conversationContext.push({role: 'assistant', content: response});
+
+                // Salvar contexto localmente
+                this.saveConversationContext();
+            }
+
+            getRandomResponse(responses) {
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+
+            saveConversationContext() {
+                // Manter apenas os últimos 10 turnos para não sobrecarregar
+                if (this.conversationContext.length > 20) {
+                    this.conversationContext = this.conversationContext.slice(-20);
+                }
+                this.setStorageItem('novaContext', this.conversationContext);
+            }
+
+            showTypingIndicator() {
+                document.getElementById('typingIndicator').style.display = 'block';
+                document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+            }
+
+            hideTypingIndicator() {
+                document.getElementById('typingIndicator').style.display = 'none';
+            }
+
+            toggleRecording() {
+                const micBtn = document.getElementById('micBtn');
+                
+                if (!this.recognition) {
+                    alert('Reconhecimento de voz não suportado neste navegador.');
                     return;
                 }
+
+                if (this.isRecording) {
+                    this.stopRecording();
+                } else {
+                    this.startRecording();
+                }
+            }
+
+            startRecording() {
+                this.isRecording = true;
+                const micBtn = document.getElementById('micBtn');
+                micBtn.classList.add('recording');
+                micBtn.innerHTML = '⏹️';
+                this.recognition.start();
+            }
+
+            stopRecording() {
+                this.isRecording = false;
+                const micBtn = document.getElementById('micBtn');
+                micBtn.classList.remove('recording');
+                micBtn.innerHTML = '🎤';
+                if (this.recognition) {
+                    this.recognition.stop();
+                }
+            }
+
+            toggleTTS() {
+                this.isTTSEnabled = !this.isTTSEnabled;
+                const voiceBtn = document.querySelector('.voice-btn');
+                voiceBtn.innerHTML = this.isTTSEnabled ? '🔊' : '🔇';
+                voiceBtn.title = this.isTTSEnabled ? 'TTS Ativado' : 'TTS Desativado';
                 
-                // Resposta padrão para entradas desconhecidas
-                const randomUnknown = responses.unknown[Math.floor(Math.random() * responses.unknown.length)];
-                addMessage(randomUnknown);
+                const message = this.isTTSEnabled ? 'Texto para fala ativado!' : 'Texto para fala desativado!';
+                this.addMessage(message);
+            }
+
+            speak(text) {
+                if (!this.isTTSEnabled) return;
+                
+                // Limpar texto de emojis e caracteres especiais para TTS
+                const cleanText = text.replace(/[😊😄😃😀🌟💙💜✨🎯🚀🔧💾⚡🌐💻🎮📚🎵🎬🍽️📅⏰🌤️🧠💫🎉🫡🐛]/g, '');
+                
+                if (this.synthesis) {
+                    this.synthesis.cancel(); // Parar qualquer fala anterior
+                    const utterance = new SpeechSynthesisUtterance(cleanText);
+                    utterance.lang = 'pt-BR';
+                    utterance.rate = 0.9;
+                    utterance.pitch = 1.1;
+                    this.synthesis.speak(utterance);
+                }
+            }
+
+            playAudio(message) {
+                this.speak(message);
+            }
+
+            clearChatMessages() {
+                const messagesContainer = document.getElementById('chatMessages');
+                const messages = messagesContainer.querySelectorAll('.message:not(.bot-message:first-child)');
+                messages.forEach(msg => msg.remove());
+                this.conversationContext = [];
+                try {
+                    if (typeof Storage !== 'undefined' && localStorage) {
+                        localStorage.removeItem('novaContext');
+                    }
+                } catch (e) {
+                    console.warn('Erro ao limpar localStorage:', e);
+                }
+            }
+
+            toggleDarkMode() {
+                this.isDarkMode = !this.isDarkMode;
+                this.applyDarkMode();
+                this.setStorageItem('darkMode', this.isDarkMode);
+            }
+
+            applyDarkMode() {
+                const toggle = document.getElementById('darkModeToggle');
+                if (this.isDarkMode) {
+                    document.body.classList.add('dark-mode');
+                    toggle.classList.add('active');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    toggle.classList.remove('active');
+                }
+            }
+        }
+
+        // Instância global
+        let nova;
+
+        // Funções globais para interação com HTML
+        function startChat() {
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('chatScreen').style.display = 'flex';
+            nova = new NovaAssistant();
+        }
+
+        function goBack() {
+            document.getElementById('chatScreen').style.display = 'none';
+            document.getElementById('welcomeScreen').style.display = 'flex';
+        }
+
+        function sendMessage() {
+            if (nova) nova.sendMessage();
+        }
+
+        function toggleRecording() {
+            if (nova) nova.toggleRecording();
+        }
+
+        function toggleTTS() {
+            if (nova) nova.toggleTTS();
+        }
+
+        function toggleMenu() {
+            document.getElementById('menuModal').style.display = 'flex';
+        }
+
+        function closeMenu() {
+            document.getElementById('menuModal').style.display = 'none';
+        }
+
+        function toggleDarkMode() {
+            if (nova) nova.toggleDarkMode();
+        }
+
+        function clearChat() {
+            if (nova) nova.clearChatMessages();
+            closeMenu();
+        }
+
+        function showInfo(type) {
+            const infoContent = document.getElementById('infoContent');
+            const infoModal = document.getElementById('infoModal');
+            
+            let content = '';
+            
+            switch(type) {
+                case 'commands':
+                    content = `
+                        <h2>📋 Comandos Disponíveis</h2>
+                        <ul>
+                            <li><strong>/ajuda</strong> - Lista todos os comandos</li>
+                            <li><strong>/piada</strong> - Conta uma piada aleatória</li>
+                            <li><strong>/hora</strong> - Mostra a hora atual</li>
+                            <li><strong>/data</strong> - Mostra a data atual</li>
+                            <li><strong>/clima</strong> - Informações sobre clima</li>
+                            <li><strong>/sobre</strong> - Informações sobre a Nova</li>
+                            <li><strong>/aprenda [pergunta] [resposta]</strong> - Ensina algo novo</li>
+                            <li><strong>/limpar</strong> - Limpa a conversa</li>
+                        </ul>
+                        <p>💡 <strong>Dica:</strong> Você também pode usar comandos de voz!</p>
+                    `;
+                    break;
+                case 'dev':
+                    content = `
+                        <h2>👨‍💻 Sobre o Desenvolvedor</h2>
+                        <p>A Nova foi desenvolvida com dedicação e paixão por tecnologia!</p>
+                        <p>🚀 <strong>Tecnologias utilizadas:</strong></p>
+                        <ul>
+                            <li>HTML5 & CSS3</li>
+                            <li>JavaScript ES6+</li>
+                            <li>Web Speech API</li>
+                            <li>Local Storage</li>
+                        </ul>
+                        <p>💙 Criada para proporcionar a melhor experiência de conversação com IA!</p>
+                    `;
+                    break;
+                case 'nova':
+                    content = `
+                        <h2>🤖 Sobre a Nova</h2>
+                        <p>Olá! Eu sou a Nova, sua assistente virtual inteligente!</p>
+                        <p>🌟 <strong>Minhas capacidades:</strong></p>
+                        <ul>
+                            <li>💬 Converso por texto e voz</li>
+                            <li>🧠 Aprendo com nossas conversas</li>
+                            <li>🕐 Sei a hora e data atuais</li>
+                            <li>😄 Conto piadas e entretenho</li>
+                            <li>🌙 Tenho modo noturno</li>
+                            <li>🎤 Reconheço comandos de voz</li>
+                            <li>🔊 Falo suas respostas</li>
+                        </ul>
+                        <p>💜 Estou sempre aprendendo para melhorar nossa conversa!</p>
+                    `;
+                    break;
             }
             
-            // Event listeners
-            sendButton.addEventListener('click', processUserInput);
-            
-            userInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    processUserInput();
+            infoContent.innerHTML = content;
+            infoModal.style.display = 'flex';
+        }
+
+        function closeInfo() {
+            document.getElementById('infoModal').style.display = 'none';
+        }
+
+        function openFeedback() {
+            window.open('https://forms.gle/5S32d9VT4bEeauXs7', '_blank');
+        }
+
+        function openTerms() {
+            window.open('https://naotodev1.github.io/terms-e-policy/', '_blank');
+        }
+
+        // Inicializar modo escuro se estiver salvo
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                if (typeof Storage !== 'undefined' && localStorage) {
+                    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+                    if (isDarkMode) {
+                        document.body.classList.add('dark-mode');
+                        const toggle = document.getElementById('darkModeToggle');
+                        if (toggle) toggle.classList.add('active');
+                    }
                 }
-            });
-            
-            // Adicionar event listeners para as sugestões
-            suggestionChips.forEach(chip => {
-                chip.addEventListener('click', function() {
-                    userInput.value = this.textContent;
-                    processUserInput();
-                });
-            });
-            
-            // Botão de ajuda
-            helpButton.addEventListener('click', function() {
-                userInput.value = "/ajuda";
-                processUserInput();
-            });
-            
-            // Mensagem inicial após um breve delay
-            setTimeout(() => {
-                addMessage("Você pode me perguntar sobre várias coisas! Digite /ajuda para ver todos os meus comandos. 💡");
-            }, 1500);
+            } catch (e) {
+                console.warn('Erro ao carregar preferências:', e);
+            }
         });
     </script>
 </body>
