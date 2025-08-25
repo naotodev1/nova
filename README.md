@@ -1,2 +1,2 @@
-# shiunji-animes
-Site Oficial do Mundo Otaku
+# Nova
+Sua assistente pessoal em desenvolvimento.
