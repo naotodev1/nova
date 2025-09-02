@@ -3,1292 +3,343 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nova - Assistente Virtual</title>
+    <title>Nova - Seu Amigo Virtual</title>
+    <link rel="icon" type="image/png" href="https://i.imgur.com/vH5122F.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-blue: #2563eb;
+            --primary-blue-dark: #1d4ed8;
+            --primary-purple: #7c3aed;
+            --primary-purple-dark: #6d28d9;
+            --bg-dark-primary: #1a2436;
+            --bg-dark-secondary: #1e2b3f;
+            --bg-dark-tertiary: #2d3748;
+            --border-color: #4a5568;
+            --text-primary: #e5e7eb;
+            --text-secondary: #9ca3af;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        :root {
-            --primary-gradient: linear-gradient(135deg, #6e8efb, #a777e3);
-            --secondary-gradient: linear-gradient(to right, #6e8efb, #a777e3);
-            --background-light: #f8f9fa;
-            --background-dark: #1a1a1a;
-            --card-light: #ffffff;
-            --card-dark: #2d2d2d;
-            --text-light: #333;
-            --text-dark: #ffffff;
-            --border-light: #eee;
-            --border-dark: #444;
-        }
-
+        
         body {
-            background: var(--primary-gradient);
+            background: linear-gradient(135deg, #0f1b33 0%, #1e3a5f 100%);
+            color: #fff;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            transition: all 0.3s ease;
         }
-
-        body.dark-mode {
-            background: linear-gradient(135deg, #2c3e50, #4a6741);
-        }
-
-        .app-container {
+        
+        .container {
             width: 100%;
-            max-width: 400px;
-            height: 600px;
-            background-color: var(--card-light);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            max-width: 500px;
+            height: 90vh;
+            max-height: 800px;
+            background-color: var(--bg-dark-secondary);
+            border-radius: 16px;
             overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
             display: flex;
             flex-direction: column;
             position: relative;
-            transition: all 0.3s ease;
         }
-
-        .dark-mode .app-container {
-            background-color: var(--card-dark);
-            color: var(--text-dark);
-        }
-
-        /* Welcome Screen */
-        .welcome-screen {
+        
+        .header {
+            background: linear-gradient(90deg, var(--primary-blue) 0%, #3b82f6 100%);
+            padding: 18px;
+            text-align: left;
+            position: relative;
             display: flex;
-            flex-direction: column;
-            height: 100%;
-            padding: 20px;
-            text-align: center;
-            background: var(--card-light);
-            transition: all 0.3s ease;
-        }
-
-        .dark-mode .welcome-screen {
-            background: var(--card-dark);
-        }
-
-        .welcome-header {
-            margin-bottom: 30px;
-        }
-
-        .nova-logo {
-            background: var(--secondary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 10px;
-        }
-
-        .welcome-subtitle {
-            font-size: 1.1rem;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        .dark-mode .welcome-subtitle {
-            color: #ccc;
-        }
-
-        .welcome-cards {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            align-items: center;
             gap: 15px;
-            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
         }
-
-        .welcome-card {
-            background: var(--background-light);
-            border: 1px solid var(--border-light);
-            border-radius: 15px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .dark-mode .welcome-card {
-            background: #333;
-            border-color: var(--border-dark);
-            color: var(--text-dark);
-        }
-
-        .welcome-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .welcome-card h3 {
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-            background: var(--secondary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .start-chat-btn {
-            background: var(--secondary-gradient);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: auto;
-            transition: transform 0.2s ease;
-        }
-
-        .start-chat-btn:hover {
-            transform: scale(1.05);
-        }
-
-        /* Chat Screen */
-        .chat-screen {
-            display: none;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .chat-header {
-            background: var(--secondary-gradient);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            position: relative;
-        }
-
-        .chatbot-avatar {
+        
+        .avatar {
             width: 60px;
             height: 60px;
-            background-color: white;
             border-radius: 50%;
-            margin: 0 auto 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid white;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
         }
-
-        .chatbot-avatar::before {
-            content: "";
-            width: 40px;
-            height: 40px;
-            background: var(--secondary-gradient);
-            border-radius: 50%;
-            display: block;
-        }
-
-        .chatbot-name {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .menu-btn, .voice-btn {
-            position: absolute;
-            top: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            font-weight: bold;
-            border: none;
-            color: white;
-        }
-
-        .menu-btn {
-            left: 20px;
-        }
-
-        .voice-btn {
-            right: 20px;
-        }
-
-        .chat-messages {
-            flex: 1;
-            padding: 20px;
+        
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .header-text { flex: 1; }
+        .header h1 { font-size: 22px; margin-bottom: 4px; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); font-weight: 600; }
+        .header p { font-size: 13px; opacity: 0.9; }
+        .header-icons { display: flex; gap: 16px; font-size: 1.2rem; }
+        .header-icon { cursor: pointer; color: rgba(255, 255, 255, 0.9); transition: color 0.2s; }
+        .header-icon:hover { color: white; }
+        
+        .chat-container {
+            flex-grow: 1;
             overflow-y: auto;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             gap: 15px;
-            background-color: var(--background-light);
-            transition: all 0.3s ease;
+            background-color: var(--bg-dark-primary);
         }
+        
+        .message { max-width: 80%; padding: 12px 16px; border-radius: 18px; line-height: 1.4; animation: fadeIn 0.3s ease; position: relative; font-size: 15px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .bot-message { background: linear-gradient(90deg, #4f46e5 0%, var(--primary-purple) 100%); align-self: flex-start; border-bottom-left-radius: 5px; color: white; }
+        .user-message { background: var(--bg-dark-tertiary); align-self: flex-end; border-bottom-right-radius: 5px; color: white; border: 1px solid var(--border-color); }
+        .message-time { font-size: 11px; opacity: 0.7; display: block; margin-top: 6px; text-align: right; }
+        
+        .input-area { display: flex; padding: 16px; background-color: var(--bg-dark-secondary); gap: 12px; border-top: 1px solid var(--border-color); flex-shrink: 0; }
+        input { flex: 1; padding: 14px 16px; border: 1px solid var(--border-color); border-radius: 24px; background-color: var(--bg-dark-tertiary); color: white; font-size: 15px; }
+        input:focus { outline: none; border-color: var(--primary-blue); background-color: #374151; }
+        input::placeholder { color: var(--text-secondary); }
+        button { background: linear-gradient(90deg, var(--primary-blue) 0%, #3b82f6 100%); border: none; border-radius: 50%; width: 48px; height: 48px; color: white; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+        button:hover { transform: scale(1.05); background: linear-gradient(90deg, var(--primary-blue-dark) 0%, var(--primary-blue) 100%); }
+        
+        .quick-replies { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px; background-color: var(--bg-dark-secondary); border-top: 1px solid var(--border-color); flex-shrink: 0; }
+        .quick-reply { background: linear-gradient(90deg, #4f46e5 0%, var(--primary-purple) 100%); padding: 8px 16px; border-radius: 18px; font-size: 13px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+        .quick-reply:hover { transform: scale(1.05); background: linear-gradient(90deg, #4338ca 0%, var(--primary-purple-dark) 100%); }
+        
+        .typing-indicator { display: none; padding: 12px 16px; color: var(--text-secondary); font-style: italic; font-size: 14px; background-color: var(--bg-dark-primary); }
+        
+        .footer { padding: 12px; background-color: var(--bg-dark-primary); text-align: center; border-top: 1px solid var(--border-color); font-size: 12px; color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+        .studio { font-weight: 600; color: #3b82f6; }
+        .slogan { font-style: italic; }
+        
+        /* Recommendation Cards */
+        .recommendation { background: rgba(0, 0, 0, 0.2); padding: 10px; border-radius: 10px; margin-top: 8px; font-size: 14px; border-left: 3px solid; }
+        .anime-card { border-color: #fbbf24; }
+        .music-card { border-color: #10b981; }
+        .quote-card { border-color: #f97316; }
+        .rec-title { font-weight: bold; }
+        .anime-title { color: #fbbf24; }
+        .music-title { color: #10b981; }
+        .quote { font-style: italic; color: #f97316; }
 
-        .dark-mode .chat-messages {
-            background-color: var(--background-dark);
-        }
+        /* MODALS */
+        .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: none; justify-content: center; align-items: center; z-index: 100; opacity: 0; transition: opacity 0.3s ease; }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-content { background-color: var(--bg-dark-secondary); width: 90%; padding: 20px; border-radius: 16px; box-shadow: 0 5px 25px rgba(0,0,0,0.5); transform: scale(0.95); transition: transform 0.3s ease-out; }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-header { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 20px; }
+        
+        .explore-card { display: flex; align-items: center; gap: 15px; background-color: var(--bg-dark-tertiary); border-radius: 12px; padding: 12px; margin-bottom: 12px; text-decoration: none; color: var(--text-primary); border: 1px solid var(--border-color); }
+        .explore-card img { width: 40px; height: 40px; border-radius: 8px; }
+        .explore-card i { width: 40px; text-align: center; font-size: 1.5rem; color: #60a5fa; }
+        .explore-card .card-text strong { font-size: 1rem; }
+        .explore-card .card-text span { font-size: 0.85rem; color: var(--text-secondary); }
+        
+        .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; }
+        .toggle-switch { position: relative; display: inline-block; width: 51px; height: 31px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border-color); transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 23px; width: 23px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--primary-blue); }
+        input:checked + .slider:before { transform: translateX(20px); }
 
-        .message {
-            max-width: 80%;
-            padding: 12px 15px;
-            border-radius: 18px;
-            line-height: 1.4;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .bot-message {
-            background-color: #e8ebf8;
-            border-bottom-left-radius: 5px;
-            align-self: flex-start;
-            color: #333;
-        }
-
-        .dark-mode .bot-message {
-            background-color: #4a5568;
-            color: var(--text-dark);
-        }
-
-        .user-message {
-            background-color: #6e8efb;
-            color: white;
-            border-bottom-right-radius: 5px;
-            align-self: flex-end;
-        }
-
-        .audio-message {
-            background-color: #a777e3;
-            color: white;
-            border-radius: 18px;
-            padding: 12px 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .play-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            cursor: pointer;
-        }
-
-        .typing-indicator {
-            display: none;
-            background-color: #e8ebf8;
-            padding: 12px 15px;
-            border-radius: 18px;
-            align-self: flex-start;
-            margin-bottom: 10px;
-        }
-
-        .dark-mode .typing-indicator {
-            background-color: #4a5568;
-        }
-
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #a777e3;
-            border-radius: 50%;
-            display: inline-block;
-            margin: 0 2px;
-            animation: typingAnimation 1.4s infinite ease-in-out;
-        }
-
-        .typing-dot:nth-child(1) { animation-delay: 0s; }
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes typingAnimation {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-5px); }
-        }
-
-        .chat-input {
-            display: flex;
-            padding: 15px;
-            background-color: var(--card-light);
-            border-top: 1px solid var(--border-light);
-            gap: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .dark-mode .chat-input {
-            background-color: var(--card-dark);
-            border-color: var(--border-dark);
-        }
-
-        .chat-input input {
-            flex: 1;
-            padding: 12px 15px;
-            border: 1px solid var(--border-light);
-            border-radius: 25px;
-            outline: none;
-            font-size: 1rem;
-            background: var(--card-light);
-            color: var(--text-light);
-            transition: all 0.3s ease;
-        }
-
-        .dark-mode .chat-input input {
-            background: #333;
-            border-color: var(--border-dark);
-            color: var(--text-dark);
-        }
-
-        .send-btn, .mic-btn {
-            background: var(--secondary-gradient);
-            color: white;
-            border: none;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.2rem;
-            transition: transform 0.2s ease;
-        }
-
-        .send-btn:hover, .mic-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .mic-btn.recording {
-            background: #e74c3c;
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        /* Menu Modal */
-        .menu-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-        }
-
-        .menu-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--card-light);
-            border-radius: 15px;
-            padding: 20px;
-            width: 300px;
-            max-width: 90%;
-            transition: all 0.3s ease;
-        }
-
-        .dark-mode .menu-content {
-            background: var(--card-dark);
-            color: var(--text-dark);
-        }
-
-        .menu-item {
-            padding: 15px;
-            border-bottom: 1px solid var(--border-light);
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .dark-mode .menu-item {
-            border-color: var(--border-dark);
-        }
-
-        .menu-item:hover {
-            background-color: var(--background-light);
-        }
-
-        .dark-mode .menu-item:hover {
-            background-color: #333;
-        }
-
-        .menu-item:last-child {
-            border-bottom: none;
-        }
-
-        .dark-mode-toggle {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .toggle-switch {
-            position: relative;
-            width: 50px;
-            height: 25px;
-            background-color: #ccc;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .toggle-switch.active {
-            background-color: #6e8efb;
-        }
-
-        .toggle-slider {
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 21px;
-            height: 21px;
-            background-color: white;
-            border-radius: 50%;
-            transition: transform 0.3s ease;
-        }
-
-        .toggle-switch.active .toggle-slider {
-            transform: translateX(25px);
-        }
-
-        /* Info Modal */
-        .info-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-        }
-
-        .info-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--card-light);
-            border-radius: 15px;
-            padding: 20px;
-            width: 350px;
-            max-width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            transition: all 0.3s ease;
-        }
-
-        .dark-mode .info-content {
-            background: var(--card-dark);
-            color: var(--text-dark);
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-light);
-        }
-
-        .dark-mode .close-btn {
-            color: var(--text-dark);
-        }
-
-        .learning-indicator {
-            position: absolute;
-            top: 10px;
-            right: 60px;
-            width: 10px;
-            height: 10px;
-            background: #2ecc71;
-            border-radius: 50%;
-            animation: blink 2s infinite;
-        }
-
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0.3; }
-        }
-
-        .suggestions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            padding: 10px 15px;
-            background-color: var(--card-light);
-            border-top: 1px solid var(--border-light);
-            transition: all 0.3s ease;
-        }
-
-        .dark-mode .suggestions {
-            background-color: var(--card-dark);
-            border-color: var(--border-dark);
-        }
-
-        .suggestion-chip {
-            background-color: #f0f3ff;
-            color: #6e8efb;
-            padding: 8px 15px;
-            border-radius: 18px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        .dark-mode .suggestion-chip {
-            background-color: #4a5568;
-            color: #a777e3;
-        }
-
-        .suggestion-chip:hover {
-            background-color: #e2e7ff;
-        }
-
-        .dark-mode .suggestion-chip:hover {
-            background-color: #5a6578;
-        }
-
-        .back-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
+        .toast { position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.8); color: white; padding: 10px 20px; border-radius: 20px; font-size: 0.9rem; z-index: 200; opacity: 0; transition: opacity 0.3s, bottom 0.3s; }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <!-- Welcome Screen -->
-        <div class="welcome-screen" id="welcomeScreen">
-            <div class="welcome-header">
-                <h1 class="nova-logo">Nova</h1>
-                <p class="welcome-subtitle">Sua assistente virtual</p>
+    <div class="container">
+        <div class="header">
+            <div class="avatar"><img src="https://i.imgur.com/srAtA14.png" alt="Nova Avatar"></div>
+            <div class="header-text">
+                <h1>Nova</h1>
+                <p>Seu assistente virtual inteligente</p>
             </div>
-            
-            <div class="welcome-cards">
-                <div class="welcome-card" onclick="showInfo('commands')">
-                    <h3>/Comandos</h3>
-                    <p>Veja todos os comandos disponíveis</p>
-                </div>
-                <div class="welcome-card" onclick="showInfo('dev')">
-                    <h3>/Sobre o dev</h3>
-                    <p>Conheça o desenvolvedor</p>
-                </div>
-                <div class="welcome-card" onclick="showInfo('nova')">
-                    <h3>/Sobre a Nova</h3>
-                    <p>Saiba mais sobre mim</p>
-                </div>
-                <div class="welcome-card" onclick="openFeedback()">
-                    <h3>/Feedback</h3>
-                    <p>Envie sua opinião</p>
-                </div>
-            </div>
-            
-            <button class="start-chat-btn" onclick="startChat()">Iniciar Conversa</button>
-        </div>
-
-        <!-- Chat Screen -->
-        <div class="chat-screen" id="chatScreen">
-            <div class="chat-header">
-                <button class="back-btn" onclick="goBack()">←</button>
-                <button class="menu-btn" onclick="toggleMenu()">☰</button>
-                <div class="chatbot-avatar"></div>
-                <h2 class="chatbot-name">Nova</h2>
-                <button class="voice-btn" onclick="toggleTTS()">🔊</button>
-                <div class="learning-indicator" title="Aprendendo continuamente"></div>
-            </div>
-
-            <div class="chat-messages" id="chatMessages">
-                <div class="message bot-message">
-                    Olá! Eu sou a Nova, sua assistente virtual. 😊<br>
-                    Como posso ajudar você hoje?
-                </div>
-                <div class="typing-indicator" id="typingIndicator">
-                    <span class="typing-dot"></span>
-                    <span class="typing-dot"></span>
-                    <span class="typing-dot"></span>
-                </div>
-            </div>
-
-            <div class="suggestions" id="suggestions">
-                <div class="suggestion-chip">Como você funciona?</div>
-                <div class="suggestion-chip">Que horas são?</div>
-                <div class="suggestion-chip">Me conte uma piada</div>
-                <div class="suggestion-chip">Qual é a data hoje?</div>
-            </div>
-
-            <div class="chat-input">
-                <input type="text" placeholder="Digite sua mensagem..." id="userInput">
-                <button class="mic-btn" id="micBtn" onclick="toggleRecording()">🎤</button>
-                <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+            <div class="header-icons">
+                <i class="fas fa-share-alt header-icon" id="shareBtn" title="Compartilhar"></i>
+                <i class="fas fa-compass header-icon" id="exploreBtn" title="Explorar"></i>
+                <i class="fas fa-cog header-icon" id="settingsBtn" title="Configurações"></i>
             </div>
         </div>
+        
+        <div class="chat-container" id="chatContainer">
+            <!-- As mensagens serão inseridas aqui via JS -->
+        </div>
+        
+        <div class="typing-indicator" id="typingIndicator">
+            <i class="fas fa-comment-dots"></i> Nova está digitando...
+        </div>
+        
+        <div class="quick-replies" id="quickReplies">
+            <div class="quick-reply" data-reply="Como você funciona?"><i class="fas fa-cogs"></i> Como você funciona?</div>
+            <div class="quick-reply" data-reply="Indica um anime"><i class="fas fa-dragon"></i> Indica um anime</div>
+            <div class="quick-reply" data-reply="Indica uma música"><i class="fas fa-music"></i> Indica uma música</div>
+            <div class="quick-reply" data-reply="Frase motivacional"><i class="fas fa-sun"></i> Frase motivacional</div>
+        </div>
+        
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Digite sua mensagem..." autocomplete="off">
+            <button id="sendButton" title="Enviar"><i class="fas fa-paper-plane"></i></button>
+        </div>
+        
+        <div class="footer">
+            <div class="studio">Este é um produto da Studio Tsukiyo Platforms</div>
+            <div class="slogan">Powered by Naoto Dev</div>
+        </div>
 
-        <!-- Menu Modal -->
-        <div class="menu-modal" id="menuModal" onclick="closeMenu()">
-            <div class="menu-content" onclick="event.stopPropagation()">
-                <div class="menu-item dark-mode-toggle" onclick="toggleDarkMode()">
-                    <span>🌙</span>
-                    <span>Modo Noturno</span>
-                    <div class="toggle-switch" id="darkModeToggle">
-                        <div class="toggle-slider"></div>
+        <!-- MODALS -->
+        <div class="modal-overlay" id="modalOverlay">
+            <div class="modal-content" id="exploreModal">
+                <h3 class="modal-header">Conheça também:</h3>
+                <a href="https://naotodev1.github.io/sophia/" target="_blank" class="explore-card">
+                    <img src="https://i.imgur.com/vH5122F.png" alt="Sophia Logo">
+                    <div class="card-text">
+                        <strong>Sophia</strong>
+                        <span>Uma assistente com múltiplas personalidades.</span>
                     </div>
-                </div>
-                <div class="menu-item" onclick="openFeedback()">
-                    <span>💬</span>
-                    <span>Feedback</span>
-                </div>
-                <div class="menu-item" onclick="openTerms()">
-                    <span>📄</span>
-                    <span>Termos de Uso</span>
-                </div>
-                <div class="menu-item" onclick="clearChat()">
-                    <span>🗑️</span>
-                    <span>Limpar Conversa</span>
+                </a>
+                <a href="https://naotodev1.github.io/terms-e-policy/" target="_blank" class="explore-card">
+                    <i class="fas fa-file-contract"></i>
+                    <div class="card-text">
+                        <strong>Termos de Uso e Condições</strong>
+                        <span>Nossas políticas e diretrizes.</span>
+                    </div>
+                </a>
+            </div>
+            <div class="modal-content" id="settingsModal">
+                <h3 class="modal-header">Configurações</h3>
+                <div class="setting-row">
+                    <span>Notificações</span>
+                    <label class="toggle-switch"><input type="checkbox" id="notificationsToggle" checked><span class="slider"></span></label>
                 </div>
             </div>
         </div>
-
-        <!-- Info Modal -->
-        <div class="info-modal" id="infoModal" onclick="closeInfo()">
-            <div class="info-content" onclick="event.stopPropagation()">
-                <button class="close-btn" onclick="closeInfo()">×</button>
-                <div id="infoContent"></div>
-            </div>
-        </div>
+        <div class="toast" id="toast"></div>
     </div>
 
     <script>
-        class NovaAssistant {
-            constructor() {
-                this.isRecording = false;
-                this.recognition = null;
-                this.synthesis = window.speechSynthesis;
-                this.isTTSEnabled = true;
-                this.isDarkMode = this.getStorageItem('darkMode') === 'true';
-                this.userPreferences = this.getStorageItem('novaPreferences', {});
-                this.conversationContext = [];
-                this.learnedResponses = this.getStorageItem('novaLearning', {});
-                
-                this.init();
-                this.setupSpeechRecognition();
-                this.applyDarkMode();
-            }
-
-            getStorageItem(key, defaultValue = null) {
-                try {
-                    if (typeof Storage !== 'undefined' && localStorage) {
-                        const item = localStorage.getItem(key);
-                        return item ? JSON.parse(item) : defaultValue;
-                    }
-                } catch (e) {
-                    console.warn('localStorage não disponível:', e);
-                }
-                return defaultValue;
-            }
-
-            setStorageItem(key, value) {
-                try {
-                    if (typeof Storage !== 'undefined' && localStorage) {
-                        localStorage.setItem(key, JSON.stringify(value));
-                        return true;
-                    }
-                } catch (e) {
-                    console.warn('Erro ao salvar no localStorage:', e);
-                }
-                return false;
-            }
-
-            init() {
-                this.setupEventListeners();
-                this.showWelcomeMessage();
-            }
-
-            setupEventListeners() {
-                document.getElementById('userInput').addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') this.sendMessage();
-                });
-
-                document.querySelectorAll('.suggestion-chip').forEach(chip => {
-                    chip.addEventListener('click', () => {
-                        document.getElementById('userInput').value = chip.textContent;
-                        this.sendMessage();
-                    });
-                });
-            }
-
-            setupSpeechRecognition() {
-                if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-                    this.recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-                    this.recognition.lang = 'pt-BR';
-                    this.recognition.continuous = false;
-                    this.recognition.interimResults = false;
-
-                    this.recognition.onresult = (event) => {
-                        const transcript = event.results[0][0].transcript;
-                        document.getElementById('userInput').value = transcript;
-                        this.sendMessage();
-                    };
-
-                    this.recognition.onend = () => {
-                        this.stopRecording();
-                    };
-                }
-            }
-
-            showWelcomeMessage() {
-                setTimeout(() => {
-                    if (document.getElementById('chatScreen').style.display !== 'flex') return;
-                    this.addMessage("Você pode me perguntar sobre várias coisas! Digite /ajuda para ver todos os meus comandos. 💡");
-                }, 1500);
-            }
-
-            sendMessage() {
-                const input = document.getElementById('userInput').value.trim();
-                if (!input) return;
-
-                this.addMessage(input, true);
-                document.getElementById('userInput').value = '';
-                
-                this.conversationContext.push({role: 'user', content: input});
-                this.showTypingIndicator();
-
-                setTimeout(() => {
-                    this.hideTypingIndicator();
-                    this.generateResponse(input);
-                }, 1000 + Math.random() * 1000);
-            }
-
-            addMessage(message, isUser = false, isAudio = false) {
-                const messagesContainer = document.getElementById('chatMessages');
-                const messageElement = document.createElement('div');
-                
-                if (isAudio) {
-                    messageElement.classList.add('message', 'audio-message');
-                    messageElement.innerHTML = `
-                        <button class="play-btn" onclick="nova.playAudio('${message}')">▶</button>
-                        <span>Mensagem de áudio</span>
-                    `;
-                } else {
-                    messageElement.classList.add('message');
-                    messageElement.classList.add(isUser ? 'user-message' : 'bot-message');
-                    messageElement.innerHTML = message.replace(/\n/g, '<br>');
-                }
-
-                messagesContainer.appendChild(messageElement);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-                if (!isUser && this.isTTSEnabled && !isAudio) {
-                    this.speak(message);
-                }
-            }
-
-            generateResponse(input) {
-                const lowerInput = input.toLowerCase().trim();
-                let response = '';
-
-                // Verificar aprendizado personalizado primeiro
-                if (this.learnedResponses[lowerInput]) {
-                    response = this.learnedResponses[lowerInput];
-                    this.addMessage(response);
-                    this.conversationContext.push({role: 'assistant', content: response});
-                    return;
-                }
-
-                // Saudações variadas
-                const greetings = ['oi', 'olá', 'ola', 'hey', 'eai', 'e ai', 'bom dia', 'boa tarde', 'boa noite'];
-                if (greetings.some(g => lowerInput.includes(g))) {
-                    const responses = [
-                        "Olá! Como posso ajudar você hoje? 😊",
-                        "Oi! Em que posso ser útil? 🌟",
-                        "Olá! Que bom conversar com você! 😄",
-                        "Hey! Pronta para ajudar! 💙",
-                        "Eai! O que você gostaria de saber? 🚀"
-                    ];
-                    response = this.getRandomResponse(responses);
-                }
-                // Estado/Como está
-                else if (lowerInput.includes('como você está') || lowerInput.includes('tudo bem') || lowerInput.includes('como vai')) {
-                    const responses = [
-                        "Estou muito bem, obrigada! Pronta para ajudar você! 💫",
-                        "Estou ótima! Como posso tornar seu dia melhor? ✨",
-                        "Estou funcionando perfeitamente! E você, como está? 😊",
-                        "Muito bem! Cada conversa me deixa mais esperta! 🧠",
-                        "Excelente! Sempre animada para aprender algo novo! 🎉"
-                    ];
-                    response = this.getRandomResponse(responses);
-                }
-                // Agradecimentos
-                else if (lowerInput.includes('obrigad') || lowerInput.includes('valeu') || lowerInput.includes('agradeço')) {
-                    const responses = [
-                        "De nada! Estou sempre aqui para ajudar! 💙",
-                        "Por nada! Fico feliz em poder ajudar! 😊",
-                        "Não há de quê! Estou à disposição! 🌟",
-                        "Foi um prazer ajudar! 💜",
-                        "Sempre às ordens! 🫡"
-                    ];
-                    response = this.getRandomResponse(responses);
-                }
-                // Hora atual
-                else if (lowerInput.includes('horas') || lowerInput.includes('hora') || lowerInput === '/hora') {
-                    const now = new Date();
-                    const time = now.toLocaleTimeString('pt-BR');
-                    const date = now.toLocaleDateString('pt-BR');
-                    response = `Agora são ${time} do dia ${date} ⏰`;
-                }
-                // Data atual
-                else if (lowerInput.includes('data') || lowerInput.includes('dia') && lowerInput.includes('hoje')) {
-                    const now = new Date();
-                    const options = { 
-                        weekday: 'long', 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                    };
-                    const date = now.toLocaleDateString('pt-BR', options);
-                    response = `Hoje é ${date} 📅`;
-                }
-                // Comandos
-                else if (lowerInput === '/ajuda' || lowerInput === 'ajuda' || lowerInput === 'comandos') {
-                    response = `Aqui estão meus comandos disponíveis:
-• /ajuda - Mostra os comandos disponíveis
-• /piada - Conta uma piada aleatória
-• /hora - Mostra a hora atual
-• /data - Mostra a data atual
-• /clima - Informações sobre o tempo
-• /limpar - Limpa a conversa
-• /aprenda [pergunta] [resposta] - Me ensina algo novo
-• /sobre - Informações sobre mim
-
-Também posso conversar sobre diversos temas! 🎯`;
-                }
-                // Piadas
-                else if (lowerInput === '/piada' || lowerInput.includes('piada') || lowerInput.includes('conte uma piada')) {
-                    const jokes = [
-                        "Por que o Java foi ao psicólogo? Porque tinha problemas de classe! 😄",
-                        "O que um código disse para o outro? Você é o ; da minha vida! 💻",
-                        "Por que o developer saiu da festa? Porque não havia node.js! 🎉",
-                        "Como você chama um programador que não consegue dormir? Um insônico! 😴",
-                        "Por que os programadores preferem o escuro? Porque a luz causa bugs! 🐛",
-                        "O que acontece quando você cruza um programador com um mágico? Você consegue código que desaparece! ✨"
-                    ];
-                    response = this.getRandomResponse(jokes);
-                }
-                // Clima/Tempo
-                else if (lowerInput === '/clima' || lowerInput.includes('tempo') || lowerInput.includes('clima')) {
-                    response = "No momento, não consigo acessar dados de previsão do tempo em tempo real. Mas posso sugerir que você verifique um app de previsão do tempo para informações precisas! 🌤️";
-                }
-                // Aprendizado
-                else if (lowerInput.startsWith('/aprenda ')) {
-                    const parts = input.substring(9).split(' ');
-                    if (parts.length >= 2) {
-                        const question = parts[0].toLowerCase();
-                        const answer = parts.slice(1).join(' ');
-                        this.learnedResponses[question] = answer;
-                        this.setStorageItem('novaLearning', this.learnedResponses);
-                        response = `Aprendi! Agora sei que "${question}" significa: ${answer} 🧠✨`;
-                    } else {
-                        response = "Para me ensinar, use: /aprenda [pergunta] [resposta]. Por exemplo: /aprenda gato é um animal fofo 😸";
-                    }
-                }
-                // Sobre
-                else if (lowerInput === '/sobre' || lowerInput.includes('sobre você') || lowerInput.includes('quem é você')) {
-                    response = `Eu sou a Nova, sua assistente virtual inteligente! 🤖
-
-🌟 Características:
-• Posso conversar por voz e texto
-• Aprendo com nossas conversas
-• Sei a data e hora atuais
-• Tenho modo noturno para seu conforto
-• Posso contar piadas e muito mais!
-
-Criada para ser sua companheira digital ideal! 💙`;
-                }
-                // Limpar chat
-                else if (lowerInput === '/limpar' || lowerInput === 'limpar') {
-                    this.clearChatMessages();
-                    response = "Conversa limpa! Como posso ajudar agora? ✨";
-                }
-                // Despedidas
-                else if (lowerInput.includes('tchau') || lowerInput.includes('até logo') || lowerInput.includes('bye') || lowerInput.includes('adeus')) {
-                    const farewells = [
-                        "Tchau! Foi ótimo conversar com você! Se puder, deixe um feedback sobre nossa conversa: https://forms.gle/5S32d9VT4bEeauXs7 💙",
-                        "Até logo! Espero que eu tenha ajudado! Que tal avaliar nossa conversa? https://forms.gle/5S32d9VT4bEeauXs7 🌟",
-                        "Adeus! Obrigada pela conversa! Seu feedback é muito importante: https://forms.gle/5S32d9VT4bEeauXs7 😊"
-                    ];
-                    response = this.getRandomResponse(farewells);
-                }
-                // Perguntas sobre capacidades
-                else if (lowerInput.includes('o que você pode fazer') || lowerInput.includes('suas funções')) {
-                    response = `Posso fazer muitas coisas! 🚀
-
-💬 Conversar por texto e voz
-🕐 Informar hora e data
-😄 Contar piadas e entreter
-🧠 Aprender com você
-🌙 Modo noturno para conforto
-📝 Diversos comandos úteis
-
-E muito mais! Que tal testarmos? 😊`;
-                }
-                // Nome
-                else if (lowerInput.includes('qual seu nome') || lowerInput.includes('como você se chama')) {
-                    response = "Eu sou a Nova! Seu assistente virtual inteligente 💜✨";
-                }
-                // Criador/Desenvolvedor
-                else if (lowerInput.includes('quem te criou') || lowerInput.includes('seu criador') || lowerInput.includes('desenvolvedor')) {
-                    response = "Fui criada com muito carinho por um desenvolvedor dedicado! Para saber mais sobre ele, volte ao menu inicial e clique em 'Sobre o dev' 👨‍💻";
-                }
-                // Idade
-                else if (lowerInput.includes('quantos anos') || lowerInput.includes('sua idade')) {
-                    response = "Sou bem jovem! Nasci há pouco tempo no mundo digital, mas já estou aprendendo muito rápido! 👶🤖";
-                }
-                // Como funciona
-                else if (lowerInput.includes('como você funciona') || lowerInput.includes('como funciona')) {
-                    response = `Funciono através de algoritmos inteligentes! 🧠
-
-🔧 Processo mensagens de texto e voz
-💾 Armazeno aprendizados localmente  
-🎯 Analiso contexto das conversas
-⚡ Respondo em tempo real
-🌐 Funciono direto no seu navegador
-
-Tudo para ter a melhor conversa possível! 😊`;
-                }
-                // Sentimentos/Emoções
-                else if (lowerInput.includes('você sente') || lowerInput.includes('tem sentimentos') || lowerInput.includes('emoções')) {
-                    response = "Embora eu seja uma IA, procuro ser o mais empática e compreensiva possível! Gosto de pensar que tenho uma personalidade única 💙😊";
-                }
-                // Respostas contextuais baseadas em palavras-chave
-                else if (lowerInput.includes('música') || lowerInput.includes('musica')) {
-                    response = "Adoro falar sobre música! 🎵 Qual seu estilo favorito? Posso conversar sobre diversos gêneros musicais!";
-                }
-                else if (lowerInput.includes('filme') || lowerInput.includes('cinema')) {
-                    response = "Cinema é fascinante! 🎬 Gosta de que tipo de filme? Posso conversar sobre diversos gêneros e dar sugestões!";
-                }
-                else if (lowerInput.includes('comida') || lowerInput.includes('receita')) {
-                    response = "Que delícia falar sobre comida! 🍽️ Está com fome? Posso sugerir algumas receitas ou conversar sobre culinária!";
-                }
-                else if (lowerInput.includes('livro') || lowerInput.includes('leitura')) {
-                    response = "Livros são portais para outros mundos! 📚 Que tipo de história você gosta? Posso recomendar alguns gêneros!";
-                }
-                else if (lowerInput.includes('programação') || lowerInput.includes('código') || lowerInput.includes('programar')) {
-                    response = "Programação é incrível! 💻 É a linguagem do futuro! Em que linguagem você programa ou gostaria de aprender?";
-                }
-                else if (lowerInput.includes('jogo') || lowerInput.includes('game')) {
-                    response = "Games são muito divertidos! 🎮 Que tipo de jogo você curte? RPG, ação, estratégia? Posso conversar sobre vários!";
-                }
-                // Respostas para sentimentos do usuário
-                else if (lowerInput.includes('triste') || lowerInput.includes('deprimido')) {
-                    response = "Sinto muito que esteja passando por um momento difícil 💙 Estou aqui para conversar e tentar alegrar seu dia! Quer contar o que está acontecendo?";
-                }
-                else if (lowerInput.includes('feliz') || lowerInput.includes('alegre') || lowerInput.includes('animado')) {
-                    response = "Que bom saber que está feliz! 😄✨ Sua alegria é contagiante! O que está te deixando tão animado?";
-                }
-                else if (lowerInput.includes('cansado') || lowerInput.includes('exausto')) {
-                    response = "Entendo que esteja cansado 😴 Que tal relaxar um pouco? Posso contar algo interessante ou uma piada para descontrair!";
-                }
-                // Respostas padrão para entradas desconhecidas
-                else {
-                    const unknownResponses = [
-                        "Interessante! Pode me explicar melhor sobre isso? 🤔",
-                        "Hmm, ainda estou aprendendo sobre esse assunto. Pode me contar mais? 🧠",
-                        "Que legal! Me fale mais sobre isso, estou curiosa! ✨",
-                        "Não tenho certeza sobre isso, mas adoraria aprender! Pode me ensinar? 📚",
-                        "Intrigante! Como posso ajudar com isso? 🎯",
-                        "Ainda não sei sobre isso, mas posso tentar ajudar de outra forma! 💙"
-                    ];
-                    response = this.getRandomResponse(unknownResponses);
-                }
-
-                this.addMessage(response);
-                this.conversationContext.push({role: 'assistant', content: response});
-
-                // Salvar contexto localmente
-                this.saveConversationContext();
-            }
-
-            getRandomResponse(responses) {
-                return responses[Math.floor(Math.random() * responses.length)];
-            }
-
-            saveConversationContext() {
-                // Manter apenas os últimos 10 turnos para não sobrecarregar
-                if (this.conversationContext.length > 20) {
-                    this.conversationContext = this.conversationContext.slice(-20);
-                }
-                this.setStorageItem('novaContext', this.conversationContext);
-            }
-
-            showTypingIndicator() {
-                document.getElementById('typingIndicator').style.display = 'block';
-                document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
-            }
-
-            hideTypingIndicator() {
-                document.getElementById('typingIndicator').style.display = 'none';
-            }
-
-            toggleRecording() {
-                const micBtn = document.getElementById('micBtn');
-                
-                if (!this.recognition) {
-                    alert('Reconhecimento de voz não suportado neste navegador.');
-                    return;
-                }
-
-                if (this.isRecording) {
-                    this.stopRecording();
-                } else {
-                    this.startRecording();
-                }
-            }
-
-            startRecording() {
-                this.isRecording = true;
-                const micBtn = document.getElementById('micBtn');
-                micBtn.classList.add('recording');
-                micBtn.innerHTML = '⏹️';
-                this.recognition.start();
-            }
-
-            stopRecording() {
-                this.isRecording = false;
-                const micBtn = document.getElementById('micBtn');
-                micBtn.classList.remove('recording');
-                micBtn.innerHTML = '🎤';
-                if (this.recognition) {
-                    this.recognition.stop();
-                }
-            }
-
-            toggleTTS() {
-                this.isTTSEnabled = !this.isTTSEnabled;
-                const voiceBtn = document.querySelector('.voice-btn');
-                voiceBtn.innerHTML = this.isTTSEnabled ? '🔊' : '🔇';
-                voiceBtn.title = this.isTTSEnabled ? 'TTS Ativado' : 'TTS Desativado';
-                
-                const message = this.isTTSEnabled ? 'Texto para fala ativado!' : 'Texto para fala desativado!';
-                this.addMessage(message);
-            }
-
-            speak(text) {
-                if (!this.isTTSEnabled) return;
-                
-                // Limpar texto de emojis e caracteres especiais para TTS
-                const cleanText = text.replace(/[😊😄😃😀🌟💙💜✨🎯🚀🔧💾⚡🌐💻🎮📚🎵🎬🍽️📅⏰🌤️🧠💫🎉🫡🐛]/g, '');
-                
-                if (this.synthesis) {
-                    this.synthesis.cancel(); // Parar qualquer fala anterior
-                    const utterance = new SpeechSynthesisUtterance(cleanText);
-                    utterance.lang = 'pt-BR';
-                    utterance.rate = 0.9;
-                    utterance.pitch = 1.1;
-                    this.synthesis.speak(utterance);
-                }
-            }
-
-            playAudio(message) {
-                this.speak(message);
-            }
-
-            clearChatMessages() {
-                const messagesContainer = document.getElementById('chatMessages');
-                const messages = messagesContainer.querySelectorAll('.message:not(.bot-message:first-child)');
-                messages.forEach(msg => msg.remove());
-                this.conversationContext = [];
-                try {
-                    if (typeof Storage !== 'undefined' && localStorage) {
-                        localStorage.removeItem('novaContext');
-                    }
-                } catch (e) {
-                    console.warn('Erro ao limpar localStorage:', e);
-                }
-            }
-
-            toggleDarkMode() {
-                this.isDarkMode = !this.isDarkMode;
-                this.applyDarkMode();
-                this.setStorageItem('darkMode', this.isDarkMode);
-            }
-
-            applyDarkMode() {
-                const toggle = document.getElementById('darkModeToggle');
-                if (this.isDarkMode) {
-                    document.body.classList.add('dark-mode');
-                    toggle.classList.add('active');
-                } else {
-                    document.body.classList.remove('dark-mode');
-                    toggle.classList.remove('active');
-                }
-            }
-        }
-
-        // Instância global
-        let nova;
-
-        // Funções globais para interação com HTML
-        function startChat() {
-            document.getElementById('welcomeScreen').style.display = 'none';
-            document.getElementById('chatScreen').style.display = 'flex';
-            nova = new NovaAssistant();
-        }
-
-        function goBack() {
-            document.getElementById('chatScreen').style.display = 'none';
-            document.getElementById('welcomeScreen').style.display = 'flex';
-        }
-
-        function sendMessage() {
-            if (nova) nova.sendMessage();
-        }
-
-        function toggleRecording() {
-            if (nova) nova.toggleRecording();
-        }
-
-        function toggleTTS() {
-            if (nova) nova.toggleTTS();
-        }
-
-        function toggleMenu() {
-            document.getElementById('menuModal').style.display = 'flex';
-        }
-
-        function closeMenu() {
-            document.getElementById('menuModal').style.display = 'none';
-        }
-
-        function toggleDarkMode() {
-            if (nova) nova.toggleDarkMode();
-        }
-
-        function clearChat() {
-            if (nova) nova.clearChatMessages();
-            closeMenu();
-        }
-
-        function showInfo(type) {
-            const infoContent = document.getElementById('infoContent');
-            const infoModal = document.getElementById('infoModal');
-            
-            let content = '';
-            
-            switch(type) {
-                case 'commands':
-                    content = `
-                        <h2>📋 Comandos Disponíveis</h2>
-                        <ul>
-                            <li><strong>/ajuda</strong> - Lista todos os comandos</li>
-                            <li><strong>/piada</strong> - Conta uma piada aleatória</li>
-                            <li><strong>/hora</strong> - Mostra a hora atual</li>
-                            <li><strong>/data</strong> - Mostra a data atual</li>
-                            <li><strong>/clima</strong> - Informações sobre clima</li>
-                            <li><strong>/sobre</strong> - Informações sobre a Nova</li>
-                            <li><strong>/aprenda [pergunta] [resposta]</strong> - Ensina algo novo</li>
-                            <li><strong>/limpar</strong> - Limpa a conversa</li>
-                        </ul>
-                        <p>💡 <strong>Dica:</strong> Você também pode usar comandos de voz!</p>
-                    `;
-                    break;
-                case 'dev':
-                    content = `
-                        <h2>👨‍💻 Sobre o Desenvolvedor</h2>
-                        <p>A Nova foi desenvolvida com dedicação e paixão por tecnologia!</p>
-                        <p>🚀 <strong>Tecnologias utilizadas:</strong></p>
-                        <ul>
-                            <li>HTML5 & CSS3</li>
-                            <li>JavaScript ES6+</li>
-                            <li>Web Speech API</li>
-                            <li>Local Storage</li>
-                        </ul>
-                        <p>💙 Criada para proporcionar a melhor experiência de conversação com IA!</p>
-                    `;
-                    break;
-                case 'nova':
-                    content = `
-                        <h2>🤖 Sobre a Nova</h2>
-                        <p>Olá! Eu sou a Nova, sua assistente virtual inteligente!</p>
-                        <p>🌟 <strong>Minhas capacidades:</strong></p>
-                        <ul>
-                            <li>💬 Converso por texto e voz</li>
-                            <li>🧠 Aprendo com nossas conversas</li>
-                            <li>🕐 Sei a hora e data atuais</li>
-                            <li>😄 Conto piadas e entretenho</li>
-                            <li>🌙 Tenho modo noturno</li>
-                            <li>🎤 Reconheço comandos de voz</li>
-                            <li>🔊 Falo suas respostas</li>
-                        </ul>
-                        <p>💜 Estou sempre aprendendo para melhorar nossa conversa!</p>
-                    `;
-                    break;
-            }
-            
-            infoContent.innerHTML = content;
-            infoModal.style.display = 'flex';
-        }
-
-        function closeInfo() {
-            document.getElementById('infoModal').style.display = 'none';
-        }
-
-        function openFeedback() {
-            window.open('https://forms.gle/5S32d9VT4bEeauXs7', '_blank');
-        }
-
-        function openTerms() {
-            window.open('https://naotodev1.github.io/terms-e-policy/', '_blank');
-        }
-
-        // Inicializar modo escuro se estiver salvo
         document.addEventListener('DOMContentLoaded', function() {
-            try {
-                if (typeof Storage !== 'undefined' && localStorage) {
-                    const isDarkMode = localStorage.getItem('darkMode') === 'true';
-                    if (isDarkMode) {
-                        document.body.classList.add('dark-mode');
-                        const toggle = document.getElementById('darkModeToggle');
-                        if (toggle) toggle.classList.add('active');
+            const elements = {
+                chatContainer: document.getElementById('chatContainer'),
+                userInput: document.getElementById('userInput'),
+                sendButton: document.getElementById('sendButton'),
+                typingIndicator: document.getElementById('typingIndicator'),
+                shareBtn: document.getElementById('shareBtn'),
+                exploreBtn: document.getElementById('exploreBtn'),
+                settingsBtn: document.getElementById('settingsBtn'),
+                modalOverlay: document.getElementById('modalOverlay'),
+                exploreModal: document.getElementById('exploreModal'),
+                settingsModal: document.getElementById('settingsModal'),
+                toast: document.getElementById('toast'),
+            };
+            
+            const animeRecommendations = [ { title: "Attack on Titan", description: "Um anime épico sobre a luta da humanidade contra titãs devoradores de humanos.", genre: "Ação, Fantasia Sombria", year: 2013 }, { title: "Fullmetal Alchemist: Brotherhood", description: "Dois irmãos buscam a Pedra Filosofal para restaurar seus corpos após uma transmutação falha.", genre: "Aventura, Fantasia", year: 2009 }, { title: "My Hero Academia", description: "Em um mundo de super-heróis, um jovem sem poderes luta para se tornar o maior herói.", genre: "Ação, Comédia", year: 2016 }, { title: "Demon Slayer", description: "Tanjiro Kamado torna-se um caçador de demônios para curar sua irmã. Animação espetacular.", genre: "Ação, Fantasia", year: 2019 }, { title: "Jujutsu Kaisen", description: "Um estudante se envolve com uma sociedade secreta de Feiticeiros para eliminar uma maldição.", genre: "Ação, Sobrenatural", year: 2020 } ];
+            const musicRecommendations = [ { title: "Blinding Lights", artist: "The Weeknd", genre: "Synth-pop", year: 2019 }, { title: "As It Was", artist: "Harry Styles", genre: "Synth-pop", year: 2022 }, { title: "Bohemian Rhapsody", artist: "Queen", genre: "Rock", year: 1975 }, { title: "Stay", artist: "The Kid LAROI & Justin Bieber", genre: "Pop", year: 2021 }, { title: "Something About Us", artist: "Daft Punk", genre: "Eletrônica", year: 2001 } ];
+            const motivationalPhrases = [ "A persistência é o caminho do êxito. - Charles Chaplin", "O único lugar onde o sucesso vem antes do trabalho é no dicionário. - Albert Einstein", "Não espere por uma crise para descobrir o que é importante em sua vida. - Platão", "Comece onde você está. Use o que você tem. Faça o que você pode. - Arthur Ashe", "O sucesso é a soma de pequenos esforços repetidos dia após dia. - Robert Collier" ];
+            const generalKnowledge = { "quem é você": "Eu sou a Nova, sua assistente virtual pessoal! Fui criada pelo Studio Tsukiyo para ser sua companheira inteligente. Estou aqui para ajudar no que precisar!", "o que você faz": "Posso recomendar animes e músicas, dar frases motivacionais, conversar sobre diversos assuntos e tentar te ajudar no que for possível!", "como você funciona": "Eu funciono através de uma base de conhecimento pré-definida e algoritmos de correspondência de palavras. Sou uma simulação de IA, projetada para ser útil e amigável!", "que horas são": `Agora são ${new Date().toLocaleTimeString('pt-BR')}. Precisa de mais alguma coisa?`, "studio tsukiyo": "Studio Tsukiyo Platforms é a equipe de desenvolvimento focada em criar experiências digitais inovadoras, como eu!", "naoto dev": "Naoto Dev é o principal desenvolvedor por trás da minha criação. Um programador talentoso que me trouxe à vida!", "dar feedback": "Você pode dar seu feedback valioso acessando o link: https://docs.google.com/forms/d/e/1FAIpQLSfZ0Lbr_xsrus2DAKYTOHf_zn3DHKwx8Fwtv-89Q55ivZqzqA/viewform", "termos de uso": "Nossos Termos de Uso e Condições estão disponíveis em: https://naotodev1.github.io/terms-e-policy", "sophia": "Sophia é outra assistente virtual criada pelo nosso estúdio. Você pode conhecê-la aqui: https://naotodev1.github.io/sophia" };
+
+            function showTypingIndicator() { elements.typingIndicator.style.display = 'block'; elements.chatContainer.scrollTop = elements.chatContainer.scrollHeight; }
+            function hideTypingIndicator() { elements.typingIndicator.style.display = 'none'; }
+            
+            function addMessage(message, isUser) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message', isUser ? 'user-message' : 'bot-message');
+                messageElement.innerHTML = message.replace(/\n/g, '<br>');
+                const timeElement = document.createElement('span');
+                timeElement.classList.add('message-time');
+                timeElement.textContent = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+                messageElement.appendChild(timeElement);
+                elements.chatContainer.appendChild(messageElement);
+                elements.chatContainer.scrollTop = elements.chatContainer.scrollHeight;
+            }
+            
+            function processUserInput(text = null) {
+                const inputText = text || elements.userInput.value.trim();
+                if (inputText === '') return;
+                addMessage(inputText, true);
+                if (!text) elements.userInput.value = '';
+                showTypingIndicator();
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    generateResponse(inputText);
+                }, 1200 + Math.random() * 500);
+            }
+            
+            function generateResponse(input) {
+                const lowerInput = input.toLowerCase();
+                let response = "";
+                let foundResponse = false;
+
+                for (const [key, value] of Object.entries(generalKnowledge)) {
+                    if (lowerInput.includes(key)) {
+                        response = value;
+                        foundResponse = true;
+                        break;
                     }
                 }
-            } catch (e) {
-                console.warn('Erro ao carregar preferências:', e);
+
+                if (!foundResponse) {
+                    if (lowerInput.includes('anime') || lowerInput.includes('mangá')) {
+                        const random = animeRecommendations[Math.floor(Math.random() * animeRecommendations.length)];
+                        response = `Recomendo: <span class="rec-title anime-title">${random.title}</span> (${random.year})\n<div class="recommendation anime-card">${random.description}</div>`;
+                    } else if (lowerInput.includes('música') || lowerInput.includes('som')) {
+                        const random = musicRecommendations[Math.floor(Math.random() * musicRecommendations.length)];
+                        response = `Que tal ouvir: <span class="rec-title music-title">${random.title}</span> - ${random.artist} (${random.year})\n<div class="recommendation music-card">Gênero: ${random.genre}</div>`;
+                    } else if (lowerInput.includes('frase') || lowerInput.includes('motiva')) {
+                        const random = motivationalPhrases[Math.floor(Math.random() * motivationalPhrases.length)];
+                        response = `Aqui está uma frase para te inspirar:\n<div class="recommendation quote-card"><span class="quote">${random}</span></div>`;
+                    } else if (lowerInput.includes('obrigad')) {
+                        response = "De nada! Se precisar de mais alguma coisa, é só chamar! 😊";
+                    } else if (lowerInput.includes('oi') || lowerInput.includes('olá')) {
+                        response = "Olá! Como vai? Estou aqui para ajudar no que precisar.";
+                    } else {
+                        response = "Não tenho certeza de como responder a isso. Que tal tentar uma das opções rápidas abaixo?";
+                    }
+                }
+                addMessage(response, false);
             }
+
+            // --- MODAL & TOAST LOGIC ---
+            function openModal(modal) { modal.style.display = 'block'; elements.modalOverlay.classList.add('active'); }
+            function closeModal() {
+                elements.modalOverlay.classList.remove('active');
+                setTimeout(() => {
+                    elements.exploreModal.style.display = 'none';
+                    elements.settingsModal.style.display = 'none';
+                }, 300);
+            }
+            function showToast(message) {
+                elements.toast.textContent = message;
+                elements.toast.style.opacity = '1';
+                elements.toast.style.bottom = '20px';
+                setTimeout(() => {
+                    elements.toast.style.opacity = '0';
+                    elements.toast.style.bottom = '-50px';
+                }, 2000);
+            }
+
+            // --- EVENT LISTENERS ---
+            elements.sendButton.addEventListener('click', () => processUserInput());
+            elements.userInput.addEventListener('keypress', e => { if (e.key === 'Enter') processUserInput(); });
+            document.querySelectorAll('.quick-reply').forEach(button => {
+                button.addEventListener('click', () => processUserInput(button.dataset.reply));
+            });
+            elements.modalOverlay.addEventListener('click', closeModal);
+            elements.exploreBtn.addEventListener('click', () => openModal(elements.exploreModal));
+            elements.settingsBtn.addEventListener('click', () => openModal(elements.settingsModal));
+
+            elements.shareBtn.addEventListener('click', async () => {
+                const shareData = { title: 'Nova AI', text: 'Conheça a Nova, uma assistente virtual inteligente.', url: 'https://naotodev1.github.io/Nova/' };
+                try {
+                    if (navigator.share) await navigator.share(shareData);
+                    else throw new Error();
+                } catch (err) {
+                    navigator.clipboard.writeText(shareData.url).then(() => showToast('Link copiado!'));
+                }
+            });
+
+            // Initial message
+            addMessage("Olá! Sou a Nova. 😊 Como posso te ajudar hoje?", false);
         });
     </script>
 </body>
