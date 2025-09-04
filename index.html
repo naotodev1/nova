@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nova - Seu Amigo Virtual</title>
-    <link rel="icon" type="image/png" href="https://i.imgur.com/lnmHzA9.png">
+    <title>Lúmen</title>
+    <link rel="icon" type="image/png" href="https://i.imgur.com/I1w6ZV6.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -150,9 +150,9 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="avatar"><img src="https://i.imgur.com/lnmHzA9.png" alt="Nova Avatar"></div>
+            <div class="avatar"><img src="https://i.imgur.com/I1w6ZV6.png" alt="Nova Avatar"></div>
             <div class="header-text">
-                <h1>Nova</h1>
+                <h1>Lúmen</h1>
                 <p>Seu assistente virtual inteligente</p>
             </div>
             <div class="header-icons">
@@ -167,7 +167,7 @@
         </div>
         
         <div class="typing-indicator" id="typingIndicator">
-            <i class="fas fa-comment-dots"></i> Nova está digitando...
+            <i class="fas fa-comment-dots"></i> Lúmen está digitando...
         </div>
         
         <div class="quick-replies" id="quickReplies">
@@ -329,7 +329,7 @@
             elements.settingsBtn.addEventListener('click', () => openModal(elements.settingsModal));
 
             elements.shareBtn.addEventListener('click', async () => {
-                const shareData = { title: 'Nova AI', text: 'Conheça a Nova, uma assistente virtual inteligente.', url: 'https://naotodev1.github.io/Nova/' };
+                const shareData = { title: 'Lúmen', text: 'Conheça a Lúmen, uma assistente virtual inteligente.', url: 'https://naotodev1.github.io/Nova/' };
                 try {
                     if (navigator.share) await navigator.share(shareData);
                     else throw new Error();
@@ -339,7 +339,7 @@
             });
 
             // Initial message
-            addMessage("Olá! Sou a Nova. 😊 Como posso te ajudar hoje?", false);
+            addMessage("Olá! Sou a Lúmen. 😊 Como posso te ajudar hoje?", false);
         });
     </script>
 </body>
