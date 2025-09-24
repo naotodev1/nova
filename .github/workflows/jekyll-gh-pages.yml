@@ -49,3 +49,16 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+                    - name: Setup React
+  # You may pin to the exact commit or the version.
+  # uses: kirkeaton/setup-react@9e28853f52cc70c0835e44fd2e934a892b0d8c61
+  uses: kirkeaton/setup-react@v1.0.0
+  with:
+    # The React version to install.
+    react-version: 
+    # The React DOM version to install.
+    react-dom-version: 
+    # The React types version to install.
+    react-types-version: # optional
+    # The React DOM types version to install.
+    react-dom-types-version: # optional
