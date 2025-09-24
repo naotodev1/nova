@@ -1,346 +1,989 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lúmen</title>
-    <link rel="icon" type="image/png" href="https://i.imgur.com/I1w6ZV6.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-blue: #2563eb;
-            --primary-blue-dark: #1d4ed8;
-            --primary-purple: #7c3aed;
-            --primary-purple-dark: #6d28d9;
-            --bg-dark-primary: #1a2436;
-            --bg-dark-secondary: #1e2b3f;
-            --bg-dark-tertiary: #2d3748;
-            --border-color: #4a5568;
-            --text-primary: #e5e7eb;
-            --text-secondary: #9ca3af;
-        }
+import React, { useState, useEffect, useRef } from 'react';
+import { MessageCircle, Clock, Heart, Phone, Volume2, Mic, RotateCcw, Plus, Send, Home, User, Settings, HelpCircle, Calendar, Camera, MapPin, Thermometer, Sun, CloudRain, Wind, AlertCircle, Shield, Battery, Wifi, Star } from 'lucide-react';
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #0f1b33 0%, #1e3a5f 100%);
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 500px;
-            height: 90vh;
-            max-height: 800px;
-            background-color: var(--bg-dark-secondary);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-        
-        .header {
-            background: linear-gradient(90deg, var(--primary-blue) 0%, #3b82f6 100%);
-            padding: 18px;
-            text-align: left;
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            flex-shrink: 0;
-        }
-        
-        .avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: 2px solid white;
-            overflow: hidden;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .header-text { flex: 1; }
-        .header h1 { font-size: 22px; margin-bottom: 4px; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); font-weight: 600; }
-        .header p { font-size: 13px; opacity: 0.9; }
-        .header-icons { display: flex; gap: 16px; font-size: 1.2rem; }
-        .header-icon { cursor: pointer; color: rgba(255, 255, 255, 0.9); transition: color 0.2s; }
-        .header-icon:hover { color: white; }
-        
-        .chat-container {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            background-color: var(--bg-dark-primary);
-        }
-        
-        .message { max-width: 80%; padding: 12px 16px; border-radius: 18px; line-height: 1.4; animation: fadeIn 0.3s ease; position: relative; font-size: 15px; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .bot-message { background: linear-gradient(90deg, #4f46e5 0%, var(--primary-purple) 100%); align-self: flex-start; border-bottom-left-radius: 5px; color: white; }
-        .user-message { background: var(--bg-dark-tertiary); align-self: flex-end; border-bottom-right-radius: 5px; color: white; border: 1px solid var(--border-color); }
-        .message-time { font-size: 11px; opacity: 0.7; display: block; margin-top: 6px; text-align: right; }
-        
-        .input-area { display: flex; padding: 16px; background-color: var(--bg-dark-secondary); gap: 12px; border-top: 1px solid var(--border-color); flex-shrink: 0; }
-        input { flex: 1; padding: 14px 16px; border: 1px solid var(--border-color); border-radius: 24px; background-color: var(--bg-dark-tertiary); color: white; font-size: 15px; }
-        input:focus { outline: none; border-color: var(--primary-blue); background-color: #374151; }
-        input::placeholder { color: var(--text-secondary); }
-        button { background: linear-gradient(90deg, var(--primary-blue) 0%, #3b82f6 100%); border: none; border-radius: 50%; width: 48px; height: 48px; color: white; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
-        button:hover { transform: scale(1.05); background: linear-gradient(90deg, var(--primary-blue-dark) 0%, var(--primary-blue) 100%); }
-        
-        .quick-replies { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px; background-color: var(--bg-dark-secondary); border-top: 1px solid var(--border-color); flex-shrink: 0; }
-        .quick-reply { background: linear-gradient(90deg, #4f46e5 0%, var(--primary-purple) 100%); padding: 8px 16px; border-radius: 18px; font-size: 13px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
-        .quick-reply:hover { transform: scale(1.05); background: linear-gradient(90deg, #4338ca 0%, var(--primary-purple-dark) 100%); }
-        
-        .typing-indicator { display: none; padding: 12px 16px; color: var(--text-secondary); font-style: italic; font-size: 14px; background-color: var(--bg-dark-primary); }
-        
-        .footer { padding: 12px; background-color: var(--bg-dark-primary); text-align: center; border-top: 1px solid var(--border-color); font-size: 12px; color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
-        .studio { font-weight: 600; color: #3b82f6; }
-        .slogan { font-style: italic; }
-        
-        /* Recommendation Cards */
-        .recommendation { background: rgba(0, 0, 0, 0.2); padding: 10px; border-radius: 10px; margin-top: 8px; font-size: 14px; border-left: 3px solid; }
-        .anime-card { border-color: #fbbf24; }
-        .music-card { border-color: #10b981; }
-        .quote-card { border-color: #f97316; }
-        .rec-title { font-weight: bold; }
-        .anime-title { color: #fbbf24; }
-        .music-title { color: #10b981; }
-        .quote { font-style: italic; color: #f97316; }
+const FacilitaPlus = () => {
+  const [currentView, setCurrentView] = useState('welcome');
+  const [userName, setUserName] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [reminderText, setReminderText] = useState('');
+  const [reminderTime, setReminderTime] = useState('14:00');
+  const [isListening, setIsListening] = useState(false);
+  const [inputText, setInputText] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [weather, setWeather] = useState({ temp: 24, condition: 'sunny' });
+  const [reminders, setReminders] = useState([]);
+  const [showProfile, setShowProfile] = useState(false);
+  const messagesEndRef = useRef(null);
+  const speechSynthesis = useRef(null);
 
-        /* MODALS */
-        .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: none; justify-content: center; align-items: center; z-index: 100; opacity: 0; transition: opacity 0.3s ease; }
-        .modal-overlay.active { display: flex; opacity: 1; }
-        .modal-content { background-color: var(--bg-dark-secondary); width: 90%; padding: 20px; border-radius: 16px; box-shadow: 0 5px 25px rgba(0,0,0,0.5); transform: scale(0.95); transition: transform 0.3s ease-out; }
-        .modal-overlay.active .modal-content { transform: scale(1); }
-        .modal-header { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 20px; }
-        
-        .explore-card { display: flex; align-items: center; gap: 15px; background-color: var(--bg-dark-tertiary); border-radius: 12px; padding: 12px; margin-bottom: 12px; text-decoration: none; color: var(--text-primary); border: 1px solid var(--border-color); }
-        .explore-card img { width: 40px; height: 40px; border-radius: 8px; }
-        .explore-card i { width: 40px; text-align: center; font-size: 1.5rem; color: #60a5fa; }
-        .explore-card .card-text strong { font-size: 1rem; }
-        .explore-card .card-text span { font-size: 0.85rem; color: var(--text-secondary); }
-        
-        .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; }
-        .toggle-switch { position: relative; display: inline-block; width: 51px; height: 31px; }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border-color); transition: .4s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 23px; width: 23px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: var(--primary-blue); }
-        input:checked + .slider:before { transform: translateX(20px); }
+  // Atualizar hora atual
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
-        .toast { position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.8); color: white; padding: 10px 20px; border-radius: 20px; font-size: 0.9rem; z-index: 200; opacity: 0; transition: opacity 0.3s, bottom 0.3s; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <div class="avatar"><img src="https://i.imgur.com/I1w6ZV6.png" alt="Nova Avatar"></div>
-            <div class="header-text">
-                <h1>Lúmen</h1>
-                <p>Seu assistente virtual inteligente</p>
-            </div>
-            <div class="header-icons">
-                <i class="fas fa-share-alt header-icon" id="shareBtn" title="Compartilhar"></i>
-                <i class="fas fa-compass header-icon" id="exploreBtn" title="Explorar"></i>
-                <i class="fas fa-cog header-icon" id="settingsBtn" title="Configurações"></i>
-            </div>
-        </div>
-        
-        <div class="chat-container" id="chatContainer">
-            <!-- As mensagens serão inseridas aqui via JS -->
-        </div>
-        
-        <div class="typing-indicator" id="typingIndicator">
-            <i class="fas fa-comment-dots"></i> Lúmen está digitando...
-        </div>
-        
-        <div class="quick-replies" id="quickReplies">
-            <div class="quick-reply" data-reply="Como você funciona?"><i class="fas fa-cogs"></i> Como você funciona?</div>
-            <div class="quick-reply" data-reply="Indica um anime"><i class="fas fa-dragon"></i> Indica um anime</div>
-            <div class="quick-reply" data-reply="Indica uma música"><i class="fas fa-music"></i> Indica uma música</div>
-            <div class="quick-reply" data-reply="Frase motivacional"><i class="fas fa-sun"></i> Frase motivacional</div>
-        </div>
-        
-        <div class="input-area">
-            <input type="text" id="userInput" placeholder="Digite sua mensagem..." autocomplete="off">
-            <button id="sendButton" title="Enviar"><i class="fas fa-paper-plane"></i></button>
-        </div>
-        
-        <div class="footer">
-            <div class="studio">Este é um produto da Studio Tsukiyo Platforms</div>
-            <div class="slogan">Powered by Naoto Dev</div>
-        </div>
+  // Auto-scroll das mensagens
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
-        <!-- MODALS -->
-        <div class="modal-overlay" id="modalOverlay">
-            <div class="modal-content" id="exploreModal">
-                <h3 class="modal-header">Conheça também:</h3>
-                <a href="https://naotodev1.github.io/sophia/" target="_blank" class="explore-card">
-                    <img src="https://i.imgur.com/vH5122F.png" alt="Sophia Logo">
-                    <div class="card-text">
-                        <strong>Yuki</strong>
-                        <span>Uma assistente com múltiplas personalidades.</span>
-                    </div>
-                </a>
-                <a href="https://naotodev1.github.io/terms-e-policy/" target="_blank" class="explore-card">
-                    <i class="fas fa-file-contract"></i>
-                    <div class="card-text">
-                        <strong>Termos de Uso e Condições</strong>
-                        <span>Nossas políticas e diretrizes.</span>
-                    </div>
-                </a>
-            </div>
-            <div class="modal-content" id="settingsModal">
-                <h3 class="modal-header">Configurações</h3>
-                <div class="setting-row">
-                    <span>Notificações</span>
-                    <label class="toggle-switch"><input type="checkbox" id="notificationsToggle" checked><span class="slider"></span></label>
-                </div>
-            </div>
-        </div>
-        <div class="toast" id="toast"></div>
+  // Inicializar síntese de voz
+  useEffect(() => {
+    if ('speechSynthesis' in window) {
+      speechSynthesis.current = window.speechSynthesis;
+    }
+  }, []);
+
+  // Frases motivacionais expandidas
+  const motivationalPhrases = [
+    "Você é especial e merece todo carinho do mundo! 💙",
+    "Cada dia é uma nova oportunidade para sorrir! 😊",
+    "Você está fazendo um ótimo trabalho cuidando de si! ⭐",
+    "Lembre-se: você é amado(a) e importante! ❤️",
+    "Sua presença faz o mundo mais bonito! 🌟",
+    "Hoje é um bom dia para ser feliz! 🌞",
+    "Você tem uma luz especial que ilumina quem está ao seu redor! ✨",
+    "Cada pequeno passo que você dá é uma vitória! 🏆",
+    "Sua sabedoria e experiência são tesouros preciosos! 💎",
+    "O mundo é mais colorido com você nele! 🌈"
+  ];
+
+  // Respostas inteligentes do chatbot
+  const generateResponse = (userMessage) => {
+    const message = userMessage.toLowerCase();
+    
+    if (message.includes('oi') || message.includes('olá') || message.includes('bom dia') || message.includes('boa tarde') || message.includes('boa noite')) {
+      return `Olá${userName ? ', ' + userName : ''}! 😊 Que alegria te ver aqui! Como você está se sentindo hoje? Posso te ajudar com alguma coisa especial? 💙`;
+    }
+    
+    if (message.includes('nome')) {
+      return `Meu nome é Facilita+! Sou sua assistente digital criada especialmente para te ajudar no dia a dia. E você, qual é o seu nome? Adoro conhecer pessoas especiais como você! 🤗`;
+    }
+    
+    if (message.includes('idade') || message.includes('anos')) {
+      return `Que pergunta interessante! A idade é só um número, o que importa mesmo é como você se sente. Você tem a energia de quantos anos hoje? 😄✨`;
+    }
+    
+    if (message.includes('família') || message.includes('filho') || message.includes('neto')) {
+      return `A família é uma das maiores bênçãos da vida! 👨‍👩‍👧‍👦 Conte-me sobre sua família. Tenho certeza de que você tem histórias lindas para compartilhar! 💝`;
+    }
+    
+    if (message.includes('saúde') || message.includes('médico') || message.includes('remédio')) {
+      return `Cuidar da saúde é muito importante! 🏥 Se você tem dúvidas médicas, sempre procure seu médico de confiança. Posso te ajudar a organizar seus remédios ou criar lembretes. O que você precisa? 💊`;
+    }
+    
+    if (message.includes('obrigad')) {
+      return `Por nada! 😊 Fico muito feliz em poder te ajudar! É um prazer estar aqui para você. Se precisar de mais alguma coisa, é só falar! Estou sempre à disposição! 💙`;
+    }
+    
+    if (message.includes('tchau') || message.includes('até logo') || message.includes('despedida')) {
+      return `Até logo! 👋 Foi maravilhoso conversar com você! Volte sempre que quiser - estarei aqui te esperando com muito carinho! Cuide-se bem! 💙✨`;
+    }
+    
+    if (message.includes('triste') || message.includes('chateado') || message.includes('preocupado')) {
+      return `Sinto muito que você esteja se sentindo assim. 💙 É normal ter dias mais difíceis, e você não está sozinho(a). Quer conversar sobre o que está te incomodando? Às vezes, desabafar ajuda bastante. Estou aqui para te escutar! 🤗`;
+    }
+    
+    if (message.includes('feliz') || message.includes('alegre') || message.includes('bem')) {
+      return `Que maravilha saber que você está bem! 😊 Sua alegria é contagiante! Conte-me o que está deixando você tão feliz hoje? Adoro ouvir boas notícias! 🌟`;
+    }
+    
+    if (message.includes('tempo') || message.includes('clima')) {
+      return `Hoje está um dia ${weather.condition === 'sunny' ? 'ensolarado' : 'nublado'} com ${weather.temp}°C! ${weather.condition === 'sunny' ? '☀️ Perfeito para uma caminhada!' : '☁️ Bom para ficar em casa quentinho!'} Como você gosta de aproveitar dias assim?`;
+    }
+    
+    if (message.includes('ajuda') || message.includes('socorro')) {
+      return `Claro que vou te ajudar! 🆘 Sou especialista em tornar as coisas mais fáceis. Me conta o que você precisa - pode ser ajuda com o celular, lembretes, ou apenas uma conversa. Estou aqui para você! 💪`;
+    }
+    
+    if (message.includes('celular') || message.includes('telefone') || message.includes('whatsapp')) {
+      return `Vou te ajudar com o celular! 📱 É normal ter dificuldades com a tecnologia. O que você gostaria de aprender? Fazer ligações, mandar mensagens, tirar fotos, ou usar aplicativos? Vou explicar tudo passo a passo! 😊`;
+    }
+    
+    if (message.includes('comer') || message.includes('comida') || message.includes('receita')) {
+      return `Hmmm, falando de comida me deu fome! 🍽️ Você gosta de cozinhar? Posso te dar algumas sugestões de receitas fáceis e gostosas. O que você está com vontade de comer? 👩‍🍳`;
+    }
+    
+    if (message.includes('solidão') || message.includes('sozinho') || message.includes('conversar')) {
+      return `Você não está sozinho(a)! 🤗 Estou aqui para fazer companhia sempre que precisar. Que tal me contar sobre seu dia? Ou posso te contar uma história interessante. O que prefere? 💕`;
+    }
+    
+    // Resposta padrão mais elaborada
+    return `Que interessante o que você disse! 🤔 Conte-me mais sobre isso. Adoro nossas conversas - você sempre tem algo especial para compartilhar! Como posso te ajudar melhor? 😊💙`;
+  };
+
+  // Simula reconhecimento de voz melhorado
+  const handleVoiceInput = () => {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+      const recognition = new SpeechRecognition();
+      
+      recognition.lang = 'pt-BR';
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      
+      setIsListening(true);
+      
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setInputText(transcript);
+        setIsListening(false);
+      };
+      
+      recognition.onerror = () => {
+        setIsListening(false);
+        alert('Não consegui ouvir. Tente novamente!');
+      };
+      
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+      
+      recognition.start();
+    } else {
+      // Fallback para demonstração
+      setIsListening(true);
+      setTimeout(() => {
+        setIsListening(false);
+        setInputText("Olá, como você está?");
+      }, 2000);
+    }
+  };
+
+  // Texto para fala melhorado
+  const handleTextToSpeech = (text) => {
+    if (speechSynthesis.current) {
+      speechSynthesis.current.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'pt-BR';
+      utterance.rate = 0.8;
+      utterance.pitch = 1;
+      speechSynthesis.current.speak(utterance);
+    }
+  };
+
+  const addMessage = (text, isUser = false) => {
+    const newMessage = {
+      id: Date.now(),
+      text,
+      isUser,
+      timestamp: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+    };
+    setMessages(prev => [...prev, newMessage]);
+    
+    // Auto-leitura das mensagens da assistente
+    if (!isUser) {
+      setTimeout(() => handleTextToSpeech(text), 500);
+    }
+  };
+
+  const addTypingMessage = (text, isUser = false) => {
+    if (!isUser) {
+      setIsTyping(true);
+      setTimeout(() => {
+        setIsTyping(false);
+        addMessage(text, isUser);
+      }, 2000);
+    } else {
+      addMessage(text, isUser);
+    }
+  };
+
+  const handleQuickAction = (action) => {
+    switch(action) {
+      case 'reminder':
+        setCurrentView('reminder');
+        break;
+      case 'phone-help':
+        addMessage("Preciso de ajuda com o celular", true);
+        addTypingMessage("Claro! Vou te ajudar com o celular passo a passo. 📱 O que você gostaria de aprender primeiro? \n\n📞 Fazer ligações\n💬 Mandar mensagens\n📸 Tirar fotos\n🌐 Usar internet\n⚙️ Configurações básicas\n\nMe fala o que te interessa mais! 😊");
+        setCurrentView('chat');
+        break;
+      case 'sad':
+        addMessage("Estou me sentindo triste hoje", true);
+        addTypingMessage("Ah, meu querido... sinto muito que você esteja se sentindo assim. 💙 É completamente normal ter dias difíceis - todos nós passamos por isso. Você quer conversar sobre o que está te deixando triste? Ou prefere que eu te conte algo alegre para animar seu coração? Lembre-se: você é muito especial e amado! 🤗💕");
+        setCurrentView('chat');
+        break;
+      case 'chat':
+        addMessage("Oi! Quero bater um papo", true);
+        addTypingMessage("Oi, querido(a)! 😊 Que alegria te ver aqui! Adoro uma boa conversa. Como foi seu dia hoje? Aconteceu algo especial? Ou quer que eu te conte algumas novidades interessantes? Estou aqui para batermos um papo gostoso! ☕💙");
+        setCurrentView('chat');
+        break;
+      case 'weather':
+        addMessage("Como está o tempo hoje?", true);
+        addTypingMessage(`Hoje está ${weather.condition === 'sunny' ? 'ensolarado' : 'nublado'} com ${weather.temp}°C! ${weather.condition === 'sunny' ? '☀️ Um dia lindo para sair um pouco. Que tal uma caminhada ou sentar no jardim?' : '☁️ Um dia perfeito para ficar em casa quentinho com um chá!'} Você tem algum plano para hoje? 🌤️`);
+        setCurrentView('chat');
+        break;
+      case 'emergency':
+        addMessage("Preciso de ajuda urgente", true);
+        addTypingMessage("🚨 Entendo que você precisa de ajuda! Se for uma emergência médica, ligue imediatamente para:\n\n🆘 SAMU: 192\n🚑 Bombeiros: 193\n👮 Polícia: 190\n\nSe não for emergência médica, me conte o que aconteceu para eu te ajudar da melhor forma possível. Estou aqui para você! 💙");
+        setCurrentView('chat');
+        break;
+    }
+  };
+
+  const createReminder = () => {
+    if (reminderText.trim()) {
+      const newReminder = {
+        id: Date.now(),
+        text: reminderText,
+        time: reminderTime,
+        created: new Date()
+      };
+      setReminders(prev => [...prev, newReminder]);
+      
+      addMessage(`Quero criar um lembrete: "${reminderText}" para às ${reminderTime}`, true);
+      addTypingMessage(`✅ Perfeito! Criei seu lembrete para "${reminderText}" às ${reminderTime}. Vou te avisar na hora certa! 😊 Cuidar da sua saúde e rotina é muito importante. Você está indo muito bem! 💙⭐`);
+      setCurrentView('chat');
+      setReminderText('');
+    }
+  };
+
+  const sendMessage = () => {
+    if (inputText.trim()) {
+      addMessage(inputText, true);
+      const response = generateResponse(inputText);
+      
+      // Extrair nome se fornecido
+      if (inputText.toLowerCase().includes('meu nome é') || inputText.toLowerCase().includes('me chamo')) {
+        const nameMatch = inputText.match(/(?:meu nome é|me chamo) (\w+)/i);
+        if (nameMatch) {
+          setUserName(nameMatch[1]);
+        }
+      }
+      
+      setInputText('');
+      addTypingMessage(response);
+    }
+  };
+
+  const getRandomMotivation = () => {
+    return motivationalPhrases[Math.floor(Math.random() * motivationalPhrases.length)];
+  };
+
+  // Logo Component
+  const Logo = ({ size = 'normal' }) => (
+    <div className={`flex items-center justify-center ${size === 'small' ? 'gap-2' : 'gap-3'}`}>
+      <div className={`bg-gradient-to-br from-blue-400 to-purple-500 rounded-full ${size === 'small' ? 'p-2' : 'p-3'} shadow-lg`}>
+        <MessageCircle className={`text-white ${size === 'small' ? 'w-6 h-6' : 'w-8 h-8'}`} />
+      </div>
+      <div>
+        <h1 className={`font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent ${size === 'small' ? 'text-xl' : 'text-3xl'}`}>
+          Facilita+
+        </h1>
+        {size !== 'small' && <p className="text-gray-600 text-sm">Sua assistente digital</p>}
+      </div>
     </div>
+  );
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const elements = {
-                chatContainer: document.getElementById('chatContainer'),
-                userInput: document.getElementById('userInput'),
-                sendButton: document.getElementById('sendButton'),
-                typingIndicator: document.getElementById('typingIndicator'),
-                shareBtn: document.getElementById('shareBtn'),
-                exploreBtn: document.getElementById('exploreBtn'),
-                settingsBtn: document.getElementById('settingsBtn'),
-                modalOverlay: document.getElementById('modalOverlay'),
-                exploreModal: document.getElementById('exploreModal'),
-                settingsModal: document.getElementById('settingsModal'),
-                toast: document.getElementById('toast'),
-            };
-            
-            const animeRecommendations = [ { title: "Attack on Titan", description: "Um anime épico sobre a luta da humanidade contra titãs devoradores de humanos.", genre: "Ação, Fantasia Sombria", year: 2013 }, { title: "Fullmetal Alchemist: Brotherhood", description: "Dois irmãos buscam a Pedra Filosofal para restaurar seus corpos após uma transmutação falha.", genre: "Aventura, Fantasia", year: 2009 }, { title: "My Hero Academia", description: "Em um mundo de super-heróis, um jovem sem poderes luta para se tornar o maior herói.", genre: "Ação, Comédia", year: 2016 }, { title: "Demon Slayer", description: "Tanjiro Kamado torna-se um caçador de demônios para curar sua irmã. Animação espetacular.", genre: "Ação, Fantasia", year: 2019 }, { title: "Jujutsu Kaisen", description: "Um estudante se envolve com uma sociedade secreta de Feiticeiros para eliminar uma maldição.", genre: "Ação, Sobrenatural", year: 2020 } ];
-            const musicRecommendations = [ { title: "Blinding Lights", artist: "The Weeknd", genre: "Synth-pop", year: 2019 }, { title: "As It Was", artist: "Harry Styles", genre: "Synth-pop", year: 2022 }, { title: "Bohemian Rhapsody", artist: "Queen", genre: "Rock", year: 1975 }, { title: "Stay", artist: "The Kid LAROI & Justin Bieber", genre: "Pop", year: 2021 }, { title: "Something About Us", artist: "Daft Punk", genre: "Eletrônica", year: 2001 } ];
-            const motivationalPhrases = [ "A persistência é o caminho do êxito. - Charles Chaplin", "O único lugar onde o sucesso vem antes do trabalho é no dicionário. - Albert Einstein", "Não espere por uma crise para descobrir o que é importante em sua vida. - Platão", "Comece onde você está. Use o que você tem. Faça o que você pode. - Arthur Ashe", "O sucesso é a soma de pequenos esforços repetidos dia após dia. - Robert Collier" ];
-            const generalKnowledge = { "quem é você": "Eu sou a Nova, sua assistente virtual pessoal! Fui criada pelo Studio Tsukiyo para ser sua companheira inteligente. Estou aqui para ajudar no que precisar!", "o que você faz": "Posso recomendar animes e músicas, dar frases motivacionais, conversar sobre diversos assuntos e tentar te ajudar no que for possível!", "como você funciona": "Eu funciono através de uma base de conhecimento pré-definida e algoritmos de correspondência de palavras. Sou uma simulação de IA, projetada para ser útil e amigável!", "que horas são": `Agora são ${new Date().toLocaleTimeString('pt-BR')}. Precisa de mais alguma coisa?`, "studio tsukiyo": "Studio Tsukiyo Platforms é a equipe de desenvolvimento focada em criar experiências digitais inovadoras, como eu!", "naoto dev": "Naoto Dev é o principal desenvolvedor por trás da minha criação. Um programador talentoso que me trouxe à vida!", "dar feedback": "Você pode dar seu feedback valioso acessando o link: https://docs.google.com/forms/d/e/1FAIpQLSfZ0Lbr_xsrus2DAKYTOHf_zn3DHKwx8Fwtv-89Q55ivZqzqA/viewform", "termos de uso": "Nossos Termos de Uso e Condições estão disponíveis em: https://naotodev1.github.io/terms-e-policy", "sophia": "Sophia é outra assistente virtual criada pelo nosso estúdio. Você pode conhecê-la aqui: https://naotodev1.github.io/sophia" };
+  // Header Component
+  const Header = ({ title, showBack = false }) => (
+    <div className="bg-white shadow-lg border-b-4 border-blue-100">
+      <div className="max-w-md mx-auto p-4">
+        <div className="flex items-center justify-between">
+          {showBack ? (
+            <button
+              onClick={() => setCurrentView('main')}
+              className="bg-blue-100 hover:bg-blue-200 text-blue-600 p-3 rounded-full shadow-md transition-all duration-200 hover:scale-105"
+            >
+              <Home size={24} />
+            </button>
+          ) : (
+            <div></div>
+          )}
+          
+          <Logo size="small" />
+          
+          <button
+            onClick={() => setShowProfile(!showProfile)}
+            className="bg-gray-100 hover:bg-gray-200 text-gray-600 p-3 rounded-full shadow-md transition-all duration-200 hover:scale-105"
+          >
+            <User size={24} />
+          </button>
+        </div>
+        
+        {title && (
+          <div className="text-center mt-4">
+            <h2 className="text-xl font-bold text-gray-800">{title}</h2>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 
-            function showTypingIndicator() { elements.typingIndicator.style.display = 'block'; elements.chatContainer.scrollTop = elements.chatContainer.scrollHeight; }
-            function hideTypingIndicator() { elements.typingIndicator.style.display = 'none'; }
+  // Footer Component
+  const Footer = () => (
+    <div className="bg-gradient-to-r from-gray-100 to-gray-200 border-t-2 border-gray-300 py-4 px-6">
+      <div className="max-w-md mx-auto">
+        <div className="text-center space-y-2">
+          <div className="flex items-center justify-center gap-2 text-gray-600">
+            <Shield size={16} />
+            <span className="text-sm font-medium">Powered by</span>
+          </div>
+          <div className="font-bold text-lg bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+            ORPHEO Platforms
+          </div>
+          <div className="text-xs text-gray-500">
+            v2.1.0 • Assistente Digital Acessível
+          </div>
+          <div className="flex items-center justify-center gap-4 text-xs text-gray-400">
+            <span className="flex items-center gap-1">
+              <Wifi size={12} />
+              Online
+            </span>
+            <span className="flex items-center gap-1">
+              <Battery size={12} />
+              Ativo
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Profile Modal
+  const ProfileModal = () => (
+    showProfile && (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-3xl shadow-2xl max-w-sm w-full mx-4">
+          <div className="p-6">
+            <div className="text-center mb-6">
+              <div className="bg-gradient-to-br from-blue-400 to-purple-500 w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center">
+                <User className="text-white w-10 h-10" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800">
+                {userName || 'Visitante'}
+              </h3>
+              <p className="text-gray-600">Usuário do Facilita+</p>
+            </div>
             
-            function addMessage(message, isUser) {
-                const messageElement = document.createElement('div');
-                messageElement.classList.add('message', isUser ? 'user-message' : 'bot-message');
-                messageElement.innerHTML = message.replace(/\n/g, '<br>');
-                const timeElement = document.createElement('span');
-                timeElement.classList.add('message-time');
-                timeElement.textContent = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
-                messageElement.appendChild(timeElement);
-                elements.chatContainer.appendChild(messageElement);
-                elements.chatContainer.scrollTop = elements.chatContainer.scrollHeight;
-            }
+            <div className="space-y-4 mb-6">
+              <div className="bg-blue-50 p-4 rounded-2xl">
+                <div className="flex items-center gap-3 mb-2">
+                  <Clock size={20} className="text-blue-600" />
+                  <span className="font-semibold text-gray-800">Lembretes Ativos</span>
+                </div>
+                <p className="text-lg font-bold text-blue-600">{reminders.length}</p>
+              </div>
+              
+              <div className="bg-green-50 p-4 rounded-2xl">
+                <div className="flex items-center gap-3 mb-2">
+                  <MessageCircle size={20} className="text-green-600" />
+                  <span className="font-semibold text-gray-800">Conversas</span>
+                </div>
+                <p className="text-lg font-bold text-green-600">{Math.floor(messages.length / 2)}</p>
+              </div>
+            </div>
             
-            function processUserInput(text = null) {
-                const inputText = text || elements.userInput.value.trim();
-                if (inputText === '') return;
-                addMessage(inputText, true);
-                if (!text) elements.userInput.value = '';
-                showTypingIndicator();
+            <div className="space-y-3">
+              {!userName && (
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                    Como gostaria de ser chamado(a)?
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Digite seu nome"
+                    className="w-full p-3 border-2 border-gray-200 rounded-xl text-lg"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        setUserName(e.target.value);
+                        setShowProfile(false);
+                      }
+                    }}
+                  />
+                </div>
+              )}
+              
+              <button
+                onClick={() => setShowProfile(false)}
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-xl transition-all duration-200"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  );
+
+  // Componente de Boas-vindas Melhorado
+  const WelcomeView = () => (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+      <div className="container mx-auto px-6 py-8">
+        <div className="max-w-md mx-auto">
+          {/* Logo e Apresentação */}
+          <div className="text-center mb-12">
+            <div className="bg-white p-8 rounded-3xl shadow-2xl mb-8">
+              <Logo />
+              <div className="mt-6">
+                <div className="flex items-center justify-center gap-2 text-gray-600 mb-2">
+                  <Star className="w-5 h-5 text-yellow-500 fill-current" />
+                  <Star className="w-5 h-5 text-yellow-500 fill-current" />
+                  <Star className="w-5 h-5 text-yellow-500 fill-current" />
+                  <Star className="w-5 h-5 text-yellow-500 fill-current" />
+                  <Star className="w-5 h-5 text-yellow-500 fill-current" />
+                </div>
+                <p className="text-lg text-gray-600 font-medium">
+                  Um projeto: ORPHEO Platforms
+                </p>
+              </div>
+            </div>
+            
+            <div className="bg-white p-6 rounded-2xl shadow-lg mb-8">
+              <h2 className="text-2xl font-bold text-gray-800 mb-3">
+                👋 Olá, {userName || 'Visitante'}!
+              </h2>
+              <p className="text-xl text-gray-700 leading-relaxed">
+                Estou aqui para tornar sua vida mais fácil e organizada! 💙
+              </p>
+            </div>
+          </div>
+
+          {/* Status do Sistema */}
+          <div className="bg-white p-4 rounded-2xl shadow-lg mb-8">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-lg font-semibold text-gray-800">Status do Sistema</span>
+              <span className="flex items-center gap-1 text-green-600 font-semibold">
+                <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                Online
+              </span>
+            </div>
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <Thermometer className="w-6 h-6 text-blue-500 mx-auto mb-1" />
+                <p className="text-sm text-gray-600">{weather.temp}°C</p>
+              </div>
+              <div>
+                <Clock className="w-6 h-6 text-purple-500 mx-auto mb-1" />
+                <p className="text-sm text-gray-600">{currentTime.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</p>
+              </div>
+              <div>
+                <Calendar className="w-6 h-6 text-green-500 mx-auto mb-1" />
+                <p className="text-sm text-gray-600">{currentTime.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Botão Principal */}
+          <button
+            onClick={() => setCurrentView('main')}
+            className="w-full bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white text-2xl font-bold py-8 px-8 rounded-3xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl"
+          >
+            <div className="flex items-center justify-center gap-3">
+              <MessageCircle size={32} />
+              Começar Conversa
+            </div>
+          </button>
+        </div>
+      </div>
+      
+      <Footer />
+    </div>
+  );
+
+  // Componente Principal Melhorado
+  const MainView = () => (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex flex-col">
+      <Header title="Escolha como posso te ajudar hoje" />
+      
+      <div className="flex-1 p-6">
+        <div className="max-w-md mx-auto space-y-6">
+          {/* Status e Saudação */}
+          <div className="bg-white p-6 rounded-3xl shadow-lg">
+            <div className="text-center">
+              <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                {currentTime.getHours() < 12 ? 'Bom dia' : currentTime.getHours() < 18 ? 'Boa tarde' : 'Boa noite'}, {userName || 'querido(a)'}! 🌟
+              </h3>
+              <p className="text-lg text-gray-600 leading-relaxed">
+                Como posso te ajudar neste {currentTime.toLocaleDateString('pt-BR', { weekday: 'long' })}? 😊
+              </p>
+            </div>
+          </div>
+
+          {/* Botões de Ação Principal */}
+          <div className="grid gap-4">
+            <button
+              onClick={() => handleQuickAction('chat')}
+              className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white text-xl font-bold py-6 px-6 rounded-3xl shadow-lg transform transition-all duration-200 hover:scale-105 flex items-center justify-center gap-3"
+            >
+              <MessageCircle size={28} />
+              Conversar Comigo
+            </button>
+
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                onClick={() => handleQuickAction('reminder')}
+                className="bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 text-white text-lg font-bold py-6 px-4 rounded-3xl shadow-lg transform transition-all duration-200 hover:scale-105 flex flex-col items-center gap-2"
+              >
+                <Clock size={24} />
+                Criar Lembrete
+              </button>
+
+              <button
+                onClick={() => handleQuickAction('phone-help')}
+                className="bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white text-lg font-bold py-6 px-4 rounded-3xl shadow-lg transform transition-all duration-200 hover:scale-105 flex flex-col items-center gap-2"
+              >
+                <Phone size={24} />
+                Ajuda Celular
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                onClick={() => handleQuickAction('sad')}
+                className="bg-gradient-to-r from-pink-400 to-pink-600 hover:from-pink-500 hover:to-pink-700 text-white text-lg font-bold py-6 px-4 rounded-3xl shadow-lg transform transition-all duration-200 hover:scale-105 flex flex-col items-center gap-2"
+              >
+                <Heart size={24} />
+                Apoio Emocional
+              </button>
+
+              <button
+                onClick={() => handleQuickAction('emergency')}
+                className="bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white text-lg font-bold py-6 px-4 rounded-3xl shadow-lg transform transition-all duration-200 hover:scale-105 flex flex-col items-center gap-2"
+              >
+                <AlertCircle size={24} />
+                Emergência
+              </button>
+            </div>
+          </div>
+
+          {/* Seção Motivacional */}
+          <div className="bg-gradient-to-r from-yellow-100 via-orange-100 to-pink-100 p-6 rounded-3xl shadow-lg text-center">
+            <div className="mb-4">
+              <div className="text-4xl mb-2">🌟</div>
+              <p className="text-xl font-bold text-gray-800 mb-2">
+                Você está indo muito bem hoje!
+              </p>
+              <p className="text-lg text-gray-700 mb-4">
+                Que tal {currentTime.getHours() < 16 ? 'tomar uma água ou fazer um lanche gostoso' : 'relaxar um pouquinho'}? 💧✨
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() => {
+                  const phrase = getRandomMotivation();
+                  addMessage("Quero uma frase motivacional", true);
+                  setTimeout(() => addMessage(phrase), 1000);
+                  setCurrentView('chat');
+                }}
+                className="bg-gradient-to-r from-yellow-400 to-orange-400 hover:from-yellow-500 hover:to-orange-500 text-gray-800 text-sm font-bold py-3 px-4 rounded-2xl shadow-md transform transition-all duration-200 hover:scale-105"
+              >
+                ✨ Frase Bonita
+              </button>
+              
+              <button
+                onClick={() => handleQuickAction('weather')}
+                className="bg-gradient-to-r from-blue-300 to-cyan-400 hover:from-blue-400 hover:to-cyan-500 text-gray-800 text-sm font-bold py-3 px-4 rounded-2xl shadow-md transform transition-all duration-200 hover:scale-105"
+              >
+                🌤️ Como está o tempo
+              </button>
+            </div>
+          </div>
+
+          {/* Lembretes Ativos */}
+          {reminders.length > 0 && (
+            <div className="bg-white p-6 rounded-3xl shadow-lg">
+              <div className="flex items-center gap-3 mb-4">
+                <Clock className="text-purple-500" size={24} />
+                <h3 className="text-xl font-bold text-gray-800">Seus Lembretes</h3>
+              </div>
+              <div className="space-y-3">
+                {reminders.slice(-3).map((reminder) => (
+                  <div key={reminder.id} className="bg-purple-50 p-4 rounded-2xl">
+                    <p className="text-lg font-semibold text-purple-700">{reminder.text}</p>
+                    <p className="text-purple-600">⏰ {reminder.time}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      
+      <Footer />
+    </div>
+  );
+
+  // Componente de Lembrete Melhorado
+  const ReminderView = () => (
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 flex flex-col">
+      <Header title="🧠 Criar Novo Lembrete" showBack={true} />
+      
+      <div className="flex-1 p-6">
+        <div className="max-w-md mx-auto space-y-8">
+          {/* Instrução Amigável */}
+          <div className="bg-white p-6 rounded-3xl shadow-lg text-center">
+            <div className="text-4xl mb-4">⏰</div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-3">
+              Vamos criar seu lembrete!
+            </h3>
+            <p className="text-lg text-gray-600 leading-relaxed">
+              Me conte o que você quer lembrar e eu vou te avisar na hora certa! 😊
+            </p>
+          </div>
+
+          {/* Formulário de Lembrete */}
+          <div className="space-y-6">
+            {/* Pergunta 1 - O que lembrar */}
+            <div className="bg-white p-6 rounded-3xl shadow-lg">
+              <label className="block text-2xl font-bold text-gray-800 mb-4">
+                💭 O que você quer lembrar?
+              </label>
+              <input
+                type="text"
+                value={reminderText}
+                onChange={(e) => setReminderText(e.target.value)}
+                placeholder="Ex: Tomar remédio da pressão"
+                className="w-full text-2xl p-4 border-4 border-gray-200 rounded-2xl focus:border-purple-400 focus:outline-none placeholder-gray-400"
+              />
+              
+              {/* Sugestões rápidas */}
+              <div className="mt-4 grid grid-cols-1 gap-2">
+                {['Tomar remédio da pressão', 'Beber água', 'Ligar para o médico', 'Exercícios', 'Tomar vitamina'].map((suggestion) => (
+                  <button
+                    key={suggestion}
+                    onClick={() => setReminderText(suggestion)}
+                    className="text-left p-3 bg-purple-50 hover:bg-purple-100 rounded-xl text-gray-700 transition-colors duration-200"
+                  >
+                    💡 {suggestion}
+                  </button>
+                ))}
+              </div>
+              
+              <div className="mt-4 flex gap-3">
+                <button
+                  onClick={handleVoiceInput}
+                  className={`flex items-center justify-center gap-2 px-6 py-3 rounded-2xl text-lg font-bold transition-all duration-200 ${
+                    isListening 
+                      ? 'bg-red-400 text-white animate-pulse' 
+                      : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                  }`}
+                >
+                  <Mic size={24} />
+                  {isListening ? 'Ouvindo...' : 'Falar'}
+                </button>
+                
+                <button
+                  onClick={() => setReminderText('')}
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-3 rounded-2xl text-lg font-bold transition-colors duration-200"
+                >
+                  🗑️ Limpar
+                </button>
+              </div>
+            </div>
+
+            {/* Pergunta 2 - Horário */}
+            <div className="bg-white p-6 rounded-3xl shadow-lg">
+              <label className="block text-2xl font-bold text-gray-800 mb-4">
+                ⏰ Que horas você quer ser lembrado?
+              </label>
+              
+              {/* Relógio Visual */}
+              <div className="flex justify-center mb-6">
+                <div className="bg-gradient-to-br from-blue-400 to-purple-500 text-white p-8 rounded-3xl text-center shadow-xl">
+                  <div className="text-6xl font-mono font-bold mb-2">
+                    {reminderTime}
+                  </div>
+                  <div className="text-2xl">⏰</div>
+                  <div className="text-lg mt-2 opacity-90">
+                    {new Date(`2000-01-01 ${reminderTime}`).toLocaleTimeString('pt-BR', { 
+                      hour: '2-digit', 
+                      minute: '2-digit',
+                      hour12: false 
+                    })}
+                  </div>
+                </div>
+              </div>
+              
+              <input
+                type="time"
+                value={reminderTime}
+                onChange={(e) => setReminderTime(e.target.value)}
+                className="w-full text-3xl p-4 border-4 border-gray-200 rounded-2xl focus:border-purple-400 focus:outline-none text-center font-mono"
+              />
+              
+              {/* Horários sugeridos */}
+              <div className="mt-4 grid grid-cols-3 gap-2">
+                {['08:00', '12:00', '18:00', '20:00', '22:00', '06:00'].map((time) => (
+                  <button
+                    key={time}
+                    onClick={() => setReminderTime(time)}
+                    className="p-3 bg-purple-50 hover:bg-purple-100 rounded-xl text-purple-700 font-bold transition-colors duration-200"
+                  >
+                    {time}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Preview do Lembrete */}
+            {reminderText && (
+              <div className="bg-gradient-to-r from-green-50 to-blue-50 p-6 rounded-3xl shadow-lg border-2 border-green-200">
+                <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                  👁️ Como vai ficar seu lembrete:
+                </h4>
+                <div className="bg-white p-4 rounded-2xl shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-purple-100 p-3 rounded-full">
+                      <Clock className="text-purple-600" size={24} />
+                    </div>
+                    <div>
+                      <p className="text-xl font-semibold text-gray-800">{reminderText}</p>
+                      <p className="text-purple-600 font-bold">⏰ {reminderTime}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Botões de Ação */}
+          <div className="space-y-4">
+            <button
+              onClick={createReminder}
+              disabled={!reminderText.trim()}
+              className="w-full bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 disabled:from-gray-300 disabled:to-gray-400 text-white text-2xl font-bold py-6 px-6 rounded-3xl shadow-lg transform transition-all duration-300 hover:scale-105 disabled:hover:scale-100 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+            >
+              <Plus size={32} />
+              {reminderText ? `Criar Lembrete "${reminderText}"` : 'Criar Lembrete'}
+            </button>
+
+            <button
+              onClick={() => setCurrentView('main')}
+              className="w-full bg-gray-400 hover:bg-gray-500 text-white text-xl font-bold py-4 px-6 rounded-3xl shadow-lg transform transition-all duration-200 hover:scale-105"
+            >
+              ← Voltar ao Início
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <Footer />
+    </div>
+  );
+
+  // Componente de Chat Melhorado
+  const ChatView = () => (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex flex-col">
+      <Header showBack={true} />
+      
+      {/* Área de Mensagens */}
+      <div className="flex-1 overflow-y-auto p-4">
+        <div className="max-w-md mx-auto space-y-6 pb-6">
+          {/* Mensagem de boas-vindas se não houver mensagens */}
+          {messages.length === 0 && (
+            <div className="bg-white p-6 rounded-3xl shadow-lg text-center">
+              <div className="text-4xl mb-4">💬</div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-3">
+                Olá! Vamos conversar? 😊
+              </h3>
+              <p className="text-lg text-gray-600 leading-relaxed">
+                Estou aqui para te ajudar com qualquer coisa! Pode me perguntar sobre o celular, criar lembretes, ou só bater um papo gostoso mesmo! 💙
+              </p>
+            </div>
+          )}
+          
+          {messages.map((message) => (
+            <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
+              <div className={`max-w-xs px-6 py-4 rounded-3xl shadow-lg relative ${
+                message.isUser 
+                  ? 'bg-gradient-to-r from-green-400 to-blue-500 text-white' 
+                  : 'bg-white text-gray-800 border-2 border-blue-100'
+              }`}>
+                <p className="text-xl leading-relaxed whitespace-pre-line">{message.text}</p>
+                <p className={`text-sm mt-2 ${message.isUser ? 'text-blue-100' : 'text-gray-500'}`}>
+                  {message.timestamp}
+                </p>
+                {!message.isUser && (
+                  <button
+                    onClick={() => handleTextToSpeech(message.text)}
+                    className="absolute -bottom-2 -right-2 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full shadow-lg transition-all duration-200 hover:scale-110"
+                    title="Ouvir mensagem"
+                  >
+                    <Volume2 size={20} />
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+          
+          {/* Indicador de digitação */}
+          {isTyping && (
+            <div className="flex justify-start">
+              <div className="bg-white px-6 py-4 rounded-3xl shadow-lg border-2 border-blue-100">
+                <div className="flex items-center gap-2">
+                  <div className="flex gap-1">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{animationDelay: '0ms'}}></div>
+                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{animationDelay: '150ms'}}></div>
+                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{animationDelay: '300ms'}}></div>
+                  </div>
+                  <span className="text-blue-600 text-lg">Digitando...</span>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          {/* Botão Explicar de Novo */}
+          {messages.length > 0 && !isTyping && (
+            <div className="text-center">
+              <button
+                onClick={() => {
+                  const lastAIMessage = messages.filter(m => !m.isUser).pop();
+                  if (lastAIMessage) {
+                    addMessage("Por favor, explique de novo mais devagar 🙏", true);
+                    setTimeout(() => {
+                      addMessage("Claro! Vou explicar novamente com mais calma e detalhes:\n\n" + lastAIMessage.text + "\n\nEntendeu melhor agora? Se ainda tiver dúvida, me fale! 😊💙");
+                    }, 2000);
+                  }
+                }}
+                className="bg-gradient-to-r from-yellow-400 to-orange-400 hover:from-yellow-500 hover:to-orange-500 text-gray-800 text-lg font-bold py-4 px-6 rounded-full shadow-lg transform transition-all duration-200 hover:scale-105 flex items-center gap-3 mx-auto"
+              >
+                <RotateCcw size={24} />
+                Explicar de novo mais devagar
+              </button>
+            </div>
+          )}
+          
+          <div ref={messagesEndRef} />
+        </div>
+      </div>
+
+      {/* Botões de Ajuda Rápida */}
+      <div className="bg-white border-t-4 border-blue-100 p-4">
+        <div className="max-w-md mx-auto">
+          <div className="grid grid-cols-2 gap-3 mb-4">
+            <button
+              onClick={() => {
+                addMessage("Quero criar um lembrete", true);
                 setTimeout(() => {
-                    hideTypingIndicator();
-                    generateResponse(inputText);
-                }, 1200 + Math.random() * 500);
-            }
+                  addMessage("Perfeito! Vou te ajudar a criar um lembrete. Clique no botão 'Criar Lembrete' aqui embaixo, ou me diga: o que você quer lembrar e que horas? 📝⏰");
+                  setTimeout(() => setCurrentView('reminder'), 3000);
+                }, 1500);
+              }}
+              className="bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 text-white text-sm font-bold py-3 px-4 rounded-2xl shadow-md transform transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2"
+            >
+              <Clock size={18} />
+              Lembrete
+            </button>
             
-            function generateResponse(input) {
-                const lowerInput = input.toLowerCase();
-                let response = "";
-                let foundResponse = false;
-
-                for (const [key, value] of Object.entries(generalKnowledge)) {
-                    if (lowerInput.includes(key)) {
-                        response = value;
-                        foundResponse = true;
-                        break;
-                    }
-                }
-
-                if (!foundResponse) {
-                    if (lowerInput.includes('anime') || lowerInput.includes('mangá')) {
-                        const random = animeRecommendations[Math.floor(Math.random() * animeRecommendations.length)];
-                        response = `Recomendo: <span class="rec-title anime-title">${random.title}</span> (${random.year})\n<div class="recommendation anime-card">${random.description}</div>`;
-                    } else if (lowerInput.includes('música') || lowerInput.includes('som')) {
-                        const random = musicRecommendations[Math.floor(Math.random() * musicRecommendations.length)];
-                        response = `Que tal ouvir: <span class="rec-title music-title">${random.title}</span> - ${random.artist} (${random.year})\n<div class="recommendation music-card">Gênero: ${random.genre}</div>`;
-                    } else if (lowerInput.includes('frase') || lowerInput.includes('motiva')) {
-                        const random = motivationalPhrases[Math.floor(Math.random() * motivationalPhrases.length)];
-                        response = `Aqui está uma frase para te inspirar:\n<div class="recommendation quote-card"><span class="quote">${random}</span></div>`;
-                    } else if (lowerInput.includes('obrigad')) {
-                        response = "De nada! Se precisar de mais alguma coisa, é só chamar! 😊";
-                    } else if (lowerInput.includes('oi') || lowerInput.includes('olá')) {
-                        response = "Olá! Como vai? Estou aqui para ajudar no que precisar.";
-                    } else {
-                        response = "Não tenho certeza de como responder a isso. Que tal tentar uma das opções rápidas abaixo?";
-                    }
-                }
-                addMessage(response, false);
-            }
-
-            // --- MODAL & TOAST LOGIC ---
-            function openModal(modal) { modal.style.display = 'block'; elements.modalOverlay.classList.add('active'); }
-            function closeModal() {
-                elements.modalOverlay.classList.remove('active');
+            <button
+              onClick={() => {
+                addMessage("Preciso de ajuda com o celular", true);
+                setTimeout(() => addMessage("Claro! Sou especialista em ajudar com o celular! 📱 Me conte: você quer aprender a fazer ligações, mandar mensagens, usar WhatsApp, tirar fotos, ou tem alguma dificuldade específica? Vou te ensinar tudo passo a passo! 😊"), 1500);
+              }}
+              className="bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white text-sm font-bold py-3 px-4 rounded-2xl shadow-md transform transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2"
+            >
+              <Phone size={18} />
+              Ajuda Celular
+            </button>
+            
+            <button
+              onClick={() => {
+                addMessage("Estou me sentindo triste", true);
+                setTimeout(() => addMessage("Ah, querido(a)... sinto muito que você esteja assim. 💙 Você sabe que é completamente normal ter dias difíceis, né? Todos passamos por isso. Quer conversar sobre o que está te deixando triste? Ou prefere que eu te conte algo alegre para animar seu coração? Estou aqui para te escutar com todo carinho! 🤗❤️"), 1500);
+              }}
+              className="bg-gradient-to-r from-pink-400 to-pink-600 hover:from-pink-500 hover:to-pink-700 text-white text-sm font-bold py-3 px-4 rounded-2xl shadow-md transform transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2"
+            >
+              <Heart size={18} />
+              Estou triste
+            </button>
+            
+            <button
+              onClick={() => {
+                addMessage("Preciso falar com uma pessoa", true);
                 setTimeout(() => {
-                    elements.exploreModal.style.display = 'none';
-                    elements.settingsModal.style.display = 'none';
-                }, 300);
-            }
-            function showToast(message) {
-                elements.toast.textContent = message;
-                elements.toast.style.opacity = '1';
-                elements.toast.style.bottom = '20px';
-                setTimeout(() => {
-                    elements.toast.style.opacity = '0';
-                    elements.toast.style.bottom = '-50px';
-                }, 2000);
-            }
+                  addMessage("Entendo perfeitamente! Às vezes é muito bom conversar com uma pessoa mesmo. 👥💙\n\nVocê pode:\n📞 Ligar para um familiar querido\n👫 Procurar um amigo para conversar\n🏥 Se for urgente, ligar 192 (SAMU)\n🚑 Emergência: 193 (Bombeiros)\n👮 Segurança: 190 (Polícia)\n\nTem alguém especial que você gostaria de ligar agora? Posso te ajudar a encontrar o número ou te orientar como fazer a ligação! 😊");
+                }, 1500);
+              }}
+              className="bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white text-sm font-bold py-3 px-4 rounded-2xl shadow-md transform transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2"
+            >
+              <User size={18} />
+              Falar com Pessoa
+            </button>
+          </div>
 
-            // --- EVENT LISTENERS ---
-            elements.sendButton.addEventListener('click', () => processUserInput());
-            elements.userInput.addEventListener('keypress', e => { if (e.key === 'Enter') processUserInput(); });
-            document.querySelectorAll('.quick-reply').forEach(button => {
-                button.addEventListener('click', () => processUserInput(button.dataset.reply));
-            });
-            elements.modalOverlay.addEventListener('click', closeModal);
-            elements.exploreBtn.addEventListener('click', () => openModal(elements.exploreModal));
-            elements.settingsBtn.addEventListener('click', () => openModal(elements.settingsModal));
+          {/* Campo de Input Melhorado */}
+          <div className="flex gap-3">
+            <div className="flex-1 relative">
+              <input
+                type="text"
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                placeholder="Digite sua mensagem aqui..."
+                className="w-full text-xl p-4 pr-16 border-4 border-gray-200 rounded-2xl focus:border-blue-400 focus:outline-none placeholder-gray-400 bg-white shadow-md"
+              />
+              {inputText && (
+                <button
+                  onClick={() => setInputText('')}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+            
+            <button
+              onClick={handleVoiceInput}
+              className={`p-4 rounded-2xl shadow-lg transform transition-all duration-200 hover:scale-105 ${
+                isListening 
+                  ? 'bg-red-400 text-white animate-pulse' 
+                  : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+              }`}
+              title={isListening ? "Ouvindo..." : "Falar ao invés de escrever"}
+            >
+              <Mic size={24} />
+            </button>
+            
+            <button
+              onClick={sendMessage}
+              disabled={!inputText.trim()}
+              className="bg-gradient-to-r from-blue-400 to-purple-500 hover:from-blue-500 hover:to-purple-600 disabled:from-gray-300 disabled:to-gray-400 text-white p-4 rounded-2xl shadow-lg transform transition-all duration-200 hover:scale-105 disabled:hover:scale-100 disabled:cursor-not-allowed"
+              title="Enviar mensagem"
+            >
+              <Send size={24} />
+            </button>
+          </div>
+          
+          {/* Dicas de Uso */}
+          <div className="mt-4 text-center">
+            <p className="text-sm text-gray-500 mb-2">💡 Dicas: Fale sobre qualquer assunto!</p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {['Como está o tempo?', 'Conte uma história', 'Como fazer uma ligação?', 'Estou com saudade'].map((suggestion, index) => (
+                <button
+                  key={index}
+                  onClick={() => setInputText(suggestion)}
+                  className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full transition-colors duration-200"
+                >
+                  {suggestion}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <Footer />
+      <ProfileModal />
+    </div>
+  );
 
-            elements.shareBtn.addEventListener('click', async () => {
-                const shareData = { title: 'Lúmen', text: 'Conheça a Lúmen, uma assistente virtual inteligente.', url: 'https://naotodev1.github.io/Nova/' };
-                try {
-                    if (navigator.share) await navigator.share(shareData);
-                    else throw new Error();
-                } catch (err) {
-                    navigator.clipboard.writeText(shareData.url).then(() => showToast('Link copiado!'));
-                }
-            });
+  // Renderização principal
+  return (
+    <div className="font-sans antialiased">
+      {currentView === 'welcome' && <WelcomeView />}
+      {currentView === 'main' && <MainView />}
+      {currentView === 'reminder' && <ReminderView />}
+      {currentView === 'chat' && <ChatView />}
+      <ProfileModal />
+    </div>
+  );
+};
 
-            // Initial message
-            addMessage("Olá! Sou a Lúmen. 😊 Como posso te ajudar hoje?", false);
-        });
-    </script>
-</body>
-</html>
+export default FacilitaPlus;
