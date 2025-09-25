@@ -10,6 +10,8 @@ Assistente Digital Acessível para 60+
 
 ## 🚀 Acesso
 https://naotodev1.github.io/nova/
+
+## Avisos
 Nota: proibido uso do código ou roubo, sujeito a sanções penais.
 Ao usar nossos produtos, você concorda com nossos termos de uso e condições descritos em https://naotodev1.github.io/terms-e-policy/
 
