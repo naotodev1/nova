@@ -9,7 +9,7 @@
     <meta name="author" content="ORPHEO Platforms">
     
     <!-- Favicons -->
-    <link rel="icon" type="image/png+xml" href="data:image/svg+xml,%3Csvg xmlns='https://i.imgur.com/StKfniS.png' viewBox='0 0 24 24' fill='%234F46E5'%3E%3Cpath d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'/%3E%3C/svg%3E">
+    <link rel="icon" type="image/png+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234F46E5'%3E%3Cpath d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'/%3E%3C/svg%3E">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -97,7 +97,9 @@
         
         /* Focus styles for accessibility */
         button:focus,
-        input:focus {
+        input:focus,
+        select:focus,
+        textarea:focus {
             outline: 3px solid #4F46E5 !important;
             outline-offset: 2px !important;
         }
@@ -109,8 +111,8 @@
         <div class="text-center">
             <div class="bg-gradient-to-br from-blue-400 to-purple-500 p-6 rounded-full mb-4 animate-pulse-slow mx-auto w-20 h-20 flex items-center justify-center">
                 <img src="https://i.imgur.com/StKfniS.png" 
-     alt="Facilita+ Icon" 
-     class="w-10 h-10 text-white" />
+                     alt="Facilita+ Icon" 
+                     class="w-10 h-10" />
             </div>
             <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">Facilita+</h1>
             <p class="text-gray-600">Carregando sua assistente...</p>
@@ -125,7 +127,7 @@
     <!-- Main App Container -->
     <div id="app" class="hidden min-h-screen">
         <!-- Welcome Screen -->
-        <div id="welcome-view" class="min-h-screen">
+        <div id="welcome-view" class="min-h-screen flex flex-col justify-between">
             <div class="container mx-auto px-6 py-8">
                 <div class="max-w-md mx-auto">
                     <!-- Logo e Apresentação -->
@@ -133,24 +135,9 @@
                         <div class="bg-white p-8 rounded-3xl shadow-2xl mb-8">
                             <div class="flex items-center justify-center gap-3 mb-6">
                                 <div class="bg-gradient-to-br from-blue-400 to-purple-500 rounded-full p-3 shadow-lg">
-                                   <svg xmlns="https://i.imgur.com/StKfniS.png" 
-     class="w-10 h-10" 
-     viewBox="0 0 24 24" 
-     fill="url(#grad)">
-  <!-- Definição do gradiente roxo/rosa -->
-  <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#8b5cf6; stop-opacity:1" /> <!-- Roxo -->
-      <stop offset="100%" style="stop-color:#ec4899; stop-opacity:1" /> <!-- Rosa -->
-    </linearGradient>
-  </defs>
-  
-  <!-- Balão de fala -->
-  <path d="M4 4h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H8l-4 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>
-  
-  <!-- Símbolo "+" -->
-  <path d="M12 8v8M8 12h8" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
-</svg>
+                                    <img src="https://i.imgur.com/StKfniS.png" 
+                                         alt="Facilita+ Icon" 
+                                         class="w-10 h-10" />
                                 </div>
                                 <div>
                                     <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -209,21 +196,25 @@
                     <!-- Botão Principal -->
                     <button
                         onclick="showView('main')"
-                        class="w-full bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white text-2xl font-bold py-8 px-8 rounded-3xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl"
+                        class="w-full bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white text-2xl font-bold py-8 px-8 rounded-3xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl mb-4"
                         aria-label="Começar conversa com a assistente"
                     >
                         <div class="flex items-center justify-center gap-3">
                             <img src="https://i.imgur.com/StKfniS.png" 
-     alt="Facilita+ Icon" 
-     class="w-10 h-10 text-white" />
+                                 alt="Facilita+ Icon" 
+                                 class="w-10 h-10" />
                             Começar Conversa
                         </div>
                     </button>
+                    <!-- Termos de Uso -->
+                    <p class="text-center text-sm text-gray-600 leading-relaxed mt-4">
+                        Ao me utilizar, você concorda com os <a href="https://naotodev1.github.io/terms-e-policy" target="_blank" class="text-blue-600 hover:underline font-semibold">Termos de Uso e Condições</a>.
+                    </p>
                 </div>
             </div>
             
             <!-- Footer -->
-            <div class="bg-gradient-to-r from-gray-100 to-gray-200 border-t-2 border-gray-300 py-4 px-6">
+            <div class="bg-gradient-to-r from-gray-100 to-gray-200 border-t-2 border-gray-300 py-4 px-6 mt-auto">
                 <div class="max-w-md mx-auto">
                     <div class="text-center space-y-2">
                         <div class="flex items-center justify-center gap-2 text-gray-600">
@@ -261,7 +252,9 @@
                         
                         <div class="flex items-center justify-center gap-2">
                             <div class="bg-gradient-to-br from-blue-400 to-purple-500 rounded-full p-2 shadow-lg">
-                                <i data-lucide="message-circle" class="text-white w-6 h-6"></i>
+                                <img src="https://i.imgur.com/StKfniS.png" 
+                                     alt="Facilita+ Icon" 
+                                     class="w-6 h-6" />
                             </div>
                             <div>
                                 <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -285,7 +278,7 @@
                 </div>
             </div>
             
-            <div class="flex-1 p-6">
+            <div class="flex-1 p-6 overflow-y-auto">
                 <div class="max-w-md mx-auto space-y-6">
                     <!-- Status e Saudação -->
                     <div class="bg-white p-6 rounded-3xl shadow-lg">
@@ -306,7 +299,9 @@
                             class="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white text-xl font-bold py-6 px-6 rounded-3xl shadow-lg transform transition-all duration-200 hover:scale-105 flex items-center justify-center gap-3"
                             aria-label="Iniciar conversa com a assistente"
                         >
-                            <i data-lucide="message-circle" class="w-7 h-7"></i>
+                            <img src="https://i.imgur.com/StKfniS.png" 
+                                 alt="Facilita+ Icon" 
+                                 class="w-7 h-7" />
                             Conversar Comigo
                         </button>
 
@@ -349,6 +344,16 @@
                                 Emergência
                             </button>
                         </div>
+                        
+                        <!-- Novo Botão de Feedback -->
+                        <button
+                            onclick="openFeedbackForm()"
+                            class="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white text-xl font-bold py-6 px-6 rounded-3xl shadow-lg transform transition-all duration-200 hover:scale-105 flex items-center justify-center gap-3"
+                            aria-label="Enviar Feedback"
+                        >
+                            <i data-lucide="message-square-text" class="w-7 h-7"></i>
+                            Enviar Feedback
+                        </button>
                     </div>
 
                     <!-- Seção Motivacional -->
@@ -385,7 +390,7 @@
                     <!-- Lembretes Ativos -->
                     <div id="active-reminders" class="hidden bg-white p-6 rounded-3xl shadow-lg">
                         <div class="flex items-center gap-3 mb-4">
-                            <i data-lucide="clock" class="text-purple-500 w-6 h-6"></i>
+                            <i data-lucide="bell" class="text-purple-500 w-6 h-6"></i>
                             <h3 class="text-xl font-bold text-gray-800">Seus Lembretes</h3>
                         </div>
                         <div id="reminders-list" class="space-y-3">
@@ -396,7 +401,7 @@
             </div>
             
             <!-- Footer -->
-            <div class="bg-gradient-to-r from-gray-100 to-gray-200 border-t-2 border-gray-300 py-4 px-6">
+            <div class="bg-gradient-to-r from-gray-100 to-gray-200 border-t-2 border-gray-300 py-4 px-6 mt-auto">
                 <div class="max-w-md mx-auto">
                     <div class="text-center space-y-2">
                         <div class="flex items-center justify-center gap-2 text-gray-600">
@@ -440,7 +445,9 @@
                         
                         <div class="flex items-center justify-center gap-2">
                             <div class="bg-gradient-to-br from-blue-400 to-purple-500 rounded-full p-2 shadow-lg">
-                                <i data-lucide="message-circle" class="text-white w-6 h-6"></i>
+                                <img src="https://i.imgur.com/StKfniS.png" 
+                                     alt="Facilita+ Icon" 
+                                     class="w-6 h-6" />
                             </div>
                             <div>
                                 <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -464,13 +471,13 @@
             <div class="flex-1 overflow-y-auto p-4" id="messages-container">
                 <div class="max-w-md mx-auto space-y-6 pb-6">
                     <!-- Mensagem de boas-vindas inicial -->
-                    <div id="welcome-message" class="bg-white p-6 rounded-3xl shadow-lg text-center">
+                    <div id="welcome-chat-message" class="bg-white p-6 rounded-3xl shadow-lg text-center">
                         <div class="text-4xl mb-4">💬</div>
                         <h3 class="text-2xl font-bold text-gray-800 mb-3">
                             Olá! Vamos conversar? 😊
                         </h3>
                         <p class="text-lg text-gray-600 leading-relaxed">
-                            Estou aqui para te ajudar com qualquer coisa! Pode me perguntar sobre o celular, criar lembretes, ou só bater um papo gostoso mesmo! Ao usar meus serviços, vocÊ concorda com os termos de uso e condições contidos no site: https://naotodev1.github.io/terms-e-policy/ 💙
+                            Estou aqui para te ajudar com qualquer coisa! Pode me perguntar sobre o celular, criar lembretes, ou só bater um papo gostoso mesmo! 💙
                         </p>
                     </div>
                     
@@ -563,7 +570,7 @@
                                 class="hidden absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
                                 aria-label="Limpar texto digitado"
                             >
-                                ✕
+                                <i data-lucide="x" class="w-5 h-5"></i>
                             </button>
                         </div>
                         
@@ -615,7 +622,9 @@
                         
                         <div class="flex items-center justify-center gap-2">
                             <div class="bg-gradient-to-br from-blue-400 to-purple-500 rounded-full p-2 shadow-lg">
-                                <i data-lucide="message-circle" class="text-white w-6 h-6"></i>
+                                <img src="https://i.imgur.com/StKfniS.png" 
+                                     alt="Facilita+ Icon" 
+                                     class="w-6 h-6" />
                             </div>
                             <div>
                                 <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -639,7 +648,7 @@
                 </div>
             </div>
             
-            <div class="flex-1 p-6">
+            <div class="flex-1 p-6 overflow-y-auto">
                 <div class="max-w-md mx-auto space-y-8">
                     <!-- Instrução Amigável -->
                     <div class="bg-white p-6 rounded-3xl shadow-lg text-center">
@@ -745,7 +754,7 @@
                             <div class="bg-white p-4 rounded-2xl shadow-sm">
                                 <div class="flex items-center gap-3">
                                     <div class="bg-purple-100 p-3 rounded-full">
-                                        <i data-lucide="clock" class="text-purple-600 w-6 h-6"></i>
+                                        <i data-lucide="bell" class="text-purple-600 w-6 h-6"></i>
                                     </div>
                                     <div>
                                         <p class="text-xl font-semibold text-gray-800" id="preview-text">Digite algo acima</p>
@@ -799,7 +808,7 @@
                 <div class="space-y-4 mb-6">
                     <div class="bg-blue-50 p-4 rounded-2xl">
                         <div class="flex items-center gap-3 mb-2">
-                            <i data-lucide="clock" class="text-blue-600 w-5 h-5"></i>
+                            <i data-lucide="bell" class="text-blue-600 w-5 h-5"></i>
                             <span class="font-semibold text-gray-800">Lembretes Ativos</span>
                         </div>
                         <p class="text-lg font-bold text-blue-600" id="profile-reminders-count">0</p>
@@ -807,7 +816,7 @@
                     
                     <div class="bg-green-50 p-4 rounded-2xl">
                         <div class="flex items-center gap-3 mb-2">
-                            <i data-lucide="message-circle" class="text-green-600 w-5 h-5"></i>
+                            <img src="https://i.imgur.com/StKfniS.png" alt="Facilita+ Icon" class="w-5 h-5" />
                             <span class="font-semibold text-gray-800">Conversas</span>
                         </div>
                         <p class="text-lg font-bold text-green-600" id="profile-conversations-count">0</p>
@@ -881,7 +890,7 @@
             
             // Update time and date
             updateDateTime();
-            setInterval(updateDateTime, 1000);
+            setInterval(updateDateTime, 1000); // This runs every second, updating time/date, not an infinite loop.
             
             // Initialize speech recognition if available
             if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -947,10 +956,17 @@
             document.getElementById(view + '-view').classList.remove('hidden');
             currentView = view;
             
-            // Clear chat if switching to chat view
+            // Clear chat if switching to chat view and no messages yet
             if (view === 'chat' && messages.length === 0) {
-                document.getElementById('welcome-message').classList.remove('hidden');
+                document.getElementById('welcome-chat-message').classList.remove('hidden');
+            } else if (view === 'chat' && messages.length > 0) {
+                document.getElementById('welcome-chat-message').classList.add('hidden');
             }
+        }
+
+        // Open Feedback Form
+        function openFeedbackForm() {
+            window.open('https://docs.google.com/forms/d/e/1FAIpQLSfZ0Lbr_xsrus2DAKYTOHf_zn3DHKwx8Fwtv-89Q55ivZqzqA/viewform?usp=header', '_blank');
         }
 
         // Quick actions from main menu
@@ -963,7 +979,7 @@
                     showView('chat');
                     addUserMessage("Preciso de ajuda com o celular");
                     setTimeout(() => {
-                        addBotMessage("Claro! Vou te ajudar com o celular passo a passo. 📱 O que você gostaria de aprender primeiro? \n\n📞 Fazer ligações\n💬 Mandar mensagens\n📸 Tirar fotos\n🌐 Usar internet\n⚙️ Configurações básicas\n\nMe fala o que te interessa mais! 😊");
+                        addBotMessage("Claro! Vou te ajudar com o celular passo a passo. 📱 O que você gostaria de aprender primeiro? \n\n📞 Fazer ligações\n💬 Mandar mensagens (SMS ou WhatsApp)\n📸 Tirar fotos e gravar vídeos\n🌐 Usar a internet para buscar informações\n⚙️ Configurações básicas do aparelho\n\nMe fala o que te interessa mais! 😊");
                     }, 1500);
                     break;
                 case 'sad':
@@ -975,14 +991,20 @@
                     break;
                 case 'chat':
                     showView('chat');
-                    addUserMessage("Oi! Quero bater um papo");
-                    setTimeout(() => {
-                        addBotMessage("Oi, querido(a)! 😊 Que alegria te ver aqui! Adoro uma boa conversa. Como foi seu dia hoje? Aconteceu algo especial? Ou quer que eu te conte algumas novidades interessantes? Estou aqui para batermos um papo gostoso! ☕💙");
-                    }, 1500);
+                    // Only add an initial message if the chat is truly empty, to avoid duplicates
+                    if (messages.length === 0) {
+                        addUserMessage("Oi! Quero bater um papo");
+                        setTimeout(() => {
+                            addBotMessage("Oi, querido(a)! 😊 Que alegria te ver aqui! Adoro uma boa conversa. Como foi seu dia hoje? Aconteceu algo especial? Ou quer que eu te conte algumas novidades interessantes? Estou aqui para batermos um papo gostoso! ☕💙");
+                        }, 1500);
+                    } else {
+                         addBotMessage("De volta ao nosso chat! O que está na sua mente agora? 😊");
+                    }
                     break;
                 case 'weather':
                     showView('chat');
                     addUserMessage("Como está o tempo hoje?");
+                    // This response would ideally come from an API. For now, it's static.
                     setTimeout(() => {
                         addBotMessage("Hoje está um dia ensolarado com 24°C! ☀️ Um dia lindo para sair um pouco. Que tal uma caminhada ou sentar no jardim? Você tem algum plano para hoje? 🌤️");
                     }, 1500);
@@ -991,7 +1013,7 @@
                     showView('chat');
                     addUserMessage("Preciso de ajuda urgente");
                     setTimeout(() => {
-                        addBotMessage("🚨 Entendo que você precisa de ajuda! Se for uma emergência médica, ligue imediatamente para:\n\n🆘 SAMU: 192\n🚑 Bombeiros: 193\n👮 Polícia: 190\n\nSe não for emergência médica, me conte o que aconteceu para eu te ajudar da melhor forma possível. Estou aqui para você! 💙");
+                        addBotMessage("🚨 Entendo que você precisa de ajuda! Se for uma emergência médica, ligue imediatamente para:\n\n🆘 SAMU: 192\n🚑 Bombeiros: 193\n👮 Polícia: 190\n\nSe não for uma emergência vital, me conte o que aconteceu para eu te ajudar da melhor forma possível. Estou aqui para você! 💙");
                     }, 1500);
                     break;
             }
@@ -1028,7 +1050,7 @@
             }
         }
 
-        // Generate intelligent bot response
+        // Generate intelligent bot response (EXPANDED)
         function generateResponse(userMessage) {
             const message = userMessage.toLowerCase();
             
@@ -1060,8 +1082,8 @@
                 return `Até logo! 👋 Foi maravilhoso conversar com você! Volte sempre que quiser - estarei aqui te esperando com muito carinho! Cuide-se bem! 💙✨`;
             }
             
-            if (message.includes('triste') || message.includes('chateado') || message.includes('preocupado')) {
-                return `Sinto muito que você esteja se sentindo assim. 💙 É normal ter dias mais difíceis, e você não está sozinho(a). Quer conversar sobre o que está te incomodando? Às vezes, desabafar ajuda bastante. Estou aqui para te escutar! 🤗`;
+            if (message.includes('triste') || message.includes('chateado') || message.includes('preocupado') || message.includes('solidão') || message.includes('sozinho')) {
+                return `Sinto muito que você esteja se sentindo assim. 💙 É normal ter dias mais difíceis, e você não está sozinho(a). Quer conversar sobre o que está te incomodando? Às vezes, desabafar ajuda bastante. Estou aqui para te escutar com todo carinho! 🤗 Que tal ouvir uma música relaxante ou ver uma foto bonita?`;
             }
             
             if (message.includes('feliz') || message.includes('alegre') || message.includes('bem')) {
@@ -1069,23 +1091,59 @@
             }
             
             if (message.includes('tempo') || message.includes('clima')) {
-                return `Hoje está um dia ensolarado com 24°C! ☀️ Perfeito para uma caminhada! Como você gosta de aproveitar dias assim?`;
+                return `Hoje está um dia ensolarado com 24°C! ☀️ Perfeito para uma caminhada! Como você gosta de aproveitar dias assim? (Lembre-se que essa é uma previsão simples, para detalhes, consulte um app de clima!)`;
             }
             
-            if (message.includes('ajuda') || message.includes('socorro')) {
+            if (message.includes('ajuda') || message.includes('socorro') || message.includes('dúvida')) {
                 return `Claro que vou te ajudar! 🆘 Sou especialista em tornar as coisas mais fáceis. Me conta o que você precisa - pode ser ajuda com o celular, lembretes, ou apenas uma conversa. Estou aqui para você! 💪`;
             }
             
-            if (message.includes('celular') || message.includes('telefone') || message.includes('whatsapp')) {
-                return `Vou te ajudar com o celular! 📱 É normal ter dificuldades com a tecnologia. O que você gostaria de aprender? Fazer ligações, mandar mensagens, tirar fotos, ou usar aplicativos? Vou explicar tudo passo a passo! 😊`;
+            if (message.includes('celular') || message.includes('telefone') || message.includes('whatsapp') || message.includes('ligação')) {
+                return `Vou te ajudar com o celular! 📱 É normal ter dificuldades com a tecnologia. O que você gostaria de aprender? Fazer ligações, mandar mensagens (SMS ou WhatsApp), tirar fotos, ou usar aplicativos? Vou explicar tudo passo a passo! 😊`;
             }
-            
-            if (message.includes('comer') || message.includes('comida') || message.includes('receita')) {
-                return `Hmmm, falando de comida me deu fome! 🍽️ Você gosta de cozinhar? Posso te dar algumas sugestões de receitas fáceis e gostosas. O que você está com vontade de comer? 👩‍🍳`;
+
+            if (message.includes('internet') || message.includes('site') || message.includes('navegar')) {
+                return `A internet é um mundo de informações! 🌐 Você quer aprender a pesquisar algo, ver notícias, ou visitar algum site específico? Posso te guiar sobre como usar o navegador para encontrar o que procura.`;
             }
-            
-            if (message.includes('solidão') || message.includes('sozinho') || message.includes('conversar')) {
-                return `Você não está sozinho(a)! 🤗 Estou aqui para fazer companhia sempre que precisar. Que tal me contar sobre seu dia? Ou posso te contar uma história interessante. O que prefere? 💕`;
+
+            if (message.includes('email') || message.includes('e-mail')) {
+                return `O e-mail é ótimo para se comunicar com amigos e familiares! 📧 Você gostaria de aprender a enviar uma mensagem, ler suas caixas de entrada ou criar uma conta de e-mail? Posso te ajudar com isso!`;
+            }
+
+            if (message.includes('aplicativos') || message.includes('apps')) {
+                return `Os aplicativos são programas que deixam o celular mais divertido e útil! 📲 Quais tipos de aplicativos te interessam? Posso te mostrar como instalar, usar ou desinstalar os apps que você quiser.`;
+            }
+
+            if (message.includes('notícias') || message.includes('acontecendo')) {
+                return `Ficar por dentro das notícias é muito bom! 📰 Posso te indicar alguns sites ou aplicativos para ler as últimas novidades, ou podemos conversar sobre algum assunto que te interesse.`;
+            }
+
+            if (message.includes('exercício') || message.includes('caminhada') || message.includes('movimentar')) {
+                return `Fazer exercícios é excelente para a saúde e o humor! 🚶‍♀️ Posso te dar algumas dicas de alongamentos leves, sugerir uma caminhada no parque, ou até mesmo indicar vídeos de exercícios para fazer em casa. O importante é se movimentar!`;
+            }
+
+            if (message.includes('comer') || message.includes('comida') || message.includes('receita') || message.includes('alimentação')) {
+                return `Hmmm, falando de comida me deu fome! 🍽️ Você gosta de cozinhar? Posso te dar algumas sugestões de receitas fáceis e gostosas para um café da manhã, almoço ou jantar saudável. O que você está com vontade de comer? 👩‍🍳`;
+            }
+
+            if (message.includes('remédio') || message.includes('medicamento')) {
+                return `Lembretes de remédios são cruciais para a sua saúde! 💊 Posso te ajudar a criar um lembrete para tomar seus medicamentos na hora certa. Qual remédio e qual horário? Lembre-se sempre de seguir as orientações do seu médico.`;
+            }
+
+            if (message.includes('social') || message.includes('amigos') || message.includes('facebook')) {
+                return `Redes sociais são ótimas para manter contato com quem a gente gosta! 👨‍👩‍👧‍👦 Quer aprender a usar o Facebook, WhatsApp ou alguma outra rede para ver fotos dos seus amigos e familiares? Posso te ajudar a entender como funciona.`;
+            }
+
+            if (message.includes('dinheiro') || message.includes('banco') || message.includes('pagar')) {
+                return `Cuidar do dinheiro é importante. 💰 Posso te dar dicas gerais sobre como organizar suas finanças, usar aplicativos de banco (com segurança!), ou te explicar como pagar contas online. Lembre-se sempre de nunca compartilhar senhas ou dados pessoais.`;
+            }
+
+            if (message.includes('ler') || message.includes('livro') || message.includes('história')) {
+                return `A leitura é uma viagem maravilhosa! 📚 Você gostaria que eu te contasse uma história curta, ou prefere que eu sugira alguns livros e autores interessantes? Me diga o que te agrada mais!`;
+            }
+
+            if (message.includes('cuidar') || message.includes('pessoal') || message.includes('beleza')) {
+                return `Cuidar de si é um ato de carinho! ✨ Quer algumas dicas de cuidados com a pele, cabelo, ou talvez umas ideias para relaxar e se sentir melhor? Pequenos gestos fazem uma grande diferença no seu bem-estar!`;
             }
             
             // Extract name if provided
@@ -1106,7 +1164,7 @@
 
         // Chat functions
         function addUserMessage(text) {
-            hideWelcomeMessage();
+            document.getElementById('welcome-chat-message').classList.add('hidden'); // Hide welcome message once user sends something
             const messageId = Date.now();
             const timestamp = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
             
@@ -1128,7 +1186,7 @@
         }
 
         function addBotMessage(text) {
-            hideWelcomeMessage();
+            document.getElementById('welcome-chat-message').classList.add('hidden'); // Hide welcome message once bot replies
             const messageId = Date.now();
             const timestamp = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
             
@@ -1153,7 +1211,7 @@
             `;
             
             messagesContainer.appendChild(messageElement);
-            lucide.createIcons();
+            lucide.createIcons(); // Re-initialize icons for newly added elements
             scrollToBottom();
             showExplainAgainButton();
             
@@ -1172,8 +1230,9 @@
             document.getElementById('typing-indicator').classList.add('hidden');
         }
 
-        function hideWelcomeMessage() {
-            document.getElementById('welcome-message').classList.add('hidden');
+        // Renamed from hideWelcomeMessage to be more specific to chat
+        function hideWelcomeChatMessage() {
+            document.getElementById('welcome-chat-message').classList.add('hidden');
         }
 
         function showExplainAgainButton() {
@@ -1188,7 +1247,7 @@
         }
 
         // Send message function
-        function sendMessage() {
+        async function sendMessage() { // Made async for potential future API calls
             const input = document.getElementById('message-input');
             const text = input.value.trim();
             
@@ -1198,12 +1257,13 @@
                 updateInputButtons();
                 
                 showTypingIndicator();
+                // Simulate network delay for bot response
+                await new Promise(resolve => setTimeout(resolve, 1500 + Math.random() * 1000)); 
+                
                 const response = generateResponse(text);
                 
-                setTimeout(() => {
-                    hideTypingIndicator();
-                    addBotMessage(response);
-                }, 2000);
+                hideTypingIndicator();
+                addBotMessage(response);
             }
         }
 
@@ -1240,15 +1300,20 @@
 
         // Voice functions
         function toggleVoiceInput() {
-            if (isListening) {
-                stopListening();
+            if (recognition) {
+                if (isListening) {
+                    stopListening();
+                } else {
+                    startListening();
+                }
             } else {
-                startListening();
+                // Fallback for browsers without Web Speech API
+                alert('Seu navegador não suporta reconhecimento de voz. Por favor, digite sua mensagem.');
             }
         }
 
         function startListening() {
-            if (recognition) {
+            if (recognition && !isListening) { // Ensure not to start if already listening
                 isListening = true;
                 const voiceButton = document.getElementById('voice-button');
                 voiceButton.classList.add('voice-pulse', 'bg-red-400', 'text-white');
@@ -1258,51 +1323,42 @@
                     const transcript = event.results[0][0].transcript;
                     document.getElementById('message-input').value = transcript;
                     updateInputButtons();
-                    stopListening();
+                    stopListening(); // Stop after result
                 };
                 
-                recognition.onerror = function() {
+                recognition.onerror = function(event) {
+                    console.error('Speech recognition error:', event.error);
                     stopListening();
-                    alert('Não consegui ouvir. Tente novamente!');
+                    alert('Não consegui ouvir bem. Tente novamente ou digite sua mensagem!');
                 };
                 
                 recognition.onend = function() {
-                    stopListening();
+                    isListening = false; // Ensure isListening is false when recognition ends naturally
+                    const voiceButton = document.getElementById('voice-button');
+                    voiceButton.classList.remove('voice-pulse', 'bg-red-400', 'text-white');
+                    voiceButton.classList.add('bg-blue-100', 'text-blue-700');
                 };
                 
                 recognition.start();
-            } else {
-                // Fallback for demo
-                isListening = true;
-                const voiceButton = document.getElementById('voice-button');
-                voiceButton.classList.add('voice-pulse', 'bg-red-400', 'text-white');
-                voiceButton.classList.remove('bg-blue-100', 'text-blue-700');
-                
-                setTimeout(() => {
-                    document.getElementById('message-input').value = "Olá, como você está?";
-                    updateInputButtons();
-                    stopListening();
-                }, 2000);
             }
         }
 
         function stopListening() {
-            isListening = false;
-            const voiceButton = document.getElementById('voice-button');
-            voiceButton.classList.remove('voice-pulse', 'bg-red-400', 'text-white');
-            voiceButton.classList.add('bg-blue-100', 'text-blue-700');
-            
-            if (recognition) {
+            if (recognition && isListening) { // Ensure only stop if actually listening
                 recognition.stop();
+                isListening = false;
+                const voiceButton = document.getElementById('voice-button');
+                voiceButton.classList.remove('voice-pulse', 'bg-red-400', 'text-white');
+                voiceButton.classList.add('bg-blue-100', 'text-blue-700');
             }
         }
 
         function speakText(text) {
             if (speechSynthesis) {
-                speechSynthesis.cancel();
+                speechSynthesis.cancel(); // Stop any current speech
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = 'pt-BR';
-                utterance.rate = 0.8;
+                utterance.rate = 0.9; // Slightly slower for better comprehension
                 utterance.pitch = 1;
                 speechSynthesis.speak(utterance);
             }
@@ -1318,6 +1374,13 @@
                     hideTypingIndicator();
                     addBotMessage("Claro! Vou explicar novamente com mais calma e detalhes:\n\n" + lastBotMessage.text + "\n\nEntendeu melhor agora? Se ainda tiver dúvida, me fale! 😊💙");
                 }, 2000);
+            } else {
+                addUserMessage("Por favor, explique de novo mais devagar 🙏");
+                showTypingIndicator();
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    addBotMessage("Não tenho uma mensagem anterior para repetir, mas estou pronta para te ajudar com qualquer outra coisa! 😊");
+                }, 2000);
             }
         }
 
@@ -1329,7 +1392,7 @@
             const createBtn = document.getElementById('create-reminder-btn');
             const createBtnText = document.getElementById('create-btn-text');
             
-            if (text.trim()) {
+            if (text.trim() && time) { // Both text and time are required
                 preview.classList.remove('hidden');
                 document.getElementById('preview-text').textContent = text;
                 document.getElementById('preview-time').textContent = `⏰ ${time}`;
@@ -1372,6 +1435,7 @@
                 voiceButton.classList.add('voice-pulse', 'bg-red-400', 'text-white');
                 voiceButton.classList.remove('bg-blue-100', 'text-blue-700');
                 voiceButton.innerHTML = '<i data-lucide="mic" class="w-6 h-6"></i> Ouvindo...';
+                lucide.createIcons(); // Re-render icon
                 
                 recognition.onresult = function(event) {
                     const transcript = event.results[0][0].transcript;
@@ -1382,7 +1446,8 @@
                     lucide.createIcons();
                 };
                 
-                recognition.onerror = function() {
+                recognition.onerror = function(event) {
+                    console.error('Speech recognition error (reminder):', event.error);
                     voiceButton.classList.remove('voice-pulse', 'bg-red-400', 'text-white');
                     voiceButton.classList.add('bg-blue-100', 'text-blue-700');
                     voiceButton.innerHTML = '<i data-lucide="mic" class="w-6 h-6"></i> Falar';
@@ -1392,10 +1457,7 @@
                 
                 recognition.start();
             } else {
-                // Fallback
-                setTimeout(() => {
-                    setReminderText("Tomar remédio da pressão");
-                }, 1000);
+                alert('Seu navegador não suporta reconhecimento de voz. Por favor, digite o lembrete.');
             }
         }
 
@@ -1403,7 +1465,7 @@
             const text = document.getElementById('reminder-text').value.trim();
             const time = document.getElementById('reminder-time').value;
             
-            if (text) {
+            if (text && time) {
                 const reminder = {
                     id: Date.now(),
                     text: text,
@@ -1426,6 +1488,8 @@
                 document.getElementById('reminder-time').value = '14:00';
                 updateReminderPreview();
                 updateVisualTime();
+            } else {
+                alert('Por favor, preencha o que lembrar e o horário para criar o lembrete.');
             }
         }
 
@@ -1437,6 +1501,7 @@
                 const remindersList = document.getElementById('reminders-list');
                 remindersList.innerHTML = '';
                 
+                // Display up to 3 most recent reminders
                 reminders.slice(-3).forEach(reminder => {
                     const reminderElement = document.createElement('div');
                     reminderElement.className = 'bg-purple-50 p-4 rounded-2xl';
@@ -1456,7 +1521,7 @@
             const modal = document.getElementById('profile-modal');
             if (modal.classList.contains('hidden')) {
                 modal.classList.remove('hidden');
-                document.getElementById('profile-conversations-count').textContent = Math.floor(messages.length / 2);
+                document.getElementById('profile-conversations-count').textContent = Math.floor(messages.length / 2); // Roughly count bot messages
             } else {
                 modal.classList.add('hidden');
             }
@@ -1474,6 +1539,8 @@
                     localStorage.setItem('userName', userName);
                     updateUserName();
                     closeProfile();
+                } else {
+                    alert('Por favor, digite um nome válido.');
                 }
             }
         }
@@ -1494,22 +1561,24 @@
             }, 1000);
         }
 
-        // Monitor input changes
+        // Monitor input changes (ensure event listeners are only added once)
         document.addEventListener('DOMContentLoaded', function() {
             const messageInput = document.getElementById('message-input');
             if (messageInput) {
                 messageInput.addEventListener('input', updateInputButtons);
             }
             
-            const reminderInput = document.getElementById('reminder-text');
-            if (reminderInput) {
-                reminderInput.addEventListener('input', updateReminderPreview);
+            const reminderTextInput = document.getElementById('reminder-text');
+            if (reminderTextInput) {
+                reminderTextInput.addEventListener('input', updateReminderPreview);
             }
             
-            const timeInput = document.getElementById('reminder-time');
-            if (timeInput) {
-                timeInput.addEventListener('change', updateVisualTime);
+            const reminderTimeInput = document.getElementById('reminder-time');
+            if (reminderTimeInput) {
+                reminderTimeInput.addEventListener('change', updateVisualTime);
+                reminderTimeInput.addEventListener('input', updateReminderPreview); // Also update preview on input
             }
+            updateReminderPreview(); // Initial check for reminder button state
         });
 
         // Accessibility improvements
@@ -1521,7 +1590,9 @@
             
             // Ctrl+Enter to send message
             if (event.ctrlKey && event.key === 'Enter') {
-                sendMessage();
+                if (currentView === 'chat') {
+                    sendMessage();
+                }
             }
         });
 
