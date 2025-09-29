@@ -7,423 +7,525 @@
     <meta name="description" content="Facilita+ - Assistente digital especializada para pessoas 60+, PCDs e iniciantes em tecnologia">
     <meta name="keywords" content="assistente digital, acessibilidade, 60+, idosos, tecnologia, chatbot">
     <meta name="author" content="ORPHEO Platforms">
-    
+    <meta name="theme-color" content="
+#4F46E5">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json,{%22name%22:%22Facilita+%20-%20Assistente%20Digital%20Acessível%22,%22short_name%22:%22Facilita+%22,%22description%22:%22Assistente%20Digital%20Especializada%20para%2060+%22,%22start_url%22:%22/%22,%22display%22:%22standalone%22,%22theme_color%22:%22%234F46E5%22,%22background_color%22:%22%23ffffff%22,%22icons%22:[{%22src%22:%22data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192' fill='%234F46E5'%3E%3Cpath d='M48 96h8M96 96h8M144 96h8M192 96c0 53-43 96-96 96-18.5 0-35.8-5.2-50.4-14.3L16 192l14.3-29.6C21.2 147.8 16 130.5 16 96 16 43 59 0 96 0s96 43 96 96z'/%3E%3C/svg%3E%22,%22sizes%22:%22192x192%22,%22type%22:%22image/svg+xml%22}]}">
+
     <!-- Favicons -->
-    <link rel="icon" type="image/png+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234F46E5'%3E%3Cpath d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'/%3E%3C/svg%3E">
-    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234F46E5'%3E%3Cpath d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'/%3E%3C/svg%3E">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    
-    <!-- Custom Styles -->
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-        
-        * {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        :root {
+            --primary-blue: 
+#4F46E5;
+            --primary-purple: 
+#7C3AED;
+            --success-green: 
+#10B981;
+            --warning-orange: 
+#F59E0B;
+            --danger-red: 
+#EF4444;
+            --text-size-multiplier: 1;
         }
-        
-        .animate-bounce-slow {
-            animation: bounce 2s infinite;
-        }
-        
-        .animate-pulse-slow {
-            animation: pulse 3s ease-in-out infinite;
-        }
-        
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .chat-message {
-            animation: slideIn 0.3s ease-out;
-        }
-        
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .typing-indicator {
-            animation: typing 1.5s ease-in-out infinite;
-        }
-        
-        @keyframes typing {
-            0%, 60%, 100% {
-                transform: translateY(0);
-            }
-            30% {
-                transform: translateY(-10px);
-            }
-        }
-        
-        .voice-pulse {
-            animation: voicePulse 1s ease-in-out infinite;
-        }
-        
-        @keyframes voicePulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        
-        /* Accessibility improvements */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-        
-        /* High contrast mode support */
-        @media (prefers-contrast: high) {
-            .bg-gradient-to-r,
-            .bg-gradient-to-br,
-            .bg-gradient-to-b {
-                background: #000 !important;
-                color: #fff !important;
-                border: 2px solid #fff !important;
-            }
-        }
-        
-        /* Focus styles for accessibility */
-        button:focus,
-        input:focus,
-        select:focus,
-        textarea:focus {
-            outline: 3px solid #4F46E5 !important;
-            outline-offset: 2px !important;
-        }
-    </style>
+
+{
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Accessibility Controls */
+.text-size-small { --text-size-multiplier: 0.9; }
+.text-size-normal { --text-size-multiplier: 1; }
+.text-size-large { --text-size-multiplier: 1.2; }
+.text-size-xlarge { --text-size-multiplier: 1.5; }
+
+.text-xs { font-size: calc(0.75rem * var(--text-size-multiplier)); }
+.text-sm { font-size: calc(0.875rem * var(--text-size-multiplier)); }
+.text-base { font-size: calc(1rem * var(--text-size-multiplier)); }
+.text-lg { font-size: calc(1.125rem * var(--text-size-multiplier)); }
+.text-xl { font-size: calc(1.25rem * var(--text-size-multiplier)); }
+.text-2xl { font-size: calc(1.5rem * var(--text-size-multiplier)); }
+.text-3xl { font-size: calc(1.875rem * var(--text-size-multiplier)); }
+.text-4xl { font-size: calc(2.25rem * var(--text-size-multiplier)); }
+.text-5xl { font-size: calc(3rem * var(--text-size-multiplier)); }
+.text-6xl { font-size: calc(3.75rem * var(--text-size-multiplier)); }
+
+/* Accessibility Themes */
+.high-contrast {
+  --bg-primary: 
+#000000;
+  --text-primary: 
+#ffffff;
+  --bg-secondary: 
+#ffffff;
+  --text-secondary: 
+#000000;
+  --border-color: 
+#ffffff;
+}
+
+.high-contrast * {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.high-contrast button, .high-contrast .bg-white {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-secondary) !important;
+  border: 3px solid var(--border-color) !important;
+}
+
+.night-mode {
+  background: 
+#1a202c !important;
+  color: 
+#e2e8f0 !important;
+}
+
+.night-mode .bg-white {
+  background: 
+#2d3748 !important;
+  color: 
+#e2e8f0 !important;
+}
+
+.reading-mode {
+  background: 
+#f8f9fa !important;
+  color: 
+#2d3748 !important;
+  line-height: 1.8 !important;
+  font-family: Georgia, serif !important;
+}
+
+/* Animations */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+  }
+}
+
+.chat-message {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.voice-pulse {
+  animation: voicePulse 1s ease-in-out infinite;
+}
+
+@keyframes voicePulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.emergency-button {
+  animation: emergencyPulse 2s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+}
+
+@keyframes emergencyPulse {
+  0%, 100% { 
+      transform: scale(1);
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+  }
+  50% { 
+      transform: scale(1.02);
+      box-shadow: 0 0 30px rgba(239, 68, 68, 0.8);
+  }
+}
+
+.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Focus Indicators */
+button:focus, input:focus, select:focus {
+  outline: 4px solid var(--primary-blue) !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.3) !important;
+}
+
+/* Touch Targets */
+button, input, select {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: 
+#f1f5f9;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: 
+#cbd5e1;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: 
+#94a3b8;
+}
+</style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 min-h-screen">
-    <!-- Loading Screen -->
-    <div id="loading" class="fixed inset-0 bg-white z-50 flex items-center justify-center">
-        <div class="text-center">
-            <div class="bg-gradient-to-br from-blue-400 to-purple-500 p-6 rounded-full mb-4 animate-pulse-slow mx-auto w-20 h-20 flex items-center justify-center">
-                <img src="https://i.imgur.com/StKfniS.png" 
-                     alt="Facilita+ Icon" 
-                     class="w-10 h-10" />
-            </div>
-            <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">Facilita+</h1>
-            <p class="text-gray-600">Carregando sua assistente...</p>
-            <div class="mt-4 flex justify-center gap-1">
-                <div class="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 0ms;"></div>
-                <div class="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 150ms;"></div>
-                <div class="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style="animation-delay: 300ms;"></div>
-            </div>
-        </div>
-    </div>
+<body class="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 min-h-screen text-size-normal">
+<!-- Accessibility Panel -->
+<div id="accessibility-panel" class="hidden fixed top-0 left-0 right-0 bg-gray-900 text-white p-4 z-50 shadow-2xl">
+<div class="max-w-6xl mx-auto">
+  <div class="flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+          <i class="fas fa-universal-access text-2xl"></i>
+          <h2 class="text-xl font-bold">Painel de Acessibilidade</h2>
+      </div>
 
-    <!-- Main App Container -->
-    <div id="app" class="hidden min-h-screen">
-        <!-- Welcome Screen -->
-        <div id="welcome-view" class="min-h-screen flex flex-col justify-between">
-            <div class="container mx-auto px-6 py-8">
-                <div class="max-w-md mx-auto">
-                    <!-- Logo e Apresentação -->
-                    <div class="text-center mb-12">
-                        <div class="bg-white p-8 rounded-3xl shadow-2xl mb-8">
-                            <div class="flex items-center justify-center gap-3 mb-6">
-                                <div class="bg-gradient-to-br from-blue-400 to-purple-500 rounded-full p-3 shadow-lg">
-                                    <img src="https://i.imgur.com/StKfniS.png" 
-                                         alt="Facilita+ Icon" 
-                                         class="w-10 h-10" />
-                                </div>
-                                <div>
-                                    <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                                        Facilita+
-                                    </h1>
-                                    <p class="text-gray-600 text-sm">Powered by ORPHEO Platforms</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-center gap-2 text-gray-600 mb-2">
-                                <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
-                                <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
-                                <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
-                                <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
-                                <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
-                            </div>
-                            <p class="text-lg text-gray-600 font-medium">
-                                Assistente Digital Especializada para 60+
-                            </p>
-                        </div>
-                        
-                        <div class="bg-white p-6 rounded-2xl shadow-lg mb-8">
-                            <h2 class="text-2xl font-bold text-gray-800 mb-3">
-                                👋 Olá, <span id="welcome-name">Visitante</span>!
-                            </h2>
-                            <p class="text-xl text-gray-700 leading-relaxed">
-                                Estou aqui para tornar sua vida mais fácil e organizada! 💙
-                            </p>
-                        </div>
-                    </div>
+      <div class="flex flex-wrap gap-4">
+          <!-- Font Size Controls -->
+          <div class="flex items-center gap-2">
+              <span class="text-sm">Tamanho:</span>
+              <button onclick="setFontSize('small')" class="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600">A</button>
+              <button onclick="setFontSize('normal')" class="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600">A</button>
+              <button onclick="setFontSize('large')" class="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600 text-lg">A</button>
+              <button onclick="setFontSize('xlarge')" class="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600 text-xl">A</button>
+          </div>
 
-                    <!-- Status do Sistema -->
-                    <div class="bg-white p-4 rounded-2xl shadow-lg mb-8">
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-lg font-semibold text-gray-800">Status do Sistema</span>
-                            <span class="flex items-center gap-1 text-green-600 font-semibold">
-                                <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                                Online
-                            </span>
-                        </div>
-                        <div class="grid grid-cols-3 gap-4 text-center">
-                            <div>
-                                <i data-lucide="thermometer" class="w-6 h-6 text-blue-500 mx-auto mb-1"></i>
-                                <p class="text-sm text-gray-600" id="current-temp">24°C</p>
-                            </div>
-                            <div>
-                                <i data-lucide="clock" class="w-6 h-6 text-purple-500 mx-auto mb-1"></i>
-                                <p class="text-sm text-gray-600" id="current-time">--:--</p>
-                            </div>
-                            <div>
-                                <i data-lucide="calendar" class="w-6 h-6 text-green-500 mx-auto mb-1"></i>
-                                <p class="text-sm text-gray-600" id="current-date">--/--</p>
-                            </div>
-                        </div>
-                    </div>
+          <!-- Theme Controls -->
+          <button onclick="toggleHighContrast()" class="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600">
+              <i class="fas fa-adjust"></i> Contraste
+          </button>
+          <button onclick="toggleNightMode()" class="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600">
+              <i class="fas fa-moon"></i> Noite
+          </button>
+          <button onclick="toggleReadingMode()" class="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600">
+              <i class="fas fa-book-open"></i> Leitura
+          </button>
 
-                    <!-- Botão Principal -->
-                    <button
-                        onclick="showView('main')"
-                        class="w-full bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white text-2xl font-bold py-8 px-8 rounded-3xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl mb-4"
-                        aria-label="Começar conversa com a assistente"
-                    >
-                        <div class="flex items-center justify-center gap-3">
-                            <img src="https://i.imgur.com/StKfniS.png" 
-                                 alt="Facilita+ Icon" 
-                                 class="w-10 h-10" />
-                            Começar Conversa
-                        </div>
-                    </button>
-                    <!-- Termos de Uso -->
-                    <p class="text-center text-sm text-gray-600 leading-relaxed mt-4">
-                        Ao me utilizar, você concorda com os <a href="https://naotodev1.github.io/terms-e-policy" target="_blank" class="text-blue-600 hover:underline font-semibold">Termos de Uso e Condições</a>.
-                    </p>
-                </div>
-            </div>
-            
-            <!-- Footer -->
-            <div class="bg-gradient-to-r from-gray-100 to-gray-200 border-t-2 border-gray-300 py-4 px-6 mt-auto">
-                <div class="max-w-md mx-auto">
-                    <div class="text-center space-y-2">
-                        <div class="flex items-center justify-center gap-2 text-gray-600">
-                            <i data-lucide="shield" class="w-4 h-4"></i>
-                            <span class="text-sm font-medium">Powered by</span>
-                        </div>
-                        <div class="font-bold text-lg bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                            ORPHEO Platforms
-                        </div>
-                        <div class="text-xs text-gray-500">
-                            v0.1.0 • Assistente Digital Acessível
-                        </div>
-                        <div class="flex items-center justify-center gap-4 text-xs text-gray-400">
-                            <span class="flex items-center gap-1">
-                                <i data-lucide="wifi" class="w-3 h-3"></i>
-                                Online
-                            </span>
-                            <span class="flex items-center gap-1">
-                                <i data-lucide="battery" class="w-3 h-3"></i>
-                                Ativo
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+          <!-- Speech Controls -->
+          <div class="flex items-center gap-2">
+              <span class="text-sm">Fala:</span>
+              <button onclick="setSpeechRate(0.5)" class="px-2 py-1 bg-gray-700 rounded hover:bg-gray-600">0.5x</button>
+              <button onclick="setSpeechRate(1)" class="px-2 py-1 bg-gray-700 rounded hover:bg-gray-600">1x</button>
+              <button onclick="setSpeechRate(1.5)" class="px-2 py-1 bg-gray-700 rounded hover:bg-gray-600">1.5x</button>
+          </div>
 
-        <!-- Main Menu -->
-        <div id="main-view" class="hidden min-h-screen flex flex-col">
-            <!-- Header -->
-            <div class="bg-white shadow-lg border-b-4 border-blue-100">
-                <div class="max-w-md mx-auto p-4">
-                    <div class="flex items-center justify-between">
-                        <div></div>
-                        
-                        <div class="flex items-center justify-center gap-2">
-                            <div class="bg-gradient-to-br from-blue-400 to-purple-500 rounded-full p-2 shadow-lg">
-                                <img src="https://i.imgur.com/StKfniS.png" 
-                                     alt="Facilita+ Icon" 
-                                     class="w-6 h-6" />
-                            </div>
-                            <div>
-                                <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                                    Facilita+
-                                </h1>
-                            </div>
-                        </div>
-                        
-                        <button
-                            onclick="toggleProfile()"
-                            class="bg-gray-100 hover:bg-gray-200 text-gray-600 p-3 rounded-full shadow-md transition-all duration-200 hover:scale-105"
-                            aria-label="Abrir perfil do usuário"
-                        >
-                            <i data-lucide="user" class="w-6 h-6"></i>
-                        </button>
-                    </div>
-                    
-                    <div class="text-center mt-4">
-                        <h2 class="text-xl font-bold text-gray-800">Escolha como posso te ajudar hoje</h2>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="flex-1 p-6 overflow-y-auto">
-                <div class="max-w-md mx-auto space-y-6">
-                    <!-- Status e Saudação -->
-                    <div class="bg-white p-6 rounded-3xl shadow-lg">
-                        <div class="text-center">
-                            <h3 class="text-2xl font-bold text-gray-800 mb-2">
-                                <span id="greeting">Olá</span>, <span id="main-username">querido(a)</span>! 🌟
-                            </h3>
-                            <p class="text-lg text-gray-600 leading-relaxed">
-                                Como posso te ajudar neste <span id="current-weekday">dia</span>? 😊
-                            </p>
-                        </div>
-                    </div>
+          <button onclick="closeAccessibilityPanel()" class="px-4 py-2 bg-red-600 rounded hover:bg-red-500">
+              <i class="fas fa-times"></i>
+          </button>
+      </div>
+  </div>
+</div>
+</div>
 
-                    <!-- Botões de Ação Principal -->
-                    <div class="grid gap-4">
-                        <button
-                            onclick="quickAction('chat')"
-                            class="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white text-xl font-bold py-6 px-6 rounded-3xl shadow-lg transform transition-all duration-200 hover:scale-105 flex items-center justify-center gap-3"
-                            aria-label="Iniciar conversa com a assistente"
-                        >
-                            <img src="https://i.imgur.com/StKfniS.png" 
-                                 alt="Facilita+ Icon" 
-                                 class="w-7 h-7" />
-                            Conversar Comigo
-                        </button>
+<!-- Loading Screen -->
+<div id="loading" class="fixed inset-0 bg-white z-40 flex items-center justify-center">
+<div class="text-center">
+  <div class="bg-gradient-to-br from-blue-400 to-purple-500 p-6 rounded-full mb-4 mx-auto w-20 h-20 flex items-center justify-center loading">
+      <i data-lucide="message-circle" class="text-white w-10 h-10"></i>
+  </div>
+  <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">Facilita+</h1>
+  <p class="text-xl text-gray-600 mb-4">Carregando seu assistente inteligente...</p>
+  <div class="flex justify-center gap-1 mb-4">
+      <div class="w-3 h-3 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 0ms;"></div>
+      <div class="w-3 h-3 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 150ms;"></div>
+      <div class="w-3 h-3 bg-pink-400 rounded-full animate-bounce" style="animation-delay: 300ms;"></div>
+  </div>
+  <div class="text-sm text-gray-500">
+      <p>Inicializando recursos de acessibilidade...</p>
+  </div>
+</div>
+</div>
 
-                        <div class="grid grid-cols-2 gap-4">
-                            <button
-                                onclick="quickAction('reminder')"
-                                class="bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 text-white text-lg font-bold py-6 px-4 rounded-3xl shadow-lg transform transition-all duration-200 hover:scale-105 flex flex-col items-center gap-2"
-                                aria-label="Criar um novo lembrete"
+<!-- Emergency Alert -->
+<div id="emergency-alert" class="hidden fixed inset-0 bg-red-600 bg-opacity-95 z-50 flex items-center justify-center p-4">
+<div class="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl">
+  <div class="text-6xl mb-4">🚨</div>
+  <h2 class="text-3xl font-bold text-red-600 mb-4">EMERGÊNCIA</h2>
+  <p class="text-xl text-gray-800 mb-6">Números importantes:</p>
+  <div class="space-y-3 mb-6">
+      <a href="tel:192" class="block bg-red-500 text-white text-2xl font-bold py-4 rounded-2xl hover:bg-red-600 transition-colors">
+          📞 SAMU - 192
+      </a>
+      <a href="tel:193" class="block bg-red-500 text-white text-2xl font-bold py-4 rounded-2xl hover:bg-red-600 transition-colors">
+          🚑 BOMBEIROS - 193
+      </a>
+      <a href="tel:190" class="block bg-red-500 text-white text-2xl font-bold py-4 rounded-2xl hover:bg-red-600 transition-colors">
+          🚔 POLÍCIA - 190
+      </a>
+  </div>
+  <button onclick="closeEmergencyAlert()" class="bg-gray-500 text-white px-6 py-3 rounded-2xl hover:bg-gray-600">
+      Fechar
+  </button>
+</div>
+</div>
+
+<!-- Voice Indicator -->
+<div id="voice-indicator" class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 text-white p-8 rounded-full z-40 voice-pulse">
+<div class="text-center">
+  <i class="fas fa-microphone text-4xl mb-2"></i>
+  <p class="text-xl font-bold">Ouvindo...</p>
+  <p class="text-sm">Fale agora</p>
+</div>
+</div>
+
+<!-- Main App -->
+<div id="app" class="hidden min-h-screen">
+<!-- Floating Buttons -->
+<button 
+  onclick="toggleAccessibilityPanel()"
+  class="fixed bottom-4 right-4 bg-blue-600 text-white p-4 rounded-full shadow-2xl hover:bg-blue-700 z-30"
+  title="Painel de Acessibilidade (Ctrl+M)"
+>
+  <i class="fas fa-universal-access text-2xl"></i>
+</button>
+
+<button 
+  onclick="showEmergencyAlert()"
+  class="fixed bottom-20 right-4 bg-red-600 text-white p-4 rounded-full shadow-2xl emergency-button z-30"
+  title="Emergência"
+>
+  <i class="fas fa-exclamation-triangle text-2xl"></i>
+</button>
+
+<!-- Welcome Screen -->
+<div id="welcome-view" class="min-h-screen">
+  <div class="container mx-auto px-6 py-8">
+      <div class="max-w-md mx-auto">
+          <!-- Logo -->
+          <div class="text-center mb-12">
+              <div class="bg-white p-8 rounded-3xl shadow-2xl mb-8 border-4 border-blue-100">
+                  <div class="flex items-center justify-center gap-3 mb-6">
+                      <div class="bg-gradient-to-br from-blue-400 to-purple-500 rounded-full p-4 shadow-lg loading">
+                          <i data-lucide="message-circle" class="text-white w-10 h-10"></i>
+                      </div>
+                      <div>
+                          <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                              Facilita+
+                          </h1>
+                          <p class="text-gray-600 text-lg font-medium">Powered by ORPHEO Platforms</p>
+                      </div>
+                  </div>
+
+                  <div class="flex items-center justify-center gap-2 text-gray-600 mb-3">
+                      <i class="fas fa-star text-yellow-500"></i>
+                      <i class="fas fa-star text-yellow-500"></i>
+                      <i class="fas fa-star text-yellow-500"></i>
+                      <i class="fas fa-star text-yellow-500"></i>
+                      <i class="fas fa-star text-yellow-500"></i>
+                      <span class="ml-2 font-semibold">5.0 ⭐</span>
+                  </div>
+                  <p class="text-lg text-gray-600 font-medium">
+                      Assistente Digital para 60+
+                  </p>
+              </div>
+
+              <div class="bg-gradient-to-r from-green-50 to-blue-50 p-6 rounded-2xl shadow-lg mb-8">
+                  <h2 class="text-3xl font-bold text-gray-800 mb-3">
+                      👋 Olá, <span id="welcome-name" class="text-blue-600">Visitante</span>!
+                  </h2>
+                  <p class="text-xl text-gray-700">
+                      Estou aqui para tornar sua vida mais fácil! 💙
+                  </p>
+              </div>
+          </div>
+
+          <!-- Status -->
+          <div class="bg-white p-6 rounded-2xl shadow-lg mb-8">
+              <div class="flex items-center justify-between mb-4">
+                  <span class="text-xl font-bold text-gray-800">Sistema</span>
+                  <span class="flex items-center gap-2 text-green-600 font-bold">
+                      <div class="w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
+                      Online
+                  </span>
+              </div>
+              <div class="grid grid-cols-3 gap-4 text-center">
+                  <div class="bg-blue-50 p-3 rounded-xl">
+                      <i class="fas fa-thermometer-half text-blue-500 text-2xl mb-1"></i>
+                      <p class="text-lg font-bold text-blue-700" id="current-temp">24°C</p>
+                  </div>
+                  <div class="bg-purple-50 p-3 rounded-xl">
+                      <i class="fas fa-clock text-purple-500 text-2xl mb-1"></i>
+                      <p class="text-lg font-bold text-purple-700" id="current-time">--:--</p>
+                  </div>
+                  <div class="bg-green-50 p-3 rounded-xl">
+                      <i class="fas fa-calendar-day text-green-500 text-2xl mb-1"></i>
+                      <p class="text-lg font-bold text-green-700" id="current-date">--/--</p>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Main Button -->
+          <button
+              onclick="showView('main')"
+              class="w-full bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white text-3xl font-bold py-10 px-8 rounded-3xl shadow-2xl transform transition-all duration-300 hover:scale-105"
+          >
+              <div class="flex items-center justify-center gap-4">
+                  <i data-lucide="message-circle" class="w-10 h-10"></i>
+                  Começar Conversa
+              </div>
+          </button>
+
+          <!-- Voice Command -->
+          <div class="mt-6 text-center">
+              <p class="text-gray-600 mb-3">Ou use comando de voz:</p>
+              <button
+                  onclick="startVoiceCommand()"
+                  class="bg-gradient-to-r from-blue-400 to-purple-500 hover:from-blue-500 hover:to-purple-600 text-white text-xl font-bold py-4 px-8 rounded-full shadow-lg transform transition-all duration-200 hover:scale-105"
+              >
+                  <i class="fas fa-microphone mr-2"></i>
+                  Falar com o Facilita+
+              </button>
+          </div>
+      </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="bg-gradient-to-r from-gray-100 to-gray-200 border-t-4 border-gray-300 py-6 px-6">
+      <div class="max-w-md mx-auto text-center space-y-3">
+          <div class="font-bold text-2xl bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+              ORPHEO Platforms
+          </div>
+          <div class="text-sm text-gray-600">
+              <p>v1.0.0 • Kai Assistente Digital</p>
+              <p>🛡️ Seguro • ♿ Acessível • 🧠 Inteligente</p>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- Main Menu -->
+<div id="main-view" class="hidden min-h-screen flex flex-col">
+  <!-- Header -->
+  <div class="bg-gradient-to-r from-white to-blue-50 shadow-2xl border-b-4 border-blue-100">
+      <div class="max-w-md mx-auto p-4">
+          <div class="flex items-center justify-between">
+              <button
+                  onclick="showView('welcome')"
+                  class="bg-blue-100 hover:bg-blue-200 text-blue-600 p-3 rounded-full shadow-md transition-all duration-200 hover:scale-105"
+              >
+                  <i class="fas fa-home text-xl"></i>
+              </button>
+
+              <div class="flex items-center justify-center gap-2">
+                  <div class="bg-gradient-to-br from-blue-400 to-purple-500 rounded-full p-3 shadow-lg">
+                      <i data-lucide="message-circle" class="text-white w-8 h-8"></i>
+                  </div>
+                  <div>
+                      <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                          Facilita+
+                      </h1>
+                  </div>
+              </div>
+
+              <button
+                  onclick="toggleProfile()"
+                  class="bg-gray-100 hover:bg-gray-200 text-gray-600 p-3 rounded-full shadow-md transition-all duration-200 hover:scale-105"
+              >
+                  <i data-lucide="user" class="w-6 h-6"></i>
+              </button>
+          </div>
+
+          <div class="text-center mt-4">
+              <h2 class="text-2xl font-bold text-gray-800">Como posso te ajudar?</h2>
+          </div>
+      </div>
+  </div>
+
+  <div class="flex-1 p-6">
+      <div class="max-w-md mx-auto space-y-6">
+          <!-- Greeting -->
+          <div class="bg-gradient-to-r from-white to-blue-50 p-6 rounded-3xl shadow-lg border-2 border-blue-100">
+              <div class="text-center">
+                  <h3 class="text-2xl font-bold text-gray-800 mb-2">
+                      <span id="greeting">Olá</span>, <span id="main-username" class="text-blue-600">querido(a)</span>! 🌟
+                  </h3>
+                  <p class="text-lg text-gray-700">
+                      Como posso te ajudar hoje? 😊
+                  </p>
+              </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="grid gap-4">
+              <button
+                  onclick="quickAction('chat')"
+                  class="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white text-2xl font-bold py-8 px-6 rounded-3xl shadow-xl transform transition-all duration-200 hover:scale-105 flex items-center justify-center gap-4"
+              >
+                  <i data-lucide="message-circle" class="w-8 h-8"></i>
+                  Conversar Comigo
+              </button>
+
+              <div class="grid grid-cols-2 gap-4">
+                  <button flex flex-col items-center gap-3"
                             >
-                                <i data-lucide="clock" class="w-6 h-6"></i>
-                                Criar Lembrete
-                            </button>
-
-                            <button
-                                onclick="quickAction('phone-help')"
-                                class="bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white text-lg font-bold py-6 px-4 rounded-3xl shadow-lg transform transition-all duration-200 hover:scale-105 flex flex-col items-center gap-2"
-                                aria-label="Obter ajuda com o celular"
-                            >
-                                <i data-lucide="phone" class="w-6 h-6"></i>
-                                Ajuda Celular
-                            </button>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <button
-                                onclick="quickAction('sad')"
-                                class="bg-gradient-to-r from-pink-400 to-pink-600 hover:from-pink-500 hover:to-pink-700 text-white text-lg font-bold py-6 px-4 rounded-3xl shadow-lg transform transition-all duration-200 hover:scale-105 flex flex-col items-center gap-2"
-                                aria-label="Obter apoio emocional"
-                            >
-                                <i data-lucide="heart" class="w-6 h-6"></i>
-                                Apoio Emocional
-                            </button>
-
-                            <button
-                                onclick="quickAction('emergency')"
-                                class="bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white text-lg font-bold py-6 px-4 rounded-3xl shadow-lg transform transition-all duration-200 hover:scale-105 flex flex-col items-center gap-2"
-                                aria-label="Informações de emergência"
-                            >
-                                <i data-lucide="alert-circle" class="w-6 h-6"></i>
+                                <i data-lucide="alert-circle" class="w-8 h-8"></i>
                                 Emergência
                             </button>
                         </div>
-                        
-                        <!-- Novo Botão de Feedback -->
+
                         <button
-                            onclick="openFeedbackForm()"
-                            class="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white text-xl font-bold py-6 px-6 rounded-3xl shadow-lg transform transition-all duration-200 hover:scale-105 flex items-center justify-center gap-3"
-                            aria-label="Enviar Feedback"
+                            onclick="quickAction('voice')"
+                            class="bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white text-2xl font-bold py-8 px-6 rounded-3xl shadow-xl transform transition-all duration-200 hover:scale-105 flex items-center justify-center gap-4"
                         >
-                            <i data-lucide="message-square-text" class="w-7 h-7"></i>
-                            Enviar Feedback
+                            <i class="fas fa-microphone text-3xl"></i>
+                            Comando de Voz
                         </button>
                     </div>
 
-                    <!-- Seção Motivacional -->
-                    <div class="bg-gradient-to-r from-yellow-100 via-orange-100 to-pink-100 p-6 rounded-3xl shadow-lg text-center">
-                        <div class="mb-4">
-                            <div class="text-4xl mb-2">🌟</div>
-                            <p class="text-xl font-bold text-gray-800 mb-2">
-                                Você está indo muito bem hoje!
-                            </p>
-                            <p class="text-lg text-gray-700 mb-4" id="motivational-suggestion">
-                                Que tal tomar uma água ou fazer um lanche gostoso? 💧✨
-                            </p>
-                        </div>
-                        
-                        <div class="grid grid-cols-2 gap-3">
-                            <button
-                                onclick="getMotivationalPhrase()"
-                                class="bg-gradient-to-r from-yellow-400 to-orange-400 hover:from-yellow-500 hover:to-orange-500 text-gray-800 text-sm font-bold py-3 px-4 rounded-2xl shadow-md transform transition-all duration-200 hover:scale-105"
-                                aria-label="Receber uma frase motivacional"
-                            >
-                                ✨ Frase Bonita
-                            </button>
-                            
-                            <button
-                                onclick="quickAction('weather')"
-                                class="bg-gradient-to-r from-blue-300 to-cyan-400 hover:from-blue-400 hover:to-cyan-500 text-gray-800 text-sm font-bold py-3 px-4 rounded-2xl shadow-md transform transition-all duration-200 hover:scale-105"
-                                aria-label="Ver informações do tempo"
-                            >
-                                🌤️ Como está o tempo
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Lembretes Ativos -->
-                    <div id="active-reminders" class="hidden bg-white p-6 rounded-3xl shadow-lg">
-                        <div class="flex items-center gap-3 mb-4">
-                            <i data-lucide="bell" class="text-purple-500 w-6 h-6"></i>
-                            <h3 class="text-xl font-bold text-gray-800">Seus Lembretes</h3>
-                        </div>
-                        <div id="reminders-list" class="space-y-3">
-                            <!-- Lembretes serão inseridos aqui dinamicamente -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Footer -->
-            <div class="bg-gradient-to-r from-gray-100 to-gray-200 border-t-2 border-gray-300 py-4 px-6 mt-auto">
-                <div class="max-w-md mx-auto">
-                    <div class="text-center space-y-2">
-                        <div class="flex items-center justify-center gap-2 text-gray-600">
-                            <i data-lucide="shield" class="w-4 h-4"></i>
-                            <span class="text-sm font-medium">Powered by</span>
-                        </div>
-                        <div class="font-bold text-lg bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                            ORPHEO Platforms
-                        </div>
-                        <div class="text-xs text-gray-500">
-                            v0.1.0 • Assistente Digital Acessível
-                        </div>
-                        <div class="flex items-center justify-center gap-4 text-xs text-gray-400">
-                            <span class="flex items-center gap-1">
-                                <i data-lucide="wifi" class="w-3 h-3"></i>
-                                Online
-                            </span>
-                            <span class="flex items-center gap-1">
-                                <i data-lucide="battery" class="w-3 h-3"></i>
-                                Ativo
-                            </span>
-                        </div>
+                    <!-- Tips -->
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 p-6 rounded-3xl shadow-lg border-2 border-yellow-200">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center gap-2">
+                            <i class="fas fa-lightbulb text-yellow-500 text-2xl"></i>
+                            Dica do Dia
+                        </h3>
+                        <p class="text-lg text-gray-700" id="daily-tip">
+                            Carregando dica...
+                        </p>
                     </div>
                 </div>
             </div>
@@ -431,1183 +533,1086 @@
 
         <!-- Chat View -->
         <div id="chat-view" class="hidden min-h-screen flex flex-col">
-            <!-- Header -->
-            <div class="bg-white shadow-lg border-b-4 border-blue-100">
-                <div class="max-w-md mx-auto p-4">
+            <!-- Chat Header -->
+            <div class="bg-gradient-to-r from-white to-blue-50 shadow-2xl border-b-4 border-blue-100">
+                <div class="max-w-3xl mx-auto p-4">
                     <div class="flex items-center justify-between">
                         <button
                             onclick="showView('main')"
                             class="bg-blue-100 hover:bg-blue-200 text-blue-600 p-3 rounded-full shadow-md transition-all duration-200 hover:scale-105"
-                            aria-label="Voltar para o menu principal"
                         >
-                            <i data-lucide="home" class="w-6 h-6"></i>
+                            <i class="fas fa-arrow-left text-xl"></i>
                         </button>
                         
-                        <div class="flex items-center justify-center gap-2">
-                            <div class="bg-gradient-to-br from-blue-400 to-purple-500 rounded-full p-2 shadow-lg">
-                                <img src="https://i.imgur.com/StKfniS.png" 
-                                     alt="Facilita+ Icon" 
-                                     class="w-6 h-6" />
+                        <div class="flex items-center gap-2">
+                            <div class="bg-gradient-to-br from-blue-400 to-purple-500 rounded-full p-3 shadow-lg">
+                                <i data-lucide="message-circle" class="text-white w-6 h-6"></i>
                             </div>
                             <div>
-                                <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                                    Facilita+
-                                </h1>
-                            </div>
-                        </div>
-                        
-                        <button
-                            onclick="toggleProfile()"
-                            class="bg-gray-100 hover:bg-gray-200 text-gray-600 p-3 rounded-full shadow-md transition-all duration-200 hover:scale-105"
-                            aria-label="Abrir perfil do usuário"
-                        >
-                            <i data-lucide="user" class="w-6 h-6"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Área de Mensagens -->
-            <div class="flex-1 overflow-y-auto p-4" id="messages-container">
-                <div class="max-w-md mx-auto space-y-6 pb-6">
-                    <!-- Mensagem de boas-vindas inicial -->
-                    <div id="welcome-chat-message" class="bg-white p-6 rounded-3xl shadow-lg text-center">
-                        <div class="text-4xl mb-4">💬</div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-3">
-                            Olá! Vamos conversar? 😊
-                        </h3>
-                        <p class="text-lg text-gray-600 leading-relaxed">
-                            Estou aqui para te ajudar com qualquer coisa! Pode me perguntar sobre o celular, criar lembretes, ou só bater um papo gostoso mesmo! 💙
-                        </p>
-                    </div>
-                    
-                    <!-- Mensagens do chat serão inseridas aqui -->
-                    <div id="chat-messages"></div>
-                    
-                    <!-- Indicador de digitação -->
-                    <div id="typing-indicator" class="hidden flex justify-start">
-                        <div class="bg-white px-6 py-4 rounded-3xl shadow-lg border-2 border-blue-100">
-                            <div class="flex items-center gap-2">
-                                <div class="flex gap-1">
-                                    <div class="w-2 h-2 bg-blue-400 rounded-full animate-bounce typing-indicator" style="animation-delay: 0ms;"></div>
-                                    <div class="w-2 h-2 bg-blue-400 rounded-full animate-bounce typing-indicator" style="animation-delay: 150ms;"></div>
-                                    <div class="w-2 h-2 bg-blue-400 rounded-full animate-bounce typing-indicator" style="animation-delay: 300ms;"></div>
+                                <h1 class="text-xl font-bold text-gray-800">KAI</h1>
+                                <div class="flex items-center gap-1 text-sm text-green-600">
+                                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                                    Online
                                 </div>
-                                <span class="text-blue-600 text-lg">Digitando...</span>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Botão Explicar de Novo -->
-                    <div id="explain-again-container" class="hidden text-center">
+                        
                         <button
-                            onclick="explainAgain()"
-                            class="bg-gradient-to-r from-yellow-400 to-orange-400 hover:from-yellow-500 hover:to-orange-500 text-gray-800 text-lg font-bold py-4 px-6 rounded-full shadow-lg transform transition-all duration-200 hover:scale-105 inline-flex items-center gap-3"
-                            aria-label="Pedir para explicar novamente mais devagar"
+                            onclick="clearChat()"
+                            class="bg-red-100 hover:bg-red-200 text-red-600 p-3 rounded-full shadow-md transition-all duration-200 hover:scale-105"
+                            title="Limpar conversa"
                         >
-                            <i data-lucide="rotate-ccw" class="w-6 h-6"></i>
-                            Explicar de novo mais devagar
+                            <i data-lucide="trash-2" class="w-6 h-6"></i>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Botões de Ajuda Rápida e Input -->
-            <div class="bg-white border-t-4 border-blue-100 p-4">
-                <div class="max-w-md mx-auto">
-                    <div class="grid grid-cols-2 gap-3 mb-4">
+            <!-- Chat Messages -->
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-6 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+                <div class="max-w-3xl mx-auto space-y-4">
+                    <!-- Welcome Message -->
+                    <div class="chat-message flex gap-3">
+                        <div class="bg-gradient-to-br from-blue-400 to-purple-500 rounded-full p-3 shadow-lg h-12 w-12 flex-shrink-0">
+                            <i data-lucide="bot" class="text-white w-6 h-6"></i>
+                        </div>
+                        <div class="bg-white p-6 rounded-3xl rounded-tl-none shadow-lg max-w-md">
+                            <p class="text-lg text-gray-800">
+                                Olá! 👋 Sou o Kai, sua assistente digital! Estou aqui para conversar, ajudar e tornar seu dia melhor. Como posso te ajudar hoje? 😊
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="bg-white shadow-2xl border-t-4 border-blue-100 p-4">
+                <div class="max-w-3xl mx-auto">
+                    <!-- Quick Actions -->
+                    <div class="flex gap-2 mb-4 overflow-x-auto pb-2">
                         <button
-                            onclick="quickChatAction('reminder')"
-                            class="bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 text-white text-sm font-bold py-3 px-4 rounded-2xl shadow-md transform transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2"
-                            aria-label="Criar lembrete pelo chat"
+                            onclick="sendQuickMessage('Olá!')"
+                            class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-4 py-2 rounded-full font-semibold whitespace-nowrap shadow-md"
                         >
-                            <i data-lucide="clock" class="w-4 h-4"></i>
-                            Lembrete
+                            👋 Olá
                         </button>
-                        
                         <button
-                            onclick="quickChatAction('phone-help')"
-                            class="bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white text-sm font-bold py-3 px-4 rounded-2xl shadow-md transform transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2"
-                            aria-label="Pedir ajuda com celular pelo chat"
+                            onclick="sendQuickMessage('Preciso de ajuda')"
+                            class="bg-purple-100 hover:bg-purple-200 text-purple-800 px-4 py-2 rounded-full font-semibold whitespace-nowrap shadow-md"
                         >
-                            <i data-lucide="phone" class="w-4 h-4"></i>
-                            Ajuda Celular
+                            🤝 Ajuda
                         </button>
-                        
                         <button
-                            onclick="quickChatAction('sad')"
-                            class="bg-gradient-to-r from-pink-400 to-pink-600 hover:from-pink-500 hover:to-pink-700 text-white text-sm font-bold py-3 px-4 rounded-2xl shadow-md transform transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2"
-                            aria-label="Pedir apoio emocional pelo chat"
+                            onclick="sendQuickMessage('Criar um lembrete')"
+                            class="bg-green-100 hover:bg-green-200 text-green-800 px-4 py-2 rounded-full font-semibold whitespace-nowrap shadow-md"
                         >
-                            <i data-lucide="heart" class="w-4 h-4"></i>
-                            Estou triste
+                            ⏰ Lembrete
                         </button>
-                        
                         <button
-                            onclick="quickChatAction('person')"
-                            class="bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700 text-white text-sm font-bold py-3 px-4 rounded-2xl shadow-md transform transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2"
-                            aria-label="Pedir para falar com pessoa real"
+                            onclick="sendQuickMessage('Como está o tempo?')"
+                            class="bg-orange-100 hover:bg-orange-200 text-orange-800 px-4 py-2 rounded-full font-semibold whitespace-nowrap shadow-md"
                         >
-                            <i data-lucide="user" class="w-4 h-4"></i>
-                            Falar com Pessoa
+                            ☀️ Tempo
                         </button>
                     </div>
 
-                    <!-- Campo de Input -->
-                    <div class="flex gap-3">
-                        <div class="flex-1 relative">
-                            <input
-                                type="text"
-                                id="message-input"
-                                placeholder="Digite sua mensagem aqui..."
-                                class="w-full text-xl p-4 pr-16 border-4 border-gray-200 rounded-2xl focus:border-blue-400 focus:outline-none placeholder-gray-400 bg-white shadow-md"
-                                onkeypress="handleKeyPress(event)"
-                                aria-label="Campo para digitar mensagem"
-                            />
-                            <button
-                                id="clear-input"
-                                onclick="clearInput()"
-                                class="hidden absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
-                                aria-label="Limpar texto digitado"
-                            >
-                                <i data-lucide="x" class="w-5 h-5"></i>
-                            </button>
-                        </div>
-                        
+                    <!-- Input Area -->
+                    <div class="flex gap-2">
+                        <input
+                            type="text"
+                            id="chat-input"
+                            placeholder="Digite sua mensagem aqui..."
+                            class="flex-1 px-6 py-4 text-xl border-2 border-gray-300 rounded-full focus:outline-none focus:border-blue-500 shadow-lg"
+                            onkeypress="handleChatKeyPress(event)"
+                        />
                         <button
-                            id="voice-button"
-                            onclick="toggleVoiceInput()"
-                            class="p-4 rounded-2xl shadow-lg transform transition-all duration-200 hover:scale-105 bg-blue-100 text-blue-700 hover:bg-blue-200"
-                            aria-label="Usar comando de voz"
+                            onclick="startVoiceInput()"
+                            class="bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white p-4 rounded-full shadow-xl transform transition-all duration-200 hover:scale-105"
+                            title="Usar voz"
                         >
-                            <i data-lucide="mic" class="w-6 h-6"></i>
+                            <i class="fas fa-microphone text-2xl"></i>
                         </button>
-                        
                         <button
                             onclick="sendMessage()"
-                            class="bg-gradient-to-r from-blue-400 to-purple-500 hover:from-blue-500 hover:to-purple-600 text-white p-4 rounded-2xl shadow-lg transform transition-all duration-200 hover:scale-105"
-                            aria-label="Enviar mensagem"
+                            class="bg-gradient-to-r from-blue-400 to-purple-500 hover:from-blue-500 hover:to-purple-600 text-white px-8 py-4 rounded-full font-bold text-xl shadow-xl transform transition-all duration-200 hover:scale-105"
                         >
                             <i data-lucide="send" class="w-6 h-6"></i>
                         </button>
                     </div>
-                    
-                    <!-- Dicas de Uso -->
-                    <div class="mt-4 text-center">
-                        <p class="text-sm text-gray-500 mb-2">💡 Dicas: Fale sobre qualquer assunto!</p>
-                        <div class="flex flex-wrap justify-center gap-2">
-                            <button onclick="setSuggestion('Como está o tempo?')" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full transition-colors duration-200">Como está o tempo?</button>
-                            <button onclick="setSuggestion('Conte uma história')" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full transition-colors duration-200">Conte uma história</button>
-                            <button onclick="setSuggestion('Como fazer uma ligação?')" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full transition-colors duration-200">Como fazer uma ligação?</button>
-                            <button onclick="setSuggestion('Estou com saudade')" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full transition-colors duration-200">Estou com saudade</button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Reminder View -->
-        <div id="reminder-view" class="hidden min-h-screen flex flex-col">
-            <!-- Header -->
-            <div class="bg-white shadow-lg border-b-4 border-blue-100">
+        <!-- Profile View -->
+        <div id="profile-view" class="hidden min-h-screen flex flex-col">
+            <div class="bg-gradient-to-r from-white to-blue-50 shadow-2xl border-b-4 border-blue-100">
                 <div class="max-w-md mx-auto p-4">
-                    <div class="flex items-center justify-between">
+                    <div class="flex items-center justify-between mb-4">
                         <button
                             onclick="showView('main')"
                             class="bg-blue-100 hover:bg-blue-200 text-blue-600 p-3 rounded-full shadow-md transition-all duration-200 hover:scale-105"
-                            aria-label="Voltar para o menu principal"
                         >
-                            <i data-lucide="home" class="w-6 h-6"></i>
+                            <i class="fas fa-arrow-left text-xl"></i>
                         </button>
-                        
-                        <div class="flex items-center justify-center gap-2">
-                            <div class="bg-gradient-to-br from-blue-400 to-purple-500 rounded-full p-2 shadow-lg">
-                                <img src="https://i.imgur.com/StKfniS.png" 
-                                     alt="Facilita+ Icon" 
-                                     class="w-6 h-6" />
+                        <h1 class="text-2xl font-bold text-gray-800">Meu Perfil</h1>
+                        <div class="w-12"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-1 p-6">
+                <div class="max-w-md mx-auto space-y-6">
+                    <!-- Profile Card -->
+                    <div class="bg-gradient-to-r from-white to-blue-50 p-8 rounded-3xl shadow-2xl border-2 border-blue-100">
+                        <div class="text-center mb-6">
+                            <div class="bg-gradient-to-br from-blue-400 to-purple-500 rounded-full p-6 w-24 h-24 mx-auto mb-4 shadow-lg">
+                                <i data-lucide="user" class="text-white w-12 h-12"></i>
                             </div>
+                            <h2 class="text-3xl font-bold text-gray-800 mb-2" id="profile-name">Visitante</h2>
+                            <p class="text-lg text-gray-600">Usuário desde hoje</p>
+                        </div>
+
+                        <div class="space-y-4">
                             <div>
-                                <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                                    Facilita+
-                                </h1>
+                                <label class="block text-lg font-bold text-gray-700 mb-2">Seu Nome:</label>
+                                <input
+                                    type="text"
+                                    id="user-name"
+                                    placeholder="Digite seu nome"
+                                    class="w-full px-4 py-3 text-lg border-2 border-gray-300 rounded-2xl focus:outline-none focus:border-blue-500"
+                                />
                             </div>
+
+                            <button
+                                onclick="saveProfile()"
+                                class="w-full bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white text-xl font-bold py-4 rounded-2xl shadow-lg transform transition-all duration-200 hover:scale-105"
+                            >
+                                💾 Salvar Perfil
+                            </button>
                         </div>
+                    </div>
+
+                    <!-- Preferences -->
+                    <div class="bg-white p-6 rounded-3xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">⚙️ Preferências</h3>
                         
-                        <button
-                            onclick="toggleProfile()"
-                            class="bg-gray-100 hover:bg-gray-200 text-gray-600 p-3 rounded-full shadow-md transition-all duration-200 hover:scale-105"
-                            aria-label="Abrir perfil do usuário"
-                        >
-                            <i data-lucide="user" class="w-6 h-6"></i>
-                        </button>
-                    </div>
-                    
-                    <div class="text-center mt-4">
-                        <h2 class="text-xl font-bold text-gray-800">🧠 Criar Novo Lembrete</h2>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="flex-1 p-6 overflow-y-auto">
-                <div class="max-w-md mx-auto space-y-8">
-                    <!-- Instrução Amigável -->
-                    <div class="bg-white p-6 rounded-3xl shadow-lg text-center">
-                        <div class="text-4xl mb-4">⏰</div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-3">
-                            Vamos criar seu lembrete!
-                        </h3>
-                        <p class="text-lg text-gray-600 leading-relaxed">
-                            Me conte o que você quer lembrar e eu vou te avisar na hora certa! 😊
-                        </p>
-                    </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 bg-blue-50 rounded-2xl">
+                                <span class="text-lg font-semibold text-gray-800">🔔 Notificações</span>
+                                <label class="relative inline-block w-16 h-8">
+                                    <input type="checkbox" id="notifications" class="sr-only peer" checked>
+                                    <div class="w-16 h-8 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-8 peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
 
-                    <!-- Formulário de Lembrete -->
-                    <div class="space-y-6">
-                        <!-- Pergunta 1 - O que lembrar -->
-                        <div class="bg-white p-6 rounded-3xl shadow-lg">
-                            <label class="block text-2xl font-bold text-gray-800 mb-4" for="reminder-text">
-                                💭 O que você quer lembrar?
-                            </label>
-                            <input
-                                type="text"
-                                id="reminder-text"
-                                placeholder="Ex: Tomar remédio da pressão"
-                                class="w-full text-2xl p-4 border-4 border-gray-200 rounded-2xl focus:border-purple-400 focus:outline-none placeholder-gray-400"
-                                oninput="updateReminderPreview()"
-                                aria-label="Digite o que deseja lembrar"
-                            />
-                            
-                            <!-- Sugestões rápidas -->
-                            <div class="mt-4 grid grid-cols-1 gap-2">
-                                <button onclick="setReminderText('Tomar remédio da pressão')" class="text-left p-3 bg-purple-50 hover:bg-purple-100 rounded-xl text-gray-700 transition-colors duration-200">💡 Tomar remédio da pressão</button>
-                                <button onclick="setReminderText('Beber água')" class="text-left p-3 bg-purple-50 hover:bg-purple-100 rounded-xl text-gray-700 transition-colors duration-200">💡 Beber água</button>
-                                <button onclick="setReminderText('Ligar para o médico')" class="text-left p-3 bg-purple-50 hover:bg-purple-100 rounded-xl text-gray-700 transition-colors duration-200">💡 Ligar para o médico</button>
-                                <button onclick="setReminderText('Fazer exercícios')" class="text-left p-3 bg-purple-50 hover:bg-purple-100 rounded-xl text-gray-700 transition-colors duration-200">💡 Fazer exercícios</button>
-                                <button onclick="setReminderText('Tomar vitamina')" class="text-left p-3 bg-purple-50 hover:bg-purple-100 rounded-xl text-gray-700 transition-colors duration-200">💡 Tomar vitamina</button>
+                            <div class="flex items-center justify-between p-4 bg-purple-50 rounded-2xl">
+                                <span class="text-lg font-semibold text-gray-800">🔊 Som</span>
+                                <label class="relative inline-block w-16 h-8">
+                                    <input type="checkbox" id="sound" class="sr-only peer" checked>
+                                    <div class="w-16 h-8 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-8 peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-purple-600"></div>
+                                </label>
                             </div>
-                            
-                            <div class="mt-4 flex gap-3">
-                                <button
-                                    id="voice-reminder-button"
-                                    onclick="voiceReminderInput()"
-                                    class="flex items-center justify-center gap-2 px-6 py-3 rounded-2xl text-lg font-bold transition-all duration-200 bg-blue-100 text-blue-700 hover:bg-blue-200"
-                                    aria-label="Usar comando de voz para lembrete"
-                                >
-                                    <i data-lucide="mic" class="w-6 h-6"></i>
-                                    Falar
-                                </button>
-                                
-                                <button
-                                    onclick="clearReminderText()"
-                                    class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-3 rounded-2xl text-lg font-bold transition-colors duration-200"
-                                    aria-label="Limpar texto do lembrete"
-                                >
-                                    🗑️ Limpar
-                                </button>
-                            </div>
-                        </div>
 
-                        <!-- Pergunta 2 - Horário -->
-                        <div class="bg-white p-6 rounded-3xl shadow-lg">
-                            <label class="block text-2xl font-bold text-gray-800 mb-4" for="reminder-time">
-                                ⏰ Que horas você quer ser lembrado?
-                            </label>
-                            
-                            <!-- Relógio Visual -->
-                            <div class="flex justify-center mb-6">
-                                <div class="bg-gradient-to-br from-blue-400 to-purple-500 text-white p-8 rounded-3xl text-center shadow-xl">
-                                    <div class="text-6xl font-mono font-bold mb-2" id="visual-time">
-                                        14:00
-                                    </div>
-                                    <div class="text-2xl">⏰</div>
-                                    <div class="text-lg mt-2 opacity-90" id="visual-time-formatted">
-                                        14:00
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <input
-                                type="time"
-                                id="reminder-time"
-                                value="14:00"
-                                class="w-full text-3xl p-4 border-4 border-gray-200 rounded-2xl focus:border-purple-400 focus:outline-none text-center font-mono"
-                                onchange="updateVisualTime()"
-                                aria-label="Selecionar horário do lembrete"
-                            />
-                            
-                            <!-- Horários sugeridos -->
-                            <div class="mt-4 grid grid-cols-3 gap-2">
-                                <button onclick="setReminderTime('08:00')" class="p-3 bg-purple-50 hover:bg-purple-100 rounded-xl text-purple-700 font-bold transition-colors duration-200">08:00</button>
-                                <button onclick="setReminderTime('12:00')" class="p-3 bg-purple-50 hover:bg-purple-100 rounded-xl text-purple-700 font-bold transition-colors duration-200">12:00</button>
-                                <button onclick="setReminderTime('18:00')" class="p-3 bg-purple-50 hover:bg-purple-100 rounded-xl text-purple-700 font-bold transition-colors duration-200">18:00</button>
-                                <button onclick="setReminderTime('20:00')" class="p-3 bg-purple-50 hover:bg-purple-100 rounded-xl text-purple-700 font-bold transition-colors duration-200">20:00</button>
-                                <button onclick="setReminderTime('22:00')" class="p-3 bg-purple-50 hover:bg-purple-100 rounded-xl text-purple-700 font-bold transition-colors duration-200">22:00</button>
-                                <button onclick="setReminderTime('06:00')" class="p-3 bg-purple-50 hover:bg-purple-100 rounded-xl text-purple-700 font-bold transition-colors duration-200">06:00</button>
-                            </div>
-                        </div>
-
-                        <!-- Preview do Lembrete -->
-                        <div id="reminder-preview" class="hidden bg-gradient-to-r from-green-50 to-blue-50 p-6 rounded-3xl shadow-lg border-2 border-green-200">
-                            <h4 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
-                                👁️ Como vai ficar seu lembrete:
-                            </h4>
-                            <div class="bg-white p-4 rounded-2xl shadow-sm">
-                                <div class="flex items-center gap-3">
-                                    <div class="bg-purple-100 p-3 rounded-full">
-                                        <i data-lucide="bell" class="text-purple-600 w-6 h-6"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-xl font-semibold text-gray-800" id="preview-text">Digite algo acima</p>
-                                        <p class="text-purple-600 font-bold" id="preview-time">⏰ 14:00</p>
-                                    </div>
-                                </div>
+                            <div class="flex items-center justify-between p-4 bg-green-50 rounded-2xl">
+                                <span class="text-lg font-semibold text-gray-800">🗣️ Respostas por Voz</span>
+                                <label class="relative inline-block w-16 h-8">
+                                    <input type="checkbox" id="voice-response" class="sr-only peer" checked>
+                                    <div class="w-16 h-8 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-8 peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-green-600"></div>
+                                </label>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Botões de Ação -->
-                    <div class="space-y-4">
-                        <button
-                            id="create-reminder-btn"
-                            onclick="createReminder()"
-                            disabled
-                            class="w-full bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 disabled:from-gray-300 disabled:to-gray-400 text-white text-2xl font-bold py-6 px-6 rounded-3xl shadow-lg transform transition-all duration-300 hover:scale-105 disabled:hover:scale-100 disabled:cursor-not-allowed flex items-center justify-center gap-3"
-                            aria-label="Criar o lembrete"
-                        >
-                            <i data-lucide="plus" class="w-8 h-8"></i>
-                            <span id="create-btn-text">Criar Lembrete</span>
-                        </button>
-
-                        <button
-                            onclick="showView('main')"
-                            class="w-full bg-gray-400 hover:bg-gray-500 text-white text-xl font-bold py-4 px-6 rounded-3xl shadow-lg transform transition-all duration-200 hover:scale-105"
-                            aria-label="Voltar ao menu principal"
-                        >
-                            ← Voltar ao Início
-                        </button>
+                    <!-- Statistics -->
+                    <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-3xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">📊 Estatísticas</h3>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded-2xl text-center">
+                                <p class="text-3xl font-bold text-blue-600" id="stat-messages">0</p>
+                                <p class="text-sm text-gray-600">Mensagens</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl text-center">
+                                <p class="text-3xl font-bold text-purple-600" id="stat-reminders">0</p>
+                                <p class="text-sm text-gray-600">Lembretes</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl text-center">
+                                <p class="text-3xl font-bold text-green-600" id="stat-days">1</p>
+                                <p class="text-sm text-gray-600">Dias de uso</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl text-center">
+                                <p class="text-3xl font-bold text-orange-600" id="stat-voice">0</p>
+                                <p class="text-sm text-gray-600">Comandos voz</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Profile Modal -->
-    <div id="profile-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full mx-4">
-            <div class="p-6">
-                <div class="text-center mb-6">
-                    <div class="bg-gradient-to-br from-blue-400 to-purple-500 w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <i data-lucide="user" class="text-white w-10 h-10"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-800" id="profile-name">
-                        Visitante
-                    </h3>
-                    <p class="text-gray-600">Usuário do Facilita+</p>
-                </div>
-                
-                <div class="space-y-4 mb-6">
-                    <div class="bg-blue-50 p-4 rounded-2xl">
-                        <div class="flex items-center gap-3 mb-2">
-                            <i data-lucide="bell" class="text-blue-600 w-5 h-5"></i>
-                            <span class="font-semibold text-gray-800">Lembretes Ativos</span>
-                        </div>
-                        <p class="text-lg font-bold text-blue-600" id="profile-reminders-count">0</p>
-                    </div>
-                    
-                    <div class="bg-green-50 p-4 rounded-2xl">
-                        <div class="flex items-center gap-3 mb-2">
-                            <img src="https://i.imgur.com/StKfniS.png" alt="Facilita+ Icon" class="w-5 h-5" />
-                            <span class="font-semibold text-gray-800">Conversas</span>
-                        </div>
-                        <p class="text-lg font-bold text-green-600" id="profile-conversations-count">0</p>
-                    </div>
-                </div>
-                
-                <div class="space-y-3">
-                    <div id="name-input-section">
-                        <label class="block text-sm font-bold text-gray-700 mb-2" for="user-name-input">
-                            Como gostaria de ser chamado(a)?
-                        </label>
-                        <input
-                            type="text"
-                            id="user-name-input"
-                            placeholder="Digite seu nome"
-                            class="w-full p-3 border-2 border-gray-200 rounded-xl text-lg"
-                            onkeypress="handleNameKeyPress(event)"
-                            aria-label="Digite seu nome"
-                        />
-                    </div>
-                    
-                    <button
-                        onclick="closeProfile()"
-                        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-xl transition-all duration-200"
-                        aria-label="Fechar perfil"
-                    >
-                        Fechar
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- JavaScript -->
     <script>
-        // Global Variables
-        let currentView = 'welcome';
-        let userName = localStorage.getItem('userName') || '';
-        let messages = [];
-        let reminders = JSON.parse(localStorage.getItem('reminders') || '[]');
-        let isListening = false;
-        let isTyping = false;
-        let recognition = null;
-        let speechSynthesis = window.speechSynthesis;
+        // Global State
+        let appState = {
+            currentView: 'loading',
+            userName: localStorage.getItem('userName') || 'Visitante',
+            chatHistory: [],
+            speechRate: parseFloat(localStorage.getItem('speechRate')) || 1,
+            fontSize: localStorage.getItem('fontSize') || 'normal',
+            theme: localStorage.getItem('theme') || 'default',
+            preferences: {
+                notifications: true,
+                sound: true,
+                voiceResponse: true
+            },
+            statistics: {
+                messages: parseInt(localStorage.getItem('stat-messages')) || 0,
+                reminders: parseInt(localStorage.getItem('stat-reminders')) || 0,
+                days: parseInt(localStorage.getItem('stat-days')) || 1,
+                voiceCommands: parseInt(localStorage.getItem('stat-voice')) || 0
+            }
+        };
 
-        // Motivational phrases
-        const motivationalPhrases = [
-            "Você é especial e merece todo carinho do mundo! 💙",
-            "Cada dia é uma nova oportunidade para sorrir! 😊",
-            "Você está fazendo um ótimo trabalho cuidando de si! ⭐",
-            "Lembre-se: você é amado(a) e importante! ❤️",
-            "Sua presença faz o mundo mais bonito! 🌟",
-            "Hoje é um bom dia para ser feliz! 🌞",
-            "Você tem uma luz especial que ilumina quem está ao seu redor! ✨",
-            "Cada pequeno passo que você dá é uma vitória! 🏆",
-            "Sua sabedoria e experiência são tesouros preciosos! 💎",
-            "O mundo é mais colorido com você nele! 🌈"
-        ];
+        // Speech Synthesis
+        const synth = window.speechSynthesis;
+        let currentUtterance = null;
 
-        // Initialize app
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Lucide icons
-            lucide.createIcons();
-            
-            // Load user name if exists
-            if (userName) {
-                document.getElementById('welcome-name').textContent = userName;
-                document.getElementById('profile-name').textContent = userName;
-                document.getElementById('main-username').textContent = userName;
-            }
-            
-            // Update time and date
-            updateDateTime();
-            setInterval(updateDateTime, 1000); // This runs every second, updating time/date, not an infinite loop.
-            
-            // Initialize speech recognition if available
-            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-                const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
-                recognition = new SpeechRecognition();
-                recognition.lang = 'pt-BR';
-                recognition.continuous = false;
-                recognition.interimResults = false;
-            }
-            
-            // Update reminders count
-            updateRemindersDisplay();
-            
-            // Hide loading screen
             setTimeout(() => {
-                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('loading').style.display = 'none';
                 document.getElementById('app').classList.remove('hidden');
+                showView('welcome');
+                initializeApp();
             }, 2000);
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.key === 'm') {
+                    e.preventDefault();
+                    toggleAccessibilityPanel();
+                }
+            });
+
+            // Initialize Lucide icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
         });
 
-        // Update date and time
+        function initializeApp() {
+            // Load saved data
+            loadUserData();
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            loadDailyTip();
+            updateStatistics();
+            applyAccessibilitySettings();
+            getWeather();
+        }
+
+        function loadUserData() {
+            if (appState.userName !== 'Visitante') {
+                document.getElementById('welcome-name').textContent = appState.userName;
+                document.getElementById('main-username').textContent = appState.userName;
+                document.getElementById('profile-name').textContent = appState.userName;
+                document.getElementById('user-name').value = appState.userName;
+            }
+        }
+
         function updateDateTime() {
             const now = new Date();
-            const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            const date = now.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
-            const weekday = now.toLocaleDateString('pt-BR', { weekday: 'long' });
-            const hour = now.getHours();
+            const hours = now.getHours();
             
-            document.getElementById('current-time').textContent = time;
-            document.getElementById('current-date').textContent = date;
-            document.getElementById('current-weekday').textContent = weekday;
+            // Update time
+            document.getElementById('current-time').textContent = now.toLocaleTimeString('pt-BR', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
             
-            // Update greeting based on time
+            // Update date
+            document.getElementById('current-date').textContent = now.toLocaleDateString('pt-BR', { 
+                day: '2-digit', 
+                month: '2-digit' 
+            });
+            
+            // Update greeting
             let greeting = 'Olá';
-            let suggestion = 'Que tal tomar uma água ou fazer um lanche gostoso? 💧✨';
+            if (hours >= 5 && hours < 12) greeting = 'Bom dia';
+            else if (hours >= 12 && hours < 18) greeting = 'Boa tarde';
+            else greeting = 'Boa noite';
             
-            if (hour < 12) {
-                greeting = 'Bom dia';
-                suggestion = 'Que tal tomar um café da manhã gostoso? ☕🌅';
-            } else if (hour < 18) {
-                greeting = 'Boa tarde';
-                suggestion = 'Que tal um lanchinho da tarde? 🍪☕';
+            const greetingEl = document.getElementById('greeting');
+            if (greetingEl) greetingEl.textContent = greeting;
+        }
+
+        function getWeather() {
+            // Simulated weather (in production, use a real API)
+            const temps = [20, 22, 24, 26, 28, 30];
+            const temp = temps[Math.floor(Math.random() * temps.length)];
+            document.getElementById('current-temp').textContent = `${temp}°C`;
+        }
+
+        function loadDailyTip() {
+            const tips = [
+                "🌟 Beba bastante água durante o dia para se manter hidratado!",
+                "🚶 Faça uma caminhada de 15 minutos. Sua saúde agradece!",
+                "📱 Explore o menu de acessibilidade do seu celular. Há muitas ferramentas úteis!",
+                "👥 Ligue para um amigo ou familiar hoje. Conexões sociais são importantes!",
+                "😊 Pratique gratidão: pense em 3 coisas boas do seu dia.",
+                "🧘 Respire fundo 5 vezes. Isso ajuda a relaxar e reduzir o estresse.",
+                "📚 Aprenda algo novo hoje, por menor que seja!",
+                "🎵 Ouça uma música que você adora. Música faz bem para a alma!",
+                "☀️ Pegue um pouco de sol. A vitamina D é importante!",
+                "💪 Alongue-se por alguns minutos. Seu corpo agradece!"
+            ];
+            
+            const tip = tips[Math.floor(Math.random() * tips.length)];
+            const tipEl = document.getElementById('daily-tip');
+            if (tipEl) tipEl.textContent = tip;
+        }
+
+        function updateStatistics() {
+            document.getElementById('stat-messages').textContent = appState.statistics.messages;
+            document.getElementById('stat-reminders').textContent = appState.statistics.reminders;
+            document.getElementById('stat-days').textContent = appState.statistics.days;
+            document.getElementById('stat-voice').textContent = appState.statistics.voiceCommands;
+        }
+
+        function incrementStat(stat) {
+            appState.statistics[stat]++;
+            localStorage.setItem(`stat-${stat}`, appState.statistics[stat]);
+            updateStatistics();
+        }
+
+        // Navigation
+        function showView(viewName) {
+            const views = ['welcome', 'main', 'chat', 'profile'];
+            views.forEach(view => {
+                document.getElementById(`${view}-view`).classList.add('hidden');
+            });
+            document.getElementById(`${viewName}-view`).classList.remove('hidden');
+            appState.currentView = viewName;
+
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        function toggleProfile() {
+            showView('profile');
+        }
+
+        function saveProfile() {
+            const nameInput = document.getElementById('user-name');
+            const name = nameInput.value.trim();
+            
+            if (name) {
+                appState.userName = name;
+                localStorage.setItem('userName', name);
+                loadUserData();
+                speak('Perfil salvo com sucesso! Olá ' + name + '!');
+                showView('main');
             } else {
-                greeting = 'Boa noite';
-                suggestion = 'Que tal relaxar um pouquinho? 🌙✨';
-            }
-            
-            document.getElementById('greeting').textContent = greeting;
-            if (document.getElementById('motivational-suggestion')) {
-                document.getElementById('motivational-suggestion').textContent = suggestion;
+                alert('Por favor, digite seu nome.');
             }
         }
 
-        // Show different views
-        function showView(view) {
-            // Hide all views
-            document.getElementById('welcome-view').classList.add('hidden');
-            document.getElementById('main-view').classList.add('hidden');
-            document.getElementById('chat-view').classList.add('hidden');
-            document.getElementById('reminder-view').classList.add('hidden');
-            
-            // Show selected view
-            document.getElementById(view + '-view').classList.remove('hidden');
-            currentView = view;
-            
-            // Clear chat if switching to chat view and no messages yet
-            if (view === 'chat' && messages.length === 0) {
-                document.getElementById('welcome-chat-message').classList.remove('hidden');
-            } else if (view === 'chat' && messages.length > 0) {
-                document.getElementById('welcome-chat-message').classList.add('hidden');
-            }
-        }
-
-        // Open Feedback Form
-        function openFeedbackForm() {
-            window.open('https://docs.google.com/forms/d/e/1FAIpQLSfZ0Lbr_xsrus2DAKYTOHf_zn3DHKwx8Fwtv-89Q55ivZqzqA/viewform?usp=header', '_blank');
-        }
-
-        // Quick actions from main menu
+        // Quick Actions
         function quickAction(action) {
             switch(action) {
-                case 'reminder':
-                    showView('reminder');
-                    break;
-                case 'phone-help':
-                    showView('chat');
-                    addUserMessage("Preciso de ajuda com o celular");
-                    setTimeout(() => {
-                        addBotMessage("Claro! Vou te ajudar com o celular passo a passo. 📱 O que você gostaria de aprender primeiro? \n\n📞 Fazer ligações\n💬 Mandar mensagens (SMS ou WhatsApp)\n📸 Tirar fotos e gravar vídeos\n🌐 Usar a internet para buscar informações\n⚙️ Configurações básicas do aparelho\n\nMe fala o que te interessa mais! 😊");
-                    }, 1500);
-                    break;
-                case 'sad':
-                    showView('chat');
-                    addUserMessage("Estou me sentindo triste hoje");
-                    setTimeout(() => {
-                        addBotMessage("Ah, meu querido... sinto muito que você esteja se sentindo assim. 💙 É completamente normal ter dias difíceis - todos nós passamos por isso. Você quer conversar sobre o que está te deixando triste? Ou prefere que eu te conte algo alegre para animar seu coração? Lembre-se: você é muito especial e amado! 🤗💕");
-                    }, 2000);
-                    break;
                 case 'chat':
                     showView('chat');
-                    // Only add an initial message if the chat is truly empty, to avoid duplicates
-                    if (messages.length === 0) {
-                        addUserMessage("Oi! Quero bater um papo");
-                        setTimeout(() => {
-                            addBotMessage("Oi, querido(a)! 😊 Que alegria te ver aqui! Adoro uma boa conversa. Como foi seu dia hoje? Aconteceu algo especial? Ou quer que eu te conte algumas novidades interessantes? Estou aqui para batermos um papo gostoso! ☕💙");
-                        }, 1500);
-                    } else {
-                         addBotMessage("De volta ao nosso chat! O que está na sua mente agora? 😊");
-                    }
                     break;
-                case 'weather':
-                    showView('chat');
-                    addUserMessage("Como está o tempo hoje?");
-                    // This response would ideally come from an API. For now, it's static.
-                    setTimeout(() => {
-                        addBotMessage("Hoje está um dia ensolarado com 24°C! ☀️ Um dia lindo para sair um pouco. Que tal uma caminhada ou sentar no jardim? Você tem algum plano para hoje? 🌤️");
-                    }, 1500);
-                    break;
-                case 'emergency':
-                    showView('chat');
-                    addUserMessage("Preciso de ajuda urgente");
-                    setTimeout(() => {
-                        addBotMessage("🚨 Entendo que você precisa de ajuda! Se for uma emergência médica, ligue imediatamente para:\n\n🆘 SAMU: 192\n🚑 Bombeiros: 193\n👮 Polícia: 190\n\nSe não for uma emergência vital, me conte o que aconteceu para eu te ajudar da melhor forma possível. Estou aqui para você! 💙");
-                    }, 1500);
-                    break;
-            }
-        }
-
-        // Quick actions from chat
-        function quickChatAction(action) {
-            switch(action) {
                 case 'reminder':
-                    addUserMessage("Quero criar um lembrete");
+                    showView('chat');
                     setTimeout(() => {
-                        addBotMessage("Perfeito! Vou te ajudar a criar um lembrete. Clique no botão 'Criar Lembrete' aqui embaixo, ou me diga: o que você quer lembrar e que horas? 📝⏰");
-                        setTimeout(() => showView('reminder'), 3000);
-                    }, 1500);
+                        sendQuickMessage('Quero criar um lembrete');
+                    }, 500);
                     break;
                 case 'phone-help':
-                    addUserMessage("Preciso de ajuda com o celular");
+                    showView('chat');
                     setTimeout(() => {
-                        addBotMessage("Claro! Sou especialista em ajudar com o celular! 📱 Me conte: você quer aprender a fazer ligações, mandar mensagens, usar WhatsApp, tirar fotos, ou tem alguma dificuldade específica? Vou te ensinar tudo passo a passo! 😊");
-                    }, 1500);
+                        sendQuickMessage('Preciso de ajuda com meu celular');
+                    }, 500);
                     break;
                 case 'sad':
-                    addUserMessage("Estou me sentindo triste");
+                    showView('chat');
                     setTimeout(() => {
-                        addBotMessage("Ah, querido(a)... sinto muito que você esteja assim. 💙 Você sabe que é completamente normal ter dias difíceis, né? Todos passamos por isso. Quer conversar sobre o que está te deixando triste? Ou prefere que eu te conte algo alegre para animar seu coração? Estou aqui para te escutar com todo carinho! 🤗❤️");
-                    }, 1500);
+                        sendQuickMessage('Estou me sentindo sozinho');
+                    }, 500);
                     break;
-                case 'person':
-                    addUserMessage("Preciso falar com uma pessoa");
-                    setTimeout(() => {
-                        addBotMessage("Entendo perfeitamente! Às vezes é muito bom conversar com uma pessoa mesmo. 👥💙\n\nVocê pode:\n📞 Ligar para um familiar querido\n👫 Procurar um amigo para conversar\n🏥 Se for urgente, ligar 192 (SAMU)\n🚑 Emergência: 193 (Bombeiros)\n👮 Segurança: 190 (Polícia)\n\nTem alguém especial que você gostaria de ligar agora? Posso te ajudar a encontrar o número ou te orientar como fazer a ligação! 😊");
-                    }, 1500);
+                case 'emergency':
+                    showEmergencyAlert();
+                    break;
+                case 'voice':
+                    startVoiceCommand();
                     break;
             }
         }
 
-        // Generate intelligent bot response (EXPANDED)
-        function generateResponse(userMessage) {
-            const message = userMessage.toLowerCase();
+        // Chat Functions
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
             
-            if (message.includes('oi') || message.includes('olá') || message.includes('bom dia') || message.includes('boa tarde') || message.includes('boa noite')) {
-                return `Olá${userName ? ', ' + userName : ''}! 😊 Que alegria te ver aqui! Como você está se sentindo hoje? Posso te ajudar com alguma coisa especial? 💙`;
-            }
-            
-            if (message.includes('nome')) {
-                return `Meu nome é Facilita+! Sou sua assistente digital criada especialmente para te ajudar no dia a dia. E você, qual é o seu nome? Adoro conhecer pessoas especiais como você! 🤗`;
-            }
-            
-            if (message.includes('idade') || message.includes('anos')) {
-                return `Que pergunta interessante! A idade é só um número, o que importa mesmo é como você se sente. Você tem a energia de quantos anos hoje? 😄✨`;
-            }
-            
-            if (message.includes('família') || message.includes('filho') || message.includes('neto')) {
-                return `A família é uma das maiores bênçãos da vida! 👨‍👩‍👧‍👦 Conte-me sobre sua família. Tenho certeza de que você tem histórias lindas para compartilhar! 💝`;
-            }
-            
-            if (message.includes('saúde') || message.includes('médico') || message.includes('remédio')) {
-                return `Cuidar da saúde é muito importante! 🏥 Se você tem dúvidas médicas, sempre procure seu médico de confiança. Posso te ajudar a organizar seus remédios ou criar lembretes. O que você precisa? 💊`;
-            }
-            
-            if (message.includes('obrigad')) {
-                return `Por nada! 😊 Fico muito feliz em poder te ajudar! É um prazer estar aqui para você. Se precisar de mais alguma coisa, é só falar! Estou sempre à disposição! 💙`;
-            }
-            
-            if (message.includes('tchau') || message.includes('até logo') || message.includes('despedida')) {
-                return `Até logo! 👋 Foi maravilhoso conversar com você! Volte sempre que quiser - estarei aqui te esperando com muito carinho! Cuide-se bem! 💙✨`;
-            }
-            
-            if (message.includes('triste') || message.includes('chateado') || message.includes('preocupado') || message.includes('solidão') || message.includes('sozinho')) {
-                return `Sinto muito que você esteja se sentindo assim. 💙 É normal ter dias mais difíceis, e você não está sozinho(a). Quer conversar sobre o que está te incomodando? Às vezes, desabafar ajuda bastante. Estou aqui para te escutar com todo carinho! 🤗 Que tal ouvir uma música relaxante ou ver uma foto bonita?`;
-            }
-            
-            if (message.includes('feliz') || message.includes('alegre') || message.includes('bem')) {
-                return `Que maravilha saber que você está bem! 😊 Sua alegria é contagiante! Conte-me o que está deixando você tão feliz hoje? Adoro ouvir boas notícias! 🌟`;
-            }
-            
-            if (message.includes('tempo') || message.includes('clima')) {
-                return `Hoje está um dia ensolarado com 24°C! ☀️ Perfeito para uma caminhada! Como você gosta de aproveitar dias assim? (Lembre-se que essa é uma previsão simples, para detalhes, consulte um app de clima!)`;
-            }
-            
-            if (message.includes('ajuda') || message.includes('socorro') || message.includes('dúvida')) {
-                return `Claro que vou te ajudar! 🆘 Sou especialista em tornar as coisas mais fáceis. Me conta o que você precisa - pode ser ajuda com o celular, lembretes, ou apenas uma conversa. Estou aqui para você! 💪`;
-            }
-            
-            if (message.includes('celular') || message.includes('telefone') || message.includes('whatsapp') || message.includes('ligação')) {
-                return `Vou te ajudar com o celular! 📱 É normal ter dificuldades com a tecnologia. O que você gostaria de aprender? Fazer ligações, mandar mensagens (SMS ou WhatsApp), tirar fotos, ou usar aplicativos? Vou explicar tudo passo a passo! 😊`;
-            }
-
-            if (message.includes('internet') || message.includes('site') || message.includes('navegar')) {
-                return `A internet é um mundo de informações! 🌐 Você quer aprender a pesquisar algo, ver notícias, ou visitar algum site específico? Posso te guiar sobre como usar o navegador para encontrar o que procura.`;
-            }
-
-            if (message.includes('email') || message.includes('e-mail')) {
-                return `O e-mail é ótimo para se comunicar com amigos e familiares! 📧 Você gostaria de aprender a enviar uma mensagem, ler suas caixas de entrada ou criar uma conta de e-mail? Posso te ajudar com isso!`;
-            }
-
-            if (message.includes('aplicativos') || message.includes('apps')) {
-                return `Os aplicativos são programas que deixam o celular mais divertido e útil! 📲 Quais tipos de aplicativos te interessam? Posso te mostrar como instalar, usar ou desinstalar os apps que você quiser.`;
-            }
-
-            if (message.includes('notícias') || message.includes('acontecendo')) {
-                return `Ficar por dentro das notícias é muito bom! 📰 Posso te indicar alguns sites ou aplicativos para ler as últimas novidades, ou podemos conversar sobre algum assunto que te interesse.`;
-            }
-
-            if (message.includes('exercício') || message.includes('caminhada') || message.includes('movimentar')) {
-                return `Fazer exercícios é excelente para a saúde e o humor! 🚶‍♀️ Posso te dar algumas dicas de alongamentos leves, sugerir uma caminhada no parque, ou até mesmo indicar vídeos de exercícios para fazer em casa. O importante é se movimentar!`;
-            }
-
-            if (message.includes('comer') || message.includes('comida') || message.includes('receita') || message.includes('alimentação')) {
-                return `Hmmm, falando de comida me deu fome! 🍽️ Você gosta de cozinhar? Posso te dar algumas sugestões de receitas fáceis e gostosas para um café da manhã, almoço ou jantar saudável. O que você está com vontade de comer? 👩‍🍳`;
-            }
-
-            if (message.includes('remédio') || message.includes('medicamento')) {
-                return `Lembretes de remédios são cruciais para a sua saúde! 💊 Posso te ajudar a criar um lembrete para tomar seus medicamentos na hora certa. Qual remédio e qual horário? Lembre-se sempre de seguir as orientações do seu médico.`;
-            }
-
-            if (message.includes('social') || message.includes('amigos') || message.includes('facebook')) {
-                return `Redes sociais são ótimas para manter contato com quem a gente gosta! 👨‍👩‍👧‍👦 Quer aprender a usar o Facebook, WhatsApp ou alguma outra rede para ver fotos dos seus amigos e familiares? Posso te ajudar a entender como funciona.`;
-            }
-
-            if (message.includes('dinheiro') || message.includes('banco') || message.includes('pagar')) {
-                return `Cuidar do dinheiro é importante. 💰 Posso te dar dicas gerais sobre como organizar suas finanças, usar aplicativos de banco (com segurança!), ou te explicar como pagar contas online. Lembre-se sempre de nunca compartilhar senhas ou dados pessoais.`;
-            }
-
-            if (message.includes('ler') || message.includes('livro') || message.includes('história')) {
-                return `A leitura é uma viagem maravilhosa! 📚 Você gostaria que eu te contasse uma história curta, ou prefere que eu sugira alguns livros e autores interessantes? Me diga o que te agrada mais!`;
-            }
-
-            if (message.includes('cuidar') || message.includes('pessoal') || message.includes('beleza')) {
-                return `Cuidar de si é um ato de carinho! ✨ Quer algumas dicas de cuidados com a pele, cabelo, ou talvez umas ideias para relaxar e se sentir melhor? Pequenos gestos fazem uma grande diferença no seu bem-estar!`;
-            }
-            
-            // Extract name if provided
-            if (message.includes('meu nome é') || message.includes('me chamo')) {
-                const nameMatch = userMessage.match(/(?:meu nome é|me chamo) (\w+)/i);
-                if (nameMatch) {
-                    const extractedName = nameMatch[1];
-                    userName = extractedName;
-                    localStorage.setItem('userName', userName);
-                    updateUserName();
-                    return `Prazer em conhecer você, ${extractedName}! 😊 Que nome lindo! A partir de agora vou te chamar assim. Como posso te ajudar hoje, ${extractedName}? 💙`;
-                }
-            }
-            
-            // Default response
-            return `Que interessante o que você disse! 🤔 Conte-me mais sobre isso. Adoro nossas conversas - você sempre tem algo especial para compartilhar! Como posso te ajudar melhor? 😊💙`;
-        }
-
-        // Chat functions
-        function addUserMessage(text) {
-            document.getElementById('welcome-chat-message').classList.add('hidden'); // Hide welcome message once user sends something
-            const messageId = Date.now();
-            const timestamp = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            
-            messages.push({ id: messageId, text, isUser: true, timestamp });
-            
-            const messagesContainer = document.getElementById('chat-messages');
-            const messageElement = document.createElement('div');
-            messageElement.className = 'flex justify-end chat-message';
-            messageElement.innerHTML = `
-                <div class="max-w-xs px-6 py-4 rounded-3xl shadow-lg bg-gradient-to-r from-green-400 to-blue-500 text-white">
-                    <p class="text-xl leading-relaxed whitespace-pre-line">${text}</p>
-                    <p class="text-sm text-blue-100 mt-2">${timestamp}</p>
-                </div>
-            `;
-            
-            messagesContainer.appendChild(messageElement);
-            scrollToBottom();
-            showExplainAgainButton();
-        }
-
-        function addBotMessage(text) {
-            document.getElementById('welcome-chat-message').classList.add('hidden'); // Hide welcome message once bot replies
-            const messageId = Date.now();
-            const timestamp = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            
-            messages.push({ id: messageId, text, isUser: false, timestamp });
-            
-            const messagesContainer = document.getElementById('chat-messages');
-            const messageElement = document.createElement('div');
-            messageElement.className = 'flex justify-start chat-message';
-            messageElement.innerHTML = `
-                <div class="max-w-xs px-6 py-4 rounded-3xl shadow-lg relative bg-white text-gray-800 border-2 border-blue-100">
-                    <p class="text-xl leading-relaxed whitespace-pre-line">${text}</p>
-                    <p class="text-sm text-gray-500 mt-2">${timestamp}</p>
-                    <button
-                        onclick="speakText('${text.replace(/'/g, "\\'").replace(/"/g, '\\"')}')"
-                        class="absolute -bottom-2 -right-2 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full shadow-lg transition-all duration-200 hover:scale-110"
-                        title="Ouvir mensagem"
-                        aria-label="Ouvir mensagem"
-                    >
-                        <i data-lucide="volume-2" class="w-5 h-5"></i>
-                    </button>
-                </div>
-            `;
-            
-            messagesContainer.appendChild(messageElement);
-            lucide.createIcons(); // Re-initialize icons for newly added elements
-            scrollToBottom();
-            showExplainAgainButton();
-            
-            // Auto-speak message
-            setTimeout(() => speakText(text), 500);
-        }
-
-        function showTypingIndicator() {
-            isTyping = true;
-            document.getElementById('typing-indicator').classList.remove('hidden');
-            scrollToBottom();
-        }
-
-        function hideTypingIndicator() {
-            isTyping = false;
-            document.getElementById('typing-indicator').classList.add('hidden');
-        }
-
-        // Renamed from hideWelcomeMessage to be more specific to chat
-        function hideWelcomeChatMessage() {
-            document.getElementById('welcome-chat-message').classList.add('hidden');
-        }
-
-        function showExplainAgainButton() {
-            if (messages.length > 0) {
-                document.getElementById('explain-again-container').classList.remove('hidden');
-            }
-        }
-
-        function scrollToBottom() {
-            const container = document.getElementById('messages-container');
-            container.scrollTop = container.scrollHeight;
-        }
-
-        // Send message function
-        async function sendMessage() { // Made async for potential future API calls
-            const input = document.getElementById('message-input');
-            const text = input.value.trim();
-            
-            if (text) {
-                addUserMessage(text);
+            if (message) {
+                addMessage('user', message);
                 input.value = '';
-                updateInputButtons();
+                incrementStat('messages');
                 
-                showTypingIndicator();
-                // Simulate network delay for bot response
-                await new Promise(resolve => setTimeout(resolve, 1500 + Math.random() * 1000)); 
-                
-                const response = generateResponse(text);
-                
-                hideTypingIndicator();
-                addBotMessage(response);
+                // Simulate AI response
+                setTimeout(() => {
+                    const response = generateResponse(message);
+                    addMessage('bot', response);
+                    if (appState.preferences.voiceResponse) {
+                        speak(response);
+                    }
+                }, 1000);
             }
         }
 
-        // Handle Enter key in chat
-        function handleKeyPress(event) {
+        function sendQuickMessage(message) {
+            addMessage('user', message);
+            incrementStat('messages');
+            
+            setTimeout(() => {
+                const response = generateResponse(message);
+                addMessage('bot', response);
+                if (appState.preferences.voiceResponse) {
+                    speak(response);
+                }
+            }, 1000);
+        }
+
+        function handleChatKeyPress(event) {
             if (event.key === 'Enter') {
                 sendMessage();
             }
         }
 
-        // Update input buttons
-        function updateInputButtons() {
-            const input = document.getElementById('message-input');
-            const clearButton = document.getElementById('clear-input');
+        function addMessage(sender, text) {
+            const messagesContainer = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message flex gap-3' + (sender === 'user' ? ' flex-row-reverse' : '');
             
-            if (input.value.trim()) {
-                clearButton.classList.remove('hidden');
+            if (sender === 'bot') {
+                messageDiv.innerHTML = `
+                    <div class="bg-gradient-to-br from-blue-400 to-purple-500 rounded-full p-3 shadow-lg h-12 w-12 flex-shrink-0">
+                        <i data-lucide="bot" class="text-white w-6 h-6"></i>
+                    </div>
+                    <div class="bg-white p-6 rounded-3xl ${sender === 'user' ? 'rounded-tr-none' : 'rounded-tl-none'} shadow-lg max-w-md">
+                        <p class="text-lg text-gray-800">${text}</p>
+                    </div>
+                `;
             } else {
-                clearButton.classList.add('hidden');
+                messageDiv.innerHTML = `
+                    <div class="bg-gradient-to-br from-green-400 to-blue-500 rounded-full p-3 shadow-lg h-12 w-12 flex-shrink-0">
+                        <i data-lucide="user" class="text-white w-6 h-6"></i>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-400 to-purple-500 text-white p-6 rounded-3xl ${sender === 'user' ? 'rounded-tr-none' : 'rounded-tl-none'} shadow-lg max-w-md">
+                        <p class="text-lg">${text}</p>
+                    </div>
+                `;
             }
-        }
-
-        // Clear input
-        function clearInput() {
-            document.getElementById('message-input').value = '';
-            updateInputButtons();
-        }
-
-        // Set suggestion in input
-        function setSuggestion(text) {
-            document.getElementById('message-input').value = text;
-            updateInputButtons();
-        }
-
-        // Voice functions
-        function toggleVoiceInput() {
-            if (recognition) {
-                if (isListening) {
-                    stopListening();
-                } else {
-                    startListening();
-                }
-            } else {
-                // Fallback for browsers without Web Speech API
-                alert('Seu navegador não suporta reconhecimento de voz. Por favor, digite sua mensagem.');
-            }
-        }
-
-        function startListening() {
-            if (recognition && !isListening) { // Ensure not to start if already listening
-                isListening = true;
-                const voiceButton = document.getElementById('voice-button');
-                voiceButton.classList.add('voice-pulse', 'bg-red-400', 'text-white');
-                voiceButton.classList.remove('bg-blue-100', 'text-blue-700');
-                
-                recognition.onresult = function(event) {
-                    const transcript = event.results[0][0].transcript;
-                    document.getElementById('message-input').value = transcript;
-                    updateInputButtons();
-                    stopListening(); // Stop after result
-                };
-                
-                recognition.onerror = function(event) {
-                    console.error('Speech recognition error:', event.error);
-                    stopListening();
-                    alert('Não consegui ouvir bem. Tente novamente ou digite sua mensagem!');
-                };
-                
-                recognition.onend = function() {
-                    isListening = false; // Ensure isListening is false when recognition ends naturally
-                    const voiceButton = document.getElementById('voice-button');
-                    voiceButton.classList.remove('voice-pulse', 'bg-red-400', 'text-white');
-                    voiceButton.classList.add('bg-blue-100', 'text-blue-700');
-                };
-                
-                recognition.start();
-            }
-        }
-
-        function stopListening() {
-            if (recognition && isListening) { // Ensure only stop if actually listening
-                recognition.stop();
-                isListening = false;
-                const voiceButton = document.getElementById('voice-button');
-                voiceButton.classList.remove('voice-pulse', 'bg-red-400', 'text-white');
-                voiceButton.classList.add('bg-blue-100', 'text-blue-700');
-            }
-        }
-
-        function speakText(text) {
-            if (speechSynthesis) {
-                speechSynthesis.cancel(); // Stop any current speech
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'pt-BR';
-                utterance.rate = 0.9; // Slightly slower for better comprehension
-                utterance.pitch = 1;
-                speechSynthesis.speak(utterance);
-            }
-        }
-
-        // Explain again function
-        function explainAgain() {
-            const lastBotMessage = messages.filter(m => !m.isUser).pop();
-            if (lastBotMessage) {
-                addUserMessage("Por favor, explique de novo mais devagar 🙏");
-                showTypingIndicator();
-                setTimeout(() => {
-                    hideTypingIndicator();
-                    addBotMessage("Claro! Vou explicar novamente com mais calma e detalhes:\n\n" + lastBotMessage.text + "\n\nEntendeu melhor agora? Se ainda tiver dúvida, me fale! 😊💙");
-                }, 2000);
-            } else {
-                addUserMessage("Por favor, explique de novo mais devagar 🙏");
-                showTypingIndicator();
-                setTimeout(() => {
-                    hideTypingIndicator();
-                    addBotMessage("Não tenho uma mensagem anterior para repetir, mas estou pronta para te ajudar com qualquer outra coisa! 😊");
-                }, 2000);
-            }
-        }
-
-        // Reminder functions
-        function updateReminderPreview() {
-            const text = document.getElementById('reminder-text').value;
-            const time = document.getElementById('reminder-time').value;
-            const preview = document.getElementById('reminder-preview');
-            const createBtn = document.getElementById('create-reminder-btn');
-            const createBtnText = document.getElementById('create-btn-text');
             
-            if (text.trim() && time) { // Both text and time are required
-                preview.classList.remove('hidden');
-                document.getElementById('preview-text').textContent = text;
-                document.getElementById('preview-time').textContent = `⏰ ${time}`;
-                
-                createBtn.disabled = false;
-                createBtnText.textContent = `Criar Lembrete "${text}"`;
-            } else {
-                preview.classList.add('hidden');
-                createBtn.disabled = true;
-                createBtnText.textContent = 'Criar Lembrete';
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
             }
         }
 
-        function setReminderText(text) {
-            document.getElementById('reminder-text').value = text;
-            updateReminderPreview();
+        function generateResponse(message) {
+            const msg = message.toLowerCase();
+            
+            // Greetings
+            if (msg.includes('olá') || msg.includes('oi') || msg.includes('bom dia') || msg.includes('boa tarde') || msg.includes('boa noite')) {
+                return `Olá, ${appState.userName}! 😊 Como posso te ajudar hoje?`;
+            }
+            
+            // Reminders
+            if (msg.includes('lembrete') || msg.includes('lembrar')) {
+                incrementStat('reminders');
+                return '⏰ Ótimo! Para criar um lembrete, me diga:\n\n1️⃣ O que você quer lembrar?\n2️⃣ Quando? (dia e hora)\n\nPor exemplo: "Lembrar de tomar remédio amanhã às 8h"';
+            }
+            
+            // Phone help
+            if (msg.includes('celular') || msg.includes('telefone') || msg.includes('whatsapp')) {
+                return '📱 Claro! Posso te ajudar com:\n\n• WhatsApp e mensagens\n• Fazer ligações\n• Tirar fotos\n• Configurações\n• Apps úteis\n\nQual sua dúvida específica?';
+            }
+            
+            // Emotional support
+            if (msg.includes('sozinho') || msg.includes('triste') || msg.includes('solidão')) {
+                return '💙 Entendo como você se sente. Estar sozinho pode ser difícil, mas saiba que você não está realmente sozinho. Que tal:\n\n• Ligar para um amigo ou familiar?\n• Participar de um grupo social?\n• Fazer uma atividade que você gosta?\n\nEstou aqui para conversar sempre que precisar! 🤗';
+            }
+            
+            // Weather
+            if (msg.includes('tempo') || msg.includes('clima') || msg.includes('chuva') || msg.includes('sol')) {
+                return '☀️ Hoje está um dia agradável! A temperatura está em torno de 24°C. Bom dia para uma caminhada ou para sair um pouco!';
+            }
+            
+            // Health
+            if (msg.includes('saúde') || msg.includes('médico') || msg.includes('remédio') || msg.includes('dor')) {
+                return '🏥 Para questões de saúde, é sempre importante consultar um profissional. Posso:\n\n• Criar lembretes para remédios\n• Te ajudar a encontrar contatos médicos\n• Chamar ajuda em emergências\n\nComo posso ajudar?';
+            }
+            
+            // Thanks
+            if (msg.includes('obrigad') || msg.includes('valeu')) {
+                return '😊 Por nada! Estou sempre aqui para te ajudar. É um prazer poder ajudar você!';
+            }
+            
+            // Help
+            if (msg.includes('ajuda') || msg.includes('ajudar') || msg.includes('pode fazer')) {
+                return '🤗 Posso te ajudar com:\n\n✅ Conversar e fazer companhia\n✅ Criar lembretes\n✅ Ajuda com tecnologia\n✅ Informações úteis\n✅ Apoio emocional\n✅ Emergências\n\nO que você precisa?';
+            }
+            
+            // Default
+            return 'Entendo! 😊 Estou aqui para te ajudar. Pode me contar mais sobre isso? Ou me dizer como posso te auxiliar melhor?';
         }
 
-        function clearReminderText() {
-            document.getElementById('reminder-text').value = '';
-            updateReminderPreview();
-        }
-
-        function setReminderTime(time) {
-            document.getElementById('reminder-time').value = time;
-            updateVisualTime();
-            updateReminderPreview();
-        }
-
-        function updateVisualTime() {
-            const time = document.getElementById('reminder-time').value;
-            document.getElementById('visual-time').textContent = time;
-            document.getElementById('visual-time-formatted').textContent = time;
-            updateReminderPreview();
-        }
-
-        function voiceReminderInput() {
-            if (recognition) {
-                const voiceButton = document.getElementById('voice-reminder-button');
-                voiceButton.classList.add('voice-pulse', 'bg-red-400', 'text-white');
-                voiceButton.classList.remove('bg-blue-100', 'text-blue-700');
-                voiceButton.innerHTML = '<i data-lucide="mic" class="w-6 h-6"></i> Ouvindo...';
-                lucide.createIcons(); // Re-render icon
+        function clearChat() {
+            if (confirm('Tem certeza que deseja limpar toda a conversa?')) {
+                const messagesContainer = document.getElementById('chat-messages');
+                messagesContainer.innerHTML = `
+                    <div class="chat-message flex gap-3">
+                        <div class="bg-gradient-to-br from-blue-400 to-purple-500 rounded-full p-3 shadow-lg h-12 w-12 flex-shrink-0">
+                            <i data-lucide="bot" class="text-white w-6 h-6"></i>
+                        </div>
+                        <div class="bg-white p-6 rounded-3xl rounded-tl-none shadow-lg max-w-md">
+                            <p class="text-lg text-gray-800">
+                                Olá! 👋 Sou o Facilita+, sua assistente digital! Estou aqui para conversar, ajudar e tornar seu dia melhor. Como posso te ajudar hoje? 😊
+                            </p>
+                        </div>
+                    </div>
+                `;
                 
-                recognition.onresult = function(event) {
-                    const transcript = event.results[0][0].transcript;
-                    setReminderText(transcript);
-                    voiceButton.classList.remove('voice-pulse', 'bg-red-400', 'text-white');
-                    voiceButton.classList.add('bg-blue-100', 'text-blue-700');
-                    voiceButton.innerHTML = '<i data-lucide="mic" class="w-6 h-6"></i> Falar';
+                if (typeof lucide !== 'undefined') {
                     lucide.createIcons();
-                };
-                
-                recognition.onerror = function(event) {
-                    console.error('Speech recognition error (reminder):', event.error);
-                    voiceButton.classList.remove('voice-pulse', 'bg-red-400', 'text-white');
-                    voiceButton.classList.add('bg-blue-100', 'text-blue-700');
-                    voiceButton.innerHTML = '<i data-lucide="mic" class="w-6 h-6"></i> Falar';
-                    lucide.createIcons();
-                    alert('Não consegui ouvir. Tente novamente!');
-                };
-                
-                recognition.start();
-            } else {
-                alert('Seu navegador não suporta reconhecimento de voz. Por favor, digite o lembrete.');
-            }
-        }
-
-        function createReminder() {
-            const text = document.getElementById('reminder-text').value.trim();
-            const time = document.getElementById('reminder-time').value;
-            
-            if (text && time) {
-                const reminder = {
-                    id: Date.now(),
-                    text: text,
-                    time: time,
-                    created: new Date()
-                };
-                
-                reminders.push(reminder);
-                localStorage.setItem('reminders', JSON.stringify(reminders));
-                updateRemindersDisplay();
-                
-                showView('chat');
-                addUserMessage(`Quero criar um lembrete: "${text}" para às ${time}`);
-                setTimeout(() => {
-                    addBotMessage(`✅ Perfeito! Criei seu lembrete para "${text}" às ${time}. Vou te avisar na hora certa! 😊 Cuidar da sua saúde e rotina é muito importante. Você está indo muito bem! 💙⭐`);
-                }, 1500);
-                
-                // Clear form
-                document.getElementById('reminder-text').value = '';
-                document.getElementById('reminder-time').value = '14:00';
-                updateReminderPreview();
-                updateVisualTime();
-            } else {
-                alert('Por favor, preencha o que lembrar e o horário para criar o lembrete.');
-            }
-        }
-
-        function updateRemindersDisplay() {
-            document.getElementById('profile-reminders-count').textContent = reminders.length;
-            
-            if (reminders.length > 0) {
-                document.getElementById('active-reminders').classList.remove('hidden');
-                const remindersList = document.getElementById('reminders-list');
-                remindersList.innerHTML = '';
-                
-                // Display up to 3 most recent reminders
-                reminders.slice(-3).forEach(reminder => {
-                    const reminderElement = document.createElement('div');
-                    reminderElement.className = 'bg-purple-50 p-4 rounded-2xl';
-                    reminderElement.innerHTML = `
-                        <p class="text-lg font-semibold text-purple-700">${reminder.text}</p>
-                        <p class="text-purple-600">⏰ ${reminder.time}</p>
-                    `;
-                    remindersList.appendChild(reminderElement);
-                });
-            } else {
-                document.getElementById('active-reminders').classList.add('hidden');
-            }
-        }
-
-        // Profile functions
-        function toggleProfile() {
-            const modal = document.getElementById('profile-modal');
-            if (modal.classList.contains('hidden')) {
-                modal.classList.remove('hidden');
-                document.getElementById('profile-conversations-count').textContent = Math.floor(messages.length / 2); // Roughly count bot messages
-            } else {
-                modal.classList.add('hidden');
-            }
-        }
-
-        function closeProfile() {
-            document.getElementById('profile-modal').classList.add('hidden');
-        }
-
-        function handleNameKeyPress(event) {
-            if (event.key === 'Enter') {
-                const newName = event.target.value.trim();
-                if (newName) {
-                    userName = newName;
-                    localStorage.setItem('userName', userName);
-                    updateUserName();
-                    closeProfile();
-                } else {
-                    alert('Por favor, digite um nome válido.');
                 }
+              speak('Conversa limpa! Como posso te ajudar agora?');
             }
         }
 
-        function updateUserName() {
-            document.getElementById('welcome-name').textContent = userName || 'Visitante';
-            document.getElementById('profile-name').textContent = userName || 'Visitante';
-            document.getElementById('main-username').textContent = userName || 'querido(a)';
+        // Voice Functions
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                // Cancel any ongoing speech
+                synth.cancel();
+                
+                currentUtterance = new SpeechSynthesisUtterance(text);
+                currentUtterance.lang = 'pt-BR';
+                currentUtterance.rate = appState.speechRate;
+                currentUtterance.pitch = 1;
+                currentUtterance.volume = 1;
+                
+                synth.speak(currentUtterance);
+            }
         }
 
-        // Get motivational phrase
-        function getMotivationalPhrase() {
-            const phrase = motivationalPhrases[Math.floor(Math.random() * motivationalPhrases.length)];
-            showView('chat');
-            addUserMessage("Quero uma frase motivacional");
+        function stopSpeaking() {
+            if ('speechSynthesis' in window) {
+                synth.cancel();
+            }
+        }
+
+        function startVoiceInput() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert('Desculpe, seu navegador não suporta reconhecimento de voz. Por favor, use o Chrome ou Edge.');
+                return;
+            }
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            
+            recognition.lang = 'pt-BR';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            document.getElementById('voice-indicator').classList.remove('hidden');
+            incrementStat('voiceCommands');
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('chat-input').value = transcript;
+                document.getElementById('voice-indicator').classList.add('hidden');
+                sendMessage();
+            };
+
+            recognition.onerror = (event) => {
+                document.getElementById('voice-indicator').classList.add('hidden');
+                console.error('Erro no reconhecimento de voz:', event.error);
+                
+                if (event.error === 'no-speech') {
+                    alert('Não consegui ouvir nada. Tente novamente!');
+                } else if (event.error === 'not-allowed') {
+                    alert('Por favor, permita o acesso ao microfone nas configurações do navegador.');
+                } else {
+                    alert('Erro no reconhecimento de voz. Tente novamente!');
+                }
+            };
+
+            recognition.onend = () => {
+                document.getElementById('voice-indicator').classList.add('hidden');
+            };
+
+            recognition.start();
+        }
+
+        function startVoiceCommand() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert('Desculpe, seu navegador não suporta reconhecimento de voz. Por favor, use o Chrome ou Edge.');
+                return;
+            }
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            
+            recognition.lang = 'pt-BR';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            document.getElementById('voice-indicator').classList.remove('hidden');
+            speak('Estou ouvindo. O que você precisa?');
+            incrementStat('voiceCommands');
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript.toLowerCase();
+                document.getElementById('voice-indicator').classList.add('hidden');
+                
+                handleVoiceCommand(transcript);
+            };
+
+            recognition.onerror = (event) => {
+                document.getElementById('voice-indicator').classList.add('hidden');
+                console.error('Erro no reconhecimento de voz:', event.error);
+                
+                if (event.error === 'no-speech') {
+                    speak('Não consegui ouvir nada. Tente novamente!');
+                } else if (event.error === 'not-allowed') {
+                    alert('Por favor, permita o acesso ao microfone nas configurações do navegador.');
+                } else {
+                    speak('Erro no reconhecimento de voz. Tente novamente!');
+                }
+            };
+
+            recognition.onend = () => {
+                document.getElementById('voice-indicator').classList.add('hidden');
+            };
+
             setTimeout(() => {
-                addBotMessage(phrase);
-            }, 1000);
+                recognition.start();
+            }, 1500);
         }
 
-        // Monitor input changes (ensure event listeners are only added once)
-        document.addEventListener('DOMContentLoaded', function() {
-            const messageInput = document.getElementById('message-input');
-            if (messageInput) {
-                messageInput.addEventListener('input', updateInputButtons);
+        function handleVoiceCommand(command) {
+            console.log('Comando de voz:', command);
+            
+            // Navigation commands
+            if (command.includes('voltar') || command.includes('menu') || command.includes('início')) {
+                showView('main');
+                speak('Voltando ao menu principal');
+                return;
             }
             
-            const reminderTextInput = document.getElementById('reminder-text');
-            if (reminderTextInput) {
-                reminderTextInput.addEventListener('input', updateReminderPreview);
+            if (command.includes('conversar') || command.includes('chat') || command.includes('falar')) {
+                showView('chat');
+                speak('Abrindo conversa. Como posso te ajudar?');
+                return;
             }
             
-            const reminderTimeInput = document.getElementById('reminder-time');
-            if (reminderTimeInput) {
-                reminderTimeInput.addEventListener('change', updateVisualTime);
-                reminderTimeInput.addEventListener('input', updateReminderPreview); // Also update preview on input
+            if (command.includes('perfil') || command.includes('configurações')) {
+                showView('profile');
+                speak('Abrindo seu perfil');
+                return;
             }
-            updateReminderPreview(); // Initial check for reminder button state
+            
+            // Action commands
+            if (command.includes('lembrete') || command.includes('lembrar')) {
+                quickAction('reminder');
+                return;
+            }
+            
+            if (command.includes('celular') || command.includes('telefone') || command.includes('ajuda')) {
+                quickAction('phone-help');
+                return;
+            }
+            
+            if (command.includes('emergência') || command.includes('socorro') || command.includes('ajuda urgente')) {
+                showEmergencyAlert();
+                return;
+            }
+            
+            if (command.includes('sozinho') || command.includes('triste') || command.includes('conversar')) {
+                quickAction('sad');
+                return;
+            }
+            
+            // Time and weather
+            if (command.includes('que horas') || command.includes('hora')) {
+                const now = new Date();
+                const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                speak(`Agora são ${time}`);
+                return;
+            }
+            
+            if (command.includes('que dia') || command.includes('data')) {
+                const now = new Date();
+                const date = now.toLocaleDateString('pt-BR', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+                speak(`Hoje é ${date}`);
+                return;
+            }
+            
+            if (command.includes('tempo') || command.includes('clima')) {
+                speak('O tempo hoje está agradável, com temperatura em torno de 24 graus');
+                return;
+            }
+            
+            // Accessibility commands
+            if (command.includes('aumentar texto') || command.includes('letra maior')) {
+                setFontSize('xlarge');
+                speak('Texto aumentado');
+                return;
+            }
+            
+            if (command.includes('diminuir texto') || command.includes('letra menor')) {
+                setFontSize('normal');
+                speak('Texto normalizado');
+                return;
+            }
+            
+            if (command.includes('modo noturno') || command.includes('escuro')) {
+                toggleNightMode();
+                return;
+            }
+            
+            if (command.includes('contraste')) {
+                toggleHighContrast();
+                return;
+            }
+            
+            // Default: open chat with the command as message
+            showView('chat');
+            setTimeout(() => {
+                sendQuickMessage(command);
+            }, 500);
+        }
+
+        // Accessibility Functions
+        function toggleAccessibilityPanel() {
+            const panel = document.getElementById('accessibility-panel');
+            panel.classList.toggle('hidden');
+        }
+
+        function closeAccessibilityPanel() {
+            document.getElementById('accessibility-panel').classList.add('hidden');
+        }
+
+        function setFontSize(size) {
+            document.body.className = document.body.className.replace(/text-size-\w+/, '');
+            document.body.classList.add(`text-size-${size}`);
+            appState.fontSize = size;
+            localStorage.setItem('fontSize', size);
+            
+            const sizes = { small: 'pequeno', normal: 'normal', large: 'grande', xlarge: 'muito grande' };
+            speak(`Tamanho de texto alterado para ${sizes[size]}`);
+        }
+
+        function toggleHighContrast() {
+            document.body.classList.toggle('high-contrast');
+            const isActive = document.body.classList.contains('high-contrast');
+            appState.theme = isActive ? 'high-contrast' : 'default';
+            localStorage.setItem('theme', appState.theme);
+            
+            speak(isActive ? 'Modo alto contraste ativado' : 'Modo alto contraste desativado');
+        }
+
+        function toggleNightMode() {
+            document.body.classList.toggle('night-mode');
+            const isActive = document.body.classList.contains('night-mode');
+            
+            if (isActive) {
+                document.body.classList.remove('high-contrast', 'reading-mode');
+                appState.theme = 'night-mode';
+            } else {
+                appState.theme = 'default';
+            }
+            
+            localStorage.setItem('theme', appState.theme);
+            speak(isActive ? 'Modo noturno ativado' : 'Modo noturno desativado');
+        }
+
+        function toggleReadingMode() {
+            document.body.classList.toggle('reading-mode');
+            const isActive = document.body.classList.contains('reading-mode');
+            
+            if (isActive) {
+                document.body.classList.remove('high-contrast', 'night-mode');
+                appState.theme = 'reading-mode';
+            } else {
+                appState.theme = 'default';
+            }
+            
+            localStorage.setItem('theme', appState.theme);
+            speak(isActive ? 'Modo leitura ativado' : 'Modo leitura desativado');
+        }
+
+        function setSpeechRate(rate) {
+            appState.speechRate = rate;
+            localStorage.setItem('speechRate', rate);
+            
+            const rates = { 0.5: 'devagar', 1: 'normal', 1.5: 'rápido' };
+            speak(`Velocidade de fala alterada para ${rates[rate]}`);
+        }
+
+        function applyAccessibilitySettings() {
+            // Apply saved font size
+            if (appState.fontSize) {
+                document.body.classList.add(`text-size-${appState.fontSize}`);
+            }
+            
+            // Apply saved theme
+            if (appState.theme && appState.theme !== 'default') {
+                document.body.classList.add(appState.theme);
+            }
+        }
+
+        // Emergency Functions
+        function showEmergencyAlert() {
+            document.getElementById('emergency-alert').classList.remove('hidden');
+            speak('Números de emergência disponíveis na tela');
+            
+            // Add to body to prevent scroll
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeEmergencyAlert() {
+            document.getElementById('emergency-alert').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // PWA Installation
+        let deferredPrompt;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install button if needed
+            console.log('PWA pode ser instalado');
         });
 
-        // Accessibility improvements
-        document.addEventListener('keydown', function(event) {
-            // ESC key to close modals
-            if (event.key === 'Escape') {
-                closeProfile();
-            }
-            
-            // Ctrl+Enter to send message
-            if (event.ctrlKey && event.key === 'Enter') {
-                if (currentView === 'chat') {
-                    sendMessage();
-                }
-            }
-        });
-
-        // Service Worker Registration (for PWA functionality)
+        // Service Worker Registration
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
+            window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
-                    .then(function(registration) {
-                        console.log('ServiceWorker registration successful');
+                    .then(registration => {
+                        console.log('Service Worker registrado com sucesso:', registration.scope);
                     })
-                    .catch(function(err) {
-                        console.log('ServiceWorker registration failed');
+                    .catch(error => {
+                        console.log('Falha ao registrar Service Worker:', error);
                     });
             });
         }
+
+        // Online/Offline Detection
+        window.addEventListener('online', () => {
+            console.log('Conectado à internet');
+            speak('Conexão restaurada');
+        });
+
+        window.addEventListener('offline', () => {
+            console.log('Sem conexão com a internet');
+            speak('Você está sem conexão com a internet');
+        });
+
+        // Notification Permission
+        function requestNotificationPermission() {
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        console.log('Permissão de notificação concedida');
+                    }
+                });
+            }
+        }
+
+        // Request notification permission after a delay
+        setTimeout(requestNotificationPermission, 5000);
+
+        // Battery Status
+        if ('getBattery' in navigator) {
+            navigator.getBattery().then(battery => {
+                if (battery.level < 0.2 && !battery.charging) {
+                    speak('Atenção! A bateria do seu dispositivo está baixa');
+                }
+            });
+        }
+
+        // Prevent accidental page close
+        window.addEventListener('beforeunload', (e) => {
+            if (appState.chatHistory.length > 0) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+
+        // Auto-save user data periodically
+        setInterval(() => {
+            localStorage.setItem('lastActive', new Date().toISOString());
+        }, 60000); // Every minute
+
+        // Accessibility: Skip to main content
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab' && e.shiftKey) {
+                // First tab press
+                console.log('Tab navigation active');
+            }
+        });
+
+        // Focus management for modals
+        function trapFocus(element) {
+            const focusableElements = element.querySelectorAll(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+            const firstFocusable = focusableElements[0];
+            const lastFocusable = focusableElements[focusableElements.length - 1];
+
+            element.addEventListener('keydown', (e) => {
+                if (e.key === 'Tab') {
+                    if (e.shiftKey) {
+                        if (document.activeElement === firstFocusable) {
+                            lastFocusable.focus();
+                            e.preventDefault();
+                        }
+                    } else {
+                        if (document.activeElement === lastFocusable) {
+                            firstFocusable.focus();
+                            e.preventDefault();
+                        }
+                    }
+                }
+                
+                if (e.key === 'Escape') {
+                    closeAccessibilityPanel();
+                    closeEmergencyAlert();
+                }
+            });
+        }
+
+        // Apply focus trap to modals
+        const accessibilityPanel = document.getElementById('accessibility-panel');
+        const emergencyAlert = document.getElementById('emergency-alert');
+        
+        if (accessibilityPanel) trapFocus(accessibilityPanel);
+        if (emergencyAlert) trapFocus(emergencyAlert);
+
+        // ARIA live regions for dynamic content
+        function announceToScreenReader(message) {
+            const liveRegion = document.createElement('div');
+            liveRegion.setAttribute('role', 'status');
+            liveRegion.setAttribute('aria-live', 'polite');
+            liveRegion.className = 'sr-only';
+            liveRegion.textContent = message;
+            document.body.appendChild(liveRegion);
+            
+            setTimeout(() => {
+                document.body.removeChild(liveRegion);
+            }, 1000);
+        }
+
+        // Enhanced error handling
+        window.addEventListener('error', (e) => {
+            console.error('Erro capturado:', e.error);
+            announceToScreenReader('Ocorreu um erro. Por favor, tente novamente.');
+        });
+
+        // Prevent double-tap zoom on buttons
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (e) => {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // Add haptic feedback for supported devices
+        function vibrate(pattern = 10) {
+            if ('vibrate' in navigator) {
+                navigator.vibrate(pattern);
+            }
+        }
+
+        // Add vibration to button clicks
+        document.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                vibrate(10);
+            }
+        });
+
+        // Gesture support for mobile
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchEndY = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
+            handleGesture();
+        });
+
+        function handleGesture() {
+            const diffX = touchStartX - touchEndX;
+            const diffY = touchStartY - touchEndY;
+            
+            // Swipe detection
+            if (Math.abs(diffX) > Math.abs(diffY)) {
+                if (Math.abs(diffX) > 100) {
+                    if (diffX > 0) {
+                        // Swipe left
+                        console.log('Swipe left detected');
+                    } else {
+                        // Swipe right
+                        console.log('Swipe right detected');
+                        if (appState.currentView === 'chat' || appState.currentView === 'profile') {
+                            showView('main');
+                        }
+                    }
+                }
+            }
+        }
+
+        // Console welcome message
+        console.log('%c🌟 Facilita+ v1.0.0', 'color: #4F46E5; font-size: 24px; font-weight: bold;');
+        console.log('%c✨ Powered by ORPHEO Platforms', 'color: #7C3AED; font-size: 16px;');
+        console.log('%c♿ Desenvolvido com foco em acessibilidade', 'color: #10B981; font-size: 14px;');
+        console.log('%c💙 ORPHEO Platforms', 'color: #3B82F6; font-size: 14px; font-weight: bold;');
+
+        // Analytics (anonymized)
+        function logEvent(eventName, eventData = {}) {
+            console.log('Event:', eventName, eventData);
+            // In production, send to analytics service
+        }
+
+        // Log app initialization
+        logEvent('app_initialized', {
+            version: '3.0.0',
+            timestamp: new Date().toISOString(),
+            userAgent: navigator.userAgent
+        });
     </script>
 </body>
 </html>
