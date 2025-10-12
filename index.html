@@ -44,7 +44,7 @@
         header {
             position: relative;
             text-align: center;
-            padding: 60px 20px;
+            padding: 60px 20px 40px;
             z-index: 1;
         }
 
@@ -76,7 +76,19 @@
         .subtitle {
             font-size: 1.3em;
             color: #d4a5ff;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
+        }
+
+        .slogan {
+            font-size: 1.2em;
+            font-style: italic;
+            color: #ff6ec7;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background: rgba(255, 110, 199, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 110, 199, 0.3);
+            display: inline-block;
         }
 
         .container {
@@ -117,6 +129,59 @@
 
         .icon {
             font-size: 1em;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .book-card {
+            background: linear-gradient(135deg, rgba(74, 25, 66, 0.6) 0%, rgba(45, 27, 78, 0.6) 100%);
+            border: 2px solid rgba(176, 106, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .book-card:hover {
+            border-color: rgba(255, 110, 199, 0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 110, 199, 0.3);
+        }
+
+        .book-card h3 {
+            color: #ff6ec7;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .book-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .book-btn {
+            flex: 1;
+            min-width: 100px;
+            background: linear-gradient(135deg, #ff6ec7 0%, #b06aff 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .book-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(255, 110, 199, 0.5);
         }
 
         .social-links {
@@ -245,6 +310,19 @@
             h2 {
                 font-size: 1.8em;
             }
+
+            .slogan {
+                font-size: 1em;
+                padding: 12px 20px;
+            }
+
+            .book-links {
+                flex-direction: column;
+            }
+
+            .book-btn {
+                min-width: 100%;
+            }
         }
     </style>
 </head>
@@ -254,10 +332,69 @@
     <header>
         <div class="moon-icon">🌙</div>
         <h1>Ren The Writer</h1>
-        <p class="subtitle">Bem vindo ao Universo Tsukiyo</p>
+        <p class="subtitle">Bem Vindo ao Universo Tsukiyo</p>
+        <div class="slogan">"Histórias que queimam devagar, mas ficam para sempre."</div>
     </header>
 
     <div class="container">
+        <section class="section">
+            <h2><span class="icon">📖</span> Obras</h2>
+            <div class="books-grid">
+                <div class="book-card">
+                    <h3>Abunai Aisuru</h3>
+                    <div class="book-links">
+                        <a href="https://a.co/d/39ImMTU" class="book-btn" target="_blank">Amazon</a>
+                        <a href="https://www.wattpad.com/story/352587141" class="book-btn" target="_blank">Wattpad</a>
+                    </div>
+                </div>
+                <div class="book-card">
+                    <h3>Abunai Aisuru - Arco 2</h3>
+                    <div class="book-links">
+                        <a href="https://a.co/d/838oTJx" class="book-btn" target="_blank">Amazon</a>
+                    </div>
+                </div>
+                <div class="book-card">
+                    <h3>Por Favor, Me Note</h3>
+                    <div class="book-links">
+                        <a href="https://a.co/d/72OJnpq" class="book-btn" target="_blank">Amazon</a>
+                        <a href="https://www.wattpad.com/story/402502894" class="book-btn" target="_blank">Wattpad</a>
+                    </div>
+                </div>
+                <div class="book-card">
+                    <h3>Married at 16</h3>
+                    <div class="book-links">
+                        <a href="https://www.wattpad.com/story/353888895" class="book-btn" target="_blank">Wattpad</a>
+                    </div>
+                </div>
+                <div class="book-card">
+                    <h3>Emilly: Além do Horizonte</h3>
+                    <div class="book-links">
+                        <a href="https://a.co/d/1XdSUt3" class="book-btn" target="_blank">Amazon</a>
+                        <a href="https://www.wattpad.com/story/359037204" class="book-btn" target="_blank">Wattpad</a>
+                    </div>
+                </div>
+                <div class="book-card">
+                    <h3>O Diário de Felipe</h3>
+                    <div class="book-links">
+                        <a href="https://www.wattpad.com/story/328285785" class="book-btn" target="_blank">Wattpad</a>
+                    </div>
+                </div>
+                <div class="book-card">
+                    <h3>Watashi No Ai Hana</h3>
+                    <div class="book-links">
+                        <a href="https://a.co/d/2RnyHsJ" class="book-btn" target="_blank">Amazon</a>
+                        <a href="https://www.wattpad.com/story/336562646" class="book-btn" target="_blank">Wattpad</a>
+                    </div>
+                </div>
+                <div class="book-card">
+                    <h3>Kiss Her, Not Me</h3>
+                    <div class="book-links">
+                        <span class="book-btn" style="opacity: 0.5; cursor: not-allowed;">Em breve</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="section">
             <h2><span class="icon">📱</span> Redes Sociais</h2>
             <div class="social-links">
@@ -275,19 +412,19 @@
         <section class="section">
             <h2><span class="icon">📚</span> Marcas da Autoria</h2>
             <div class="social-links">
-                <div class="social-card" onclick="window.open('https://instagram.com/cafeepaginas', '_blank')">
+                <div class="social-card" onclick="window.open('https://ig.me/j/AbYAHRZS0AgKx6Xi/', '_blank')">
                     <h3>Café e Páginas</h3>
                     <p>Clube do Livro</p>
                 </div>
-                <div class="social-card" onclick="window.open('https://ig.me/j/AbYAHRZS0AgKx6Xi/', '_blank')">
-                    <h3>Kaoru Writer</h3>
+                <div class="social-card" onclick="window.open('https://instagram.com/kaoruwriter', '_blank')">
+                    <h3>@kaoruwriter</h3>
                     <p>Autor</p>
                 </div>
             </div>
         </section>
 
         <section class="section">
-            <h2><span class="icon">🎨</span> Projetos</h2>
+            <h2><span class="icon">🎨</span> Studio Tsukiyo Platforms</h2>
             <div class="projects-grid">
                 <div class="project-card">
                     <h3>ORPHEO Platforms</h3>
@@ -314,15 +451,12 @@
                 <div class="yume-link">
                     <a class="link" href="https://studio.orpheostudio.com.br" target="_blank">Site Oficial</a>
                 </div>
-                <div class="yume-link">
-                    <a class="link" href="https://rtwriter.orpheostudio.com.br" target="_blank">Site do Ren</a>
-                </div>
             </div>
         </section>
     </div>
 
     <footer>
-        <p>🌙 Ren The Writer © 2025 | Todas as obras e projetos são propriedade de Ren Tsukiyo</p>
+        <p>🌙 Ren The Writer © 2025 | Todos os direitos reservados a Ren Tsukiyo</p>
     </footer>
 
     <script>
